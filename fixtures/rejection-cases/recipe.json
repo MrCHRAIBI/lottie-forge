@@ -1,0 +1,188 @@
+[
+  {
+    "case_id": "dm02-recipe-id-out-of-catalogue",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "disco-spin",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 1},
+      "theme_anchors": []
+    },
+    "expect_paths": [["recipe_id"]]
+  },
+  {
+    "case_id": "dm02-duration-ms-below-min",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 99,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 1},
+      "theme_anchors": []
+    },
+    "expect_paths": [["duration_ms"]]
+  },
+  {
+    "case_id": "dm02-duration-ms-above-max",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 10001,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 1},
+      "theme_anchors": []
+    },
+    "expect_paths": [["duration_ms"]]
+  },
+  {
+    "case_id": "dm02-duration-ms-string-strict",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": "1200",
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 1},
+      "theme_anchors": []
+    },
+    "expect_paths": [["duration_ms"]]
+  },
+  {
+    "case_id": "dm02-params-amplitude-above-max",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 1.1, "direction": "up", "loops": 1},
+      "theme_anchors": []
+    },
+    "expect_paths": [["params", "amplitude"]]
+  },
+  {
+    "case_id": "dm02-params-amplitude-below-min",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": -0.1, "direction": "up", "loops": 1},
+      "theme_anchors": []
+    },
+    "expect_paths": [["params", "amplitude"]]
+  },
+  {
+    "case_id": "dm02-params-direction-unknown",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "diagonal", "loops": 1},
+      "theme_anchors": []
+    },
+    "expect_paths": [["params", "direction"]]
+  },
+  {
+    "case_id": "dm02-params-loops-above-max",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 11},
+      "theme_anchors": []
+    },
+    "expect_paths": [["params", "loops"]]
+  },
+  {
+    "case_id": "dm02-params-loops-below-min",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 0},
+      "theme_anchors": []
+    },
+    "expect_paths": [["params", "loops"]]
+  },
+  {
+    "case_id": "cr01-theme-anchor-accent-newline",
+    "ref": "CR-01",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 1},
+      "theme_anchors": ["accent\n"]
+    },
+    "expect_paths": [["theme_anchors", 0]]
+  },
+  {
+    "case_id": "wr04-family-too-long-65",
+    "ref": "WR-04",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "a234567890123456789012345678901234567890123456789012345678901234x",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 1},
+      "theme_anchors": []
+    },
+    "expect_paths": [["family"]]
+  },
+  {
+    "case_id": "dm02-extra-key-top-level",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {"amplitude": 0.5, "direction": "up", "loops": 1},
+      "theme_anchors": [],
+      "rogue_field": "must be rejected"
+    }
+  },
+  {
+    "case_id": "dm02-extra-key-nested",
+    "ref": "DM-02",
+    "model": "MotionRecipe",
+    "payload": {
+      "recipe_id": "fade",
+      "family": "transform",
+      "duration_ms": 1200,
+      "easing": "ease-in-out",
+      "params": {
+        "amplitude": 0.5,
+        "direction": "up",
+        "loops": 1,
+        "rogue_param": "must be rejected"
+      },
+      "theme_anchors": []
+    }
+  }
+]

@@ -1,0 +1,18 @@
+# lottie-forge — line-ending policy
+#
+# Force LF for ALL tracked text files on checkout, regardless of the
+# platform's core.autocrlf setting. Without this, `git clone` on Windows
+# converts LF (the committed form) to CRLF on checkout via autocrlf=true,
+# and the Biome formatter rejects the CRLF files with "Formatter would
+# have printed..." warnings — a fresh-checkout on Windows would fail the
+# local verification chain while the CI (ubuntu-latest) would pass.
+#
+# The repo's canonical form is LF (the GitHub Actions runner is Linux,
+# biome defaults to platform-native but auto-resolves to LF on non-Windows
+# hosts and CRLF on Windows — diverging by environment).
+#
+# `text=auto` lets git auto-detect binary vs text, `eol=lf` enforces the
+# checkout form. We keep `*` broad because every text file in the repo is
+# authored to expect LF.
+
+* text=auto eol=lf

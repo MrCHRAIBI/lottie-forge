@@ -1,0 +1,23 @@
+# GSD runtime (convention: not tracked)
+.opencode/
+.gsd/
+
+# uv lockfile — local-environment artifact (CI uses pip, not uv sync)
+uv.lock
+
+# Planning lock
+.planning/milestone.lock
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+
+# Generated at test time (see docs/project/04_Modeles.md §4.3)
+fixtures/bridge/

@@ -1,0 +1,332 @@
+[
+  {
+    "case_id": "dm03-asset-id-deux-chiffres",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-12",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["asset_id"]]
+  },
+  {
+    "case_id": "dm03-asset-id-quatre-chiffres",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-1234",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["asset_id"]]
+  },
+  {
+    "case_id": "dm03-asset-id-vide",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["asset_id"]]
+  },
+  {
+    "case_id": "dm03-asset-id-prefix-incorrect",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "b-123",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["asset_id"]]
+  },
+  {
+    "case_id": "dm03-asset-id-trailing-dash",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["asset_id"]]
+  },
+  {
+    "case_id": "sty03-style-ref-version-partielle",
+    "ref": "STY-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.2",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["style_ref"]]
+  },
+  {
+    "case_id": "sty03-style-ref-four-segment",
+    "ref": "STY-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0.1",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["style_ref"]]
+  },
+  {
+    "case_id": "sty03-style-ref-name-underscore",
+    "ref": "STY-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example_style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["style_ref"]]
+  },
+  {
+    "case_id": "dm02-recipe-ref-hors-catalogue",
+    "ref": "DM-02",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "disco-spin",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["recipe_ref"]]
+  },
+  {
+    "case_id": "dm03-shape-groups-vide",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": []},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["composition_meta", "shape_group_names"]]
+  },
+  {
+    "case_id": "dm03-shape-groups-au-dessus-max",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {
+        "shape_group_names": [
+          "shape-00", "shape-01", "shape-02", "shape-03", "shape-04",
+          "shape-05", "shape-06", "shape-07", "shape-08", "shape-09",
+          "shape-10", "shape-11", "shape-12", "shape-13", "shape-14",
+          "shape-15", "shape-16", "shape-17", "shape-18", "shape-19",
+          "shape-20", "shape-21", "shape-22", "shape-23", "shape-24"
+        ]
+      },
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["composition_meta", "shape_group_names"]]
+  },
+  {
+    "case_id": "dm03-shape-group-nom-court",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["ab"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["composition_meta", "shape_group_names", 0]]
+  },
+  {
+    "case_id": "dm03-shape-group-leading-digit",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["1-bad"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["composition_meta", "shape_group_names", 0]]
+  },
+  {
+    "case_id": "cr01-token-non-ascii-shape-group-name",
+    "ref": "CR-01",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["café"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["composition_meta", "shape_group_names", 0]]
+  },
+  {
+    "case_id": "dm03-hash-svg-majuscule",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789ABCDEF0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["content_hashes", "svg_sha256"]]
+  },
+  {
+    "case_id": "dm03-hash-svg-longueur-63",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcde",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["content_hashes", "svg_sha256"]]
+  },
+  {
+    "case_id": "dm03-hash-svg-non-hex",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    },
+    "expect_paths": [["content_hashes", "svg_sha256"]]
+  },
+  {
+    "case_id": "dm03-content-hashes-champ-extra",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "rogue_hash": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+      }
+    }
+  },
+  {
+    "case_id": "dm03-extra-key-top-level",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      },
+      "rogue_field": "must be rejected"
+    }
+  },
+  {
+    "case_id": "dm03-extra-key-nested-composition-meta",
+    "ref": "DM-03",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {
+        "shape_group_names": ["bg-shape"],
+        "rogue_meta": "must be rejected"
+      },
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+      }
+    }
+  }
+]

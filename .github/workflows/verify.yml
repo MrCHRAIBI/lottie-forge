@@ -1,0 +1,106 @@
+---
+# lottie-forge — Phase 1 CI workflow.
+#
+# Implements the 10-step ordered sequence from §3.6 of docs/project/03_Stack.md
+# plus `npx tsc --noEmit` and the zero-skip assertion gate (§4.2 of
+# docs/project/04_Modeles.md). The 12 steps run sequentially in a single job,
+# with NO continue-on-error and NO if: always() — a half-silent bridge chain
+# cannot pass green.
+#
+# Doctrine: "the gate is the gate" (§1.8) — without this CI job, parity would
+# be convention, not enforcement. This workflow is the canonical enforcer
+# of DM-05 (zod ↔ Pydantic parity) and the rejection-harness mirrors.
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same ref — keep CI history clean.
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+# Principle of least privilege: the workflow only needs to read the
+# repository contents. No secrets, no write access, no packages scope.
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: verify (bridge ordered + zero-skip)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Force Python not to write .pyc files (CI step 4 onwards runs in a
+      # throwaway checkout — no need for them).
+      PYTHONDONTWRITEBYTECODE: "1"
+      # UTF-8 across the board — Python output, pytest paths, vitest output.
+      PYTHONIOENCODING: "utf-8"
+      LC_ALL: "C.UTF-8"
+      LANG: "C.UTF-8"
+
+    steps:
+      # --- 1. checkout ---
+      - name: 01-checkout
+        uses: actions/checkout@v4
+
+      # --- 2. setup-python 3.12 ---
+      - name: 02-setup-python-3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # --- 3. setup-node 20 ---
+      - name: 03-setup-node-20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # --- 4. pip install -e ".[dev]" ---
+      # The chain must be quoted in the YAML literal — `pip install -e .[dev]`
+      # would be parsed by the shell as `[dev]` (a glob) and fail.
+      - name: 04-pip-install-dev
+        run: pip install -e ".[dev]"
+
+      # --- 5. npm ci ---
+      # `package-lock.json` is committed (01-01) — `npm ci` fails hard on
+      # drift. No `npm install` fallback, no `--no-audit` shortcuts.
+      - name: 05-npm-ci
+        run: npm ci
+
+      # --- 6. ruff ---
+      - name: 06-ruff
+        run: ruff check .
+
+      # --- 7. biome ---
+      - name: 07-biome
+        run: npx @biomejs/biome check .
+
+      # --- 8. pytest export (Py → fixtures/bridge/*.from-python.json) ---
+      # The first leg of the bridge — produces pytest-junit.xml AND
+      # fixtures/bridge/<contract>.from-python.json for the TS leg.
+      - name: 08-pytest-export
+        run: python -m pytest tests/ -q -k export
+
+      # --- 9. vitest run (TS validates Py exports, re-emits *.from-ts.json) ---
+      - name: 09-vitest
+        run: npx vitest run
+
+      # --- 10. pytest full suite (Py strict re-import of TS re-emit) ---
+      # This is the lockstep gate — every TS-emitted payload MUST re-import
+      # under Pydantic strict. A partial CI cannot reach this step green.
+      - name: 10-pytest-full
+        run: python -m pytest tests/ -q
+
+      # --- 11. tsc --noEmit (type-check the z.infer<...> exports) ---
+      - name: 11-tsc-noEmit
+        run: npx tsc --noEmit
+
+      # --- 12. zero-skip assertion gate ---
+      # Parses pytest-junit.xml + vitest-junit.xml. Any `skipped="N"` > 0
+      # anywhere in those files fails the job. Doctrinal: a CI bridge half-
+      # silent on skips cannot pass green (§4.2 + §1.8).
+      - name: 12-assert-zero-skips
+        run: node scripts/assert-zero-skips.mjs fixtures/bridge/pytest-junit.xml fixtures/bridge/vitest-junit.xml

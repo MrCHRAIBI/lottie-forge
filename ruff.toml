@@ -1,0 +1,12 @@
+# Ruff configuration — linter + import sorter only (formatting deferred).
+# Determinism: same rules produce identical output on fresh checkout (CI ubuntu == local Windows).
+# See docs/project/04_Modeles.md §4.3.
+
+target-version = "py312"
+line-length = 100
+
+[lint]
+select = ["E", "F", "I", "UP"]
+
+[lint.isort]
+known-first-party = ["lottie_forge", "fixtures"]

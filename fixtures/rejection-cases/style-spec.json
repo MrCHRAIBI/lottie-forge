@@ -1,0 +1,393 @@
+[
+  {
+    "case_id": "cr01-accent-newline",
+    "ref": "CR-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent\n", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["palette", 1, "name"]]
+  },
+  {
+    "case_id": "dm01-crossfield-stroke-order",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 4.0, "default": 2.5, "bold": 1.0},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["stroke_widths"]]
+  },
+  {
+    "case_id": "dm01-crossfield-radii-order",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 12.0, "medium": 6.0, "large": 3.0},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["corner_radii"]]
+  },
+  {
+    "case_id": "dm01-strict-float-string",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": "1.5", "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["stroke_widths", "thin"]]
+  },
+  {
+    "case_id": "dm01-strict-int-string",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": "1200", "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["viewBox", "width"]]
+  },
+  {
+    "case_id": "dm01-extra-key-top-level",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ],
+      "rogue_field": "must be rejected"
+    }
+  },
+  {
+    "case_id": "dm01-extra-key-nested",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25, "extra": 99},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    }
+  },
+  {
+    "case_id": "dm01-style-version-required",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["style_version"]]
+  },
+  {
+    "case_id": "dm01-style-version-regex",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1x0x0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["style_version"]]
+  },
+  {
+    "case_id": "dm01-style-version-empty",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1..0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["style_version"]]
+  },
+  {
+    "case_id": "dm01-palette-duplicate-name",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "ink", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    }
+  },
+  {
+    "case_id": "dm01-hex-invalid",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "not-a-hex"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["palette", 1, "hex"]]
+  },
+  {
+    "case_id": "dm01-viewbox-below-min",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 8, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["viewBox", "width"]]
+  },
+  {
+    "case_id": "dm01-viewbox-above-max",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 4096},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["viewBox", "height"]]
+  },
+  {
+    "case_id": "dm01-control-points-too-few",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["easing_curves", 0, "control_points"]]
+  },
+  {
+    "case_id": "dm01-control-points-too-many",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95, 0.5]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["easing_curves", 0, "control_points"]]
+  },
+  {
+    "case_id": "dm01-control-points-out-of-range",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"},
+        {"name": "accent", "hex": "#F26A4B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 1.5]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["easing_curves", 0, "control_points", 3]]
+  },
+  {
+    "case_id": "dm01-palette-too-few",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "ink", "hex": "#1B1F3B"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["palette"]]
+  },
+  {
+    "case_id": "dm01-palette-too-many",
+    "ref": "DM-01",
+    "model": "StyleSpec",
+    "payload": {
+      "style_version": "1.0.0",
+      "viewBox": {"width": 1200, "height": 800},
+      "stroke_widths": {"thin": 1.5, "default": 2.5, "bold": 4.25},
+      "corner_radii": {"small": 2.5, "medium": 6.5, "large": 12.75},
+      "palette": [
+        {"name": "p01", "hex": "#000000"},
+        {"name": "p02", "hex": "#000001"},
+        {"name": "p03", "hex": "#000002"},
+        {"name": "p04", "hex": "#000003"},
+        {"name": "p05", "hex": "#000004"},
+        {"name": "p06", "hex": "#000005"},
+        {"name": "p07", "hex": "#000006"},
+        {"name": "p08", "hex": "#000007"},
+        {"name": "p09", "hex": "#000008"},
+        {"name": "p10", "hex": "#000009"},
+        {"name": "p11", "hex": "#00000A"},
+        {"name": "p12", "hex": "#00000B"},
+        {"name": "p13", "hex": "#00000C"},
+        {"name": "p14", "hex": "#00000D"},
+        {"name": "p15", "hex": "#00000E"},
+        {"name": "p16", "hex": "#00000F"},
+        {"name": "p17", "hex": "#000010"}
+      ],
+      "easing_curves": [
+        {"name": "standard", "control_points": [0.4, 0.05, 0.2, 0.95]},
+        {"name": "entrance", "control_points": [0.25, 0.1, 0.25, 0.95]}
+      ]
+    },
+    "expect_paths": [["palette"]]
+  }
+]

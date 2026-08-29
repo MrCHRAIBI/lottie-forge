@@ -1,0 +1,342 @@
+[
+  {
+    "case_id": "in08-doublons-asset-id",
+    "ref": "IN-08",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        },
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        }
+      ],
+      "totals": {"asset_count": 2, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": true,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["assets", 0, "asset_id"], ["assets", 1, "asset_id"]]
+  },
+  {
+    "case_id": "totals-compte-incoherent",
+    "ref": "DM-04",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        },
+        {
+          "asset_id": "a-002",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        }
+      ],
+      "totals": {"asset_count": 1, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": true,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["totals", "asset_count"]]
+  },
+  {
+    "case_id": "mono-style-mismatch",
+    "ref": "WR-01",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@2.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        }
+      ],
+      "totals": {"asset_count": 1, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": true,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["assets", 0, "style_ref"]]
+  },
+  {
+    "case_id": "assets-vide",
+    "ref": "DM-04",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [],
+      "totals": {"asset_count": 0, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": true,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["assets"]]
+  },
+  {
+    "case_id": "assets-51",
+    "ref": "DM-04",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [
+        {"asset_id": "a-001", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-002", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-003", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-004", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-005", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-006", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-007", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-008", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-009", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-010", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-011", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-012", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-013", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-014", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-015", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-016", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-017", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-018", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-019", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-020", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-021", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-022", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-023", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-024", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-025", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-026", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-027", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-028", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-029", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-030", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-031", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-032", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-033", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-034", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-035", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-036", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-037", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-038", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-039", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-040", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-041", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-042", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-043", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-044", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-045", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-046", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-047", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-048", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-049", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-050", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}},
+        {"asset_id": "a-051", "style_ref": "example-style@1.0.0", "recipe_ref": "fade", "composition_meta": {"shape_group_names": ["bg-shape"]}, "content_hashes": {"svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}}
+      ],
+      "totals": {"asset_count": 51, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": true,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["assets"]]
+  },
+  {
+    "case_id": "license-terms-hors-literal",
+    "ref": "LIC-01",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        }
+      ],
+      "totals": {"asset_count": 1, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "subscription-monthly",
+        "commercial_use": true,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["license", "terms"]]
+  },
+  {
+    "case_id": "license-commercial-use-false",
+    "ref": "LIC-01",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        }
+      ],
+      "totals": {"asset_count": 1, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": false,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["license"]]
+  },
+  {
+    "case_id": "license-attribution-required-true",
+    "ref": "LIC-01",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        }
+      ],
+      "totals": {"asset_count": 1, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": true,
+        "attribution_required": true
+      }
+    },
+    "expect_paths": [["license"]]
+  },
+  {
+    "case_id": "cost-eur-hors-bornes",
+    "ref": "DM-04",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15",
+      "style_version": "1.0.0",
+      "assets": [
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        }
+      ],
+      "totals": {"asset_count": 1, "cost_eur": -0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": true,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["totals", "cost_eur"]]
+  },
+  {
+    "case_id": "pack-id-forme-invalide",
+    "ref": "DM-04",
+    "model": "PackManifest",
+    "payload": {
+      "pack_id": "pack-nature-2026-03-15-extra",
+      "style_version": "1.0.0",
+      "assets": [
+        {
+          "asset_id": "a-001",
+          "style_ref": "example-style@1.0.0",
+          "recipe_ref": "fade",
+          "composition_meta": {"shape_group_names": ["bg-shape"]},
+          "content_hashes": {
+            "svg_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "lottie_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          }
+        }
+      ],
+      "totals": {"asset_count": 1, "cost_eur": 0.5, "first_pass_yield": 0.75},
+      "license": {
+        "license_id": "pack-license-std",
+        "terms": "perpetual-one-time",
+        "commercial_use": true,
+        "attribution_required": false
+      }
+    },
+    "expect_paths": [["pack_id"]]
+  }
+]

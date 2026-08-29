@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lottie-forge"
+version = "0.1.0"
+description = "lottie-forge — industrial factory for batch production of themed animated illustration packs"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "pydantic==2.13.4",
+    # pyyaml reserved for Phase 2 (RecipeCatalogue fixture loading, IN-02)
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["lottie_forge"]
+
+[tool.pytest.ini_options]
+# Generated artifact lands in fixtures/bridge/ (gitignored). See docs/project/04_Modeles.md §4.3.
+addopts = "--junitxml=fixtures/bridge/pytest-junit.xml"
+testpaths = ["tests"]
