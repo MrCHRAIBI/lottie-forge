@@ -85,12 +85,12 @@ Plans:
   5. Le catalogue verbatim + son hash sont câblés comme fixture du template de system prompt versionné (placeholder asserté par test ; l'enregistrement du hash au manifest est en place)
 
 **Canonical refs**: `docs/project/05_Style.md` (§5.1–§5.9) · `docs/project/04_Modeles.md` §4.4 (vocabulaire clos)
-**Plans:** 6 plans
+**Plans:** 1/6 plans executed
 
 Plans:
 **Wave 1**
 
-- [ ] 02-01-PLAN.md — Gate légitimité PyYAML + tracer fixture style end-to-end (style.yaml hashé §5.2.2 → loader → bridge ordonné → palette.json sync) + vocabulaire `ThemeAnchorId` (D-02/D-04/D-10/D-11)
+- [x] 02-01-PLAN.md — Gate légitimité PyYAML + tracer fixture style end-to-end (style.yaml hashé §5.2.2 → loader → bridge ordonné → palette.json sync) + vocabulaire `ThemeAnchorId` (D-02/D-04/D-10/D-11)
 - [ ] 02-02-PLAN.md — `StyleRefinement` delta-only deux côtés + harnais de rejet partagé (STY-02 partial)
 
 **Wave 2** *(blocked on Wave 1 completion)*
@@ -243,7 +243,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | In Progress|  |
-| 2. Style verrouillé & catalogue de recettes | 0/6 | Planned | - |
+| 2. Style verrouillé & catalogue de recettes | 1/6 | In Progress|  |
 | 3. Motion Compiler & SVG Sanitizer | 0/0 | Not started | - |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |

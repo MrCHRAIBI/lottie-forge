@@ -24,7 +24,7 @@ Requirements pour la sortie v1 (premier pack shippé via ship-gate humain). Chac
 
 ### Style (STY) — Partie 5
 
-- [ ] **STY-01**: Mono-style par pack structurel + fixture `StyleSpec` YAML versionnée et hashée comme unique source de vérité du style
+- [x] **STY-01**: Mono-style par pack structurel + fixture `StyleSpec` YAML versionnée et hashée comme unique source de vérité du style
 - [ ] **STY-02**: `StyleRefinement` delta-only par construction (jamais de SVG/path data/hex libre) ; vérification `sub_palette ⊆ style.palette` au Translator
 - [ ] **STY-03**: Gate de re-validation sur bump de `style_version` via l'ancre `style_ref` (assets pinnés flaggés : PATCH échantillonné, MINOR tokens touchés, MAJOR tous)
 
@@ -32,7 +32,7 @@ Requirements pour la sortie v1 (premier pack shippé via ship-gate humain). Chac
 
 - [ ] **MOT-01**: Catalogue fermé de 8–12 recettes en données versionnées (`catalogue.json`) possédant durées, easings, keyframe_shapes et ranges d'intensité
 - [ ] **MOT-02**: Les ids de recette choisis par tout agent ⊆ vocabulaire clos (jamais d'invention hors catalogue)
-- [ ] **MOT-03**: `theme_anchors` ≥ 1 par recette, labels non-PII
+- [x] **MOT-03**: `theme_anchors` ≥ 1 par recette, labels non-PII
 - [ ] **MOT-04**: Catalogue chargé bilingue (Python + TypeScript) sans drift + embarqué comme fixture de system prompt versionnée (hash au manifest)
 
 ### Compilation (COM) — Partie 6
@@ -165,12 +165,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DM-05 | Phase 1 | Complete |
 | LIC-01 | Phase 10 (structurel : Phase 1) | Pending |
 | LIC-02 | Phase 10 (structurel : Phase 1) | Pending |
-| STY-01 | Phase 2 | Pending |
+| STY-01 | Phase 2 | Complete |
 | STY-02 | Phase 6 (type delta-only livré en Phase 2 ; complété au Translator Phase 7) | Pending |
 | STY-03 | Phase 2 | Pending |
 | MOT-01 | Phase 2 | Pending |
 | MOT-02 | Phase 2 (clos structurel) + Phase 6 (côté agent) | Pending |
-| MOT-03 | Phase 2 | Pending |
+| MOT-03 | Phase 2 | Complete |
 | MOT-04 | Phase 2 | Pending |
 | COM-01 | Phase 3 | Pending |
 | COM-02 | Phase 3 | Pending |

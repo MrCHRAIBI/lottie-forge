@@ -1,18 +1,18 @@
 ---
 gsd_state_version: 1.0
-current_phase: 2
+current_phase: 02
 current_phase_name: Style verrouillé & catalogue de recettes
 status: executing
-stopped_at: Phase 2 context gathered
-last_updated: "2026-08-30T14:16:12.346Z"
-last_activity: 2026-08-29
-last_activity_desc: Plan 01-04 complete — PackManifest + licence structurelle + 3 validateurs collect-all + déterminisme
-state_head: 7b2854f58ae07419aff2ed3a277b9b2de4e7b291
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-08-30T15:30:11.105Z"
+last_activity: 2026-08-30
+last_activity_desc: Phase 02 execution started
+state_head: 41beb303ac993f4f56ad9e709ae89de91122175c
 progress:
   total_phases: 10
   completed_phases: 0
   total_plans: 11
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -23,14 +23,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-29)
 
 **Core value:** Un style visuel verrouillé + un vocabulaire de mouvement catalogué + des exports dev-ready — first-pass yield > 70 % et coût < €0,05 / asset.
-**Current focus:** Phase 01 — Contrats de données & frontière Pydantic↔zod (reconstruction)
+**Current focus:** Phase 02 — Style verrouillé & catalogue de recettes
 
 ## Current Position
 
-Phase: 2 (Style verrouillé & catalogue de recettes) — READY TO EXECUTE
-Plan: 5 of 5
-Status: Plan 01-04 complete (PackManifest + LicenseInfo structurelle + 3 validateurs collect-all + déterminisme byte-identique + bridge pack-manifest verte); ready for 01-05 (CI verify.yml + README)
-Last activity: 2026-08-29 — Plan 01-04 complete
+Phase: 02 (Style verrouillé & catalogue de recettes) — EXECUTING
+Plan: 2 of 6
+Status: Ready to execute
+Last activity: 2026-08-30 — Phase 02 execution started
 Progress: [░░░░░░░░░░] 0% (4/5 plans in phase 01)
 
 **Milestone 1 = Phases 1–5** (spine déterministe sans agents) · **Milestone 2 = Phases 6–10** (agents + orchestration + packager + observabilité + ship).
@@ -63,6 +63,7 @@ Progress: [░░░░░░░░░░] 0% (4/5 plans in phase 01)
 | Phase 01 P03 | 7 min | 2 tasks | 10 files |
 | Phase 01 P04 | 33 min | 2 tasks | 9 files |
 | Phase 01 P05 | 18 | 3 tasks | 5 files |
+| Phase 02-01 P02-01 | 28 | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,9 @@ Recent decisions affecting current work:
 - [Phase 01]: PackManifest (DM-04) + LicenseInfo structurelle anti-subscription (LIC-01/02) + 3 validateurs collect-all (IN-08 / WR-01 / compte coherence) avec chemin d'erreur precis via pydantic_core.ValidationError.from_exception_data. Mono-style via rsplit@ + comparaison exacte (WR-01 lock, D-02 #3). Determinisme byte-identique (critere ROADMAP n°5) prouve deux constructions independantes -> meme model_dump_json(). 10 shared rejection cases (IN-08 doublons, WR-01 mono-style, LIC-01 3 voies license, DM-04 assets/totals/pack_id form) consommes par pytest parametrize ET vitest test.each (D-06/D-08). Bridge ordered chain pack-manifest verte : pytest -k export -> vitest -> pytest -q, byte-identical JSON artifacts. 329 pytest + 85 vitest + ruff/biome/tsc all green. Le jeu de contrats Phase 1 est complet : 4 contrats (StyleSpec + MotionRecipe + AssetSpec + PackManifest) tous livres avec Pydantic strict + zod strictObject mirror + bridge chain verte + rejection harness partage. — Critere ROADMAP n°4 (anti-subscription structurelle) verouille par Literal + validateur belt. Critere ROADMAP n°5 (determinisme byte-identique) verouille par test dedie. IN-08 adjacency probe : doublons asset_id rejetes avec one issue per duplicate index, jamais fusion/deduplication silencieuse.
 - [Phase 01]: Phase 1 close : parite DM-05 enforce par CI (verify.yml 12 etapes ordonnees + assert-zero-skips gate + README byte-for-byte + fresh-clone proof 12/12 vertes). Le job verify est le garde-fou permanent pour Phases 2+. Doctrine " the gate is the gate\
 - [Phase 01]: .gitattributes * text=auto eol=lf : force cross-platform LF checkout. Detecte par le fresh-clone proof : sur Windows avec core.autocrlf=true, git checkout convertit LF en CRLF, biome formatter fail avec 12 errors. Fix Rule 2 critical : la doctrine " CI == local verify\
+- [Phase 02]: PyYAML gate cleared by human (pypi.org legitimacy verified); install via uv pip (pip not bootstrapped in venv)
+- [Phase 02]: Loader-side style_id gate (option b, D-16): KebabToken + directory-name match via pydantic-core (CR-01), strip before StyleSpec.model_validate; StyleSpec + StyleSpecSchema contracts untouched
+- [Phase 02]: ThemeAnchorId closed Literal explicit form (no star-unpack of THEME_ANCHOR_IDS) mirroring the RecipeId lockstep pattern; 6 labels primary/secondary/accent/background/success/danger; anchors and palette token names stay in distinct namespaces (D-12)
 
 ### Pending Todos
 
@@ -104,6 +108,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-08-30T00:36:31.168Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-style-verrouill-catalogue-de-recettes/02-CONTEXT.md
+Last session: 2026-08-30T15:30:10.942Z
+Stopped at: Completed 02-01-PLAN.md
+Resume file: None
