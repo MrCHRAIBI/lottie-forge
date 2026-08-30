@@ -85,7 +85,23 @@ Plans:
   5. Le catalogue verbatim + son hash sont câblés comme fixture du template de system prompt versionné (placeholder asserté par test ; l'enregistrement du hash au manifest est en place)
 
 **Canonical refs**: `docs/project/05_Style.md` (§5.1–§5.9) · `docs/project/04_Modeles.md` §4.4 (vocabulaire clos)
-**Plans**: TBD
+**Plans:** 6 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 02-01-PLAN.md — Gate légitimité PyYAML + tracer fixture style end-to-end (style.yaml hashé §5.2.2 → loader → bridge ordonné → palette.json sync) + vocabulaire `ThemeAnchorId` (D-02/D-04/D-10/D-11)
+- [ ] 02-02-PLAN.md — `StyleRefinement` delta-only deux côtés + harnais de rejet partagé (STY-02 partial)
+- [ ] 02-03-PLAN.md — `AssetSpec.content_hashes` étendu à 4 champs, same-commit §4.14 (D-16)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 02-04-PLAN.md — `CatalogRecipe`/`RecipeCatalogue` + validateurs collect-all §5.5.3 + fixtures catalogue.json/coverage-map.json verbatim + parité bilingue + cross-ref easing conjointe (D-01/D-15/D-17)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 02-05-PLAN.md — Gates bloquantes : rejets catalogue harnais partagé, audit de couverture D-14 (A/B), same-commit 4 fichiers (C), gate `scan_stale_pins` + 2 tests bloquants (D-06..D-09)
+- [ ] 02-06-PLAN.md — Mécanisme prompt-fixture verbatim + hash (D-13) + enregistrement au manifest (critère 5)
 
 ### Phase 3: Motion Compiler & SVG Sanitizer
 
@@ -227,7 +243,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | In Progress|  |
-| 2. Style verrouillé & catalogue de recettes | 0/0 | Not started | - |
+| 2. Style verrouillé & catalogue de recettes | 0/6 | Planned | - |
 | 3. Motion Compiler & SVG Sanitizer | 0/0 | Not started | - |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |
