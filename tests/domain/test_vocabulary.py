@@ -45,7 +45,9 @@ from lottie_forge.domain.vocabulary import (
     MAX_RECIPE_COUNT,
     MIN_RECIPE_COUNT,
     RECIPE_IDS,
+    THEME_ANCHOR_IDS,
     RecipeId,
+    ThemeAnchorId,
     assert_recipe_count,
 )
 
@@ -225,4 +227,110 @@ def test_other_contracts_import_recipe_id_schema_from_vocabulary() -> None:
     assert offenders == [], (
         f"Files referencing RecipeIdSchema must import from vocabulary.schema.ts; "
         f"offenders: {offenders}"
+    )
+
+
+# ---------- (e) ThemeAnchorId closure (D-10, D-11, MOT-03) ----------
+
+
+def test_theme_anchor_ids_count_is_six() -> None:
+    """The current lock is exactly 6 labels (D-10, fixed cardinality)."""
+    assert len(THEME_ANCHOR_IDS) == 6
+
+
+def test_get_args_of_theme_anchor_id_equals_anchor_ids_tuple() -> None:
+    """The Literal arguments and the exported tuple are the same sequence.
+
+    Same lockstep doctrine as RecipeId -- drift between the two sources
+    would cause the same label to be accepted by one consumer and
+    rejected by another (D-11).
+    """
+    assert get_args(ThemeAnchorId) == THEME_ANCHOR_IDS
+
+
+def test_theme_anchor_ids_are_unique() -> None:
+    assert len(set(THEME_ANCHOR_IDS)) == len(THEME_ANCHOR_IDS)
+
+
+@pytest.mark.parametrize("anchor", THEME_ANCHOR_IDS)
+def test_canonical_anchor_id_is_a_member_of_the_literal(anchor: str) -> None:
+    """Every canonical label must be in the Literal's args (parametrised)."""
+    assert anchor in get_args(ThemeAnchorId)
+
+
+def test_unknown_label_is_not_a_member_of_theme_anchor_vocabulary() -> None:
+    """The closed vocabulary rejects unknown labels at the type boundary.
+
+    ``"logo"`` is the canonical probe -- it is not a token of either
+    the closed anchor vocabulary or the recipe vocabulary, and any
+    downstream consumer (Phase 4 ``CatalogRecipe`` etc.) inherits the
+    rejection.
+    """
+    assert "logo" not in get_args(ThemeAnchorId)
+    assert "logo" not in THEME_ANCHOR_IDS
+
+
+def test_every_theme_anchor_id_is_a_kebab_case_slug() -> None:
+    """All canonical labels must satisfy the fullmatch kebab pattern.
+
+    CR-01 lock applied to the THEME_ANCHOR_IDS tuple specifically --
+    Phase 4 ``CatalogRecipe.theme_anchors`` will reuse the KebabToken
+    pattern through this vocabulary, so a label that slips the kebab
+    pattern here would slip it everywhere downstream.
+    """
+    offenders = [a for a in THEME_ANCHOR_IDS if _TOKEN_RE.fullmatch(a) is None]
+    assert offenders == []
+
+
+# ---------- (f) ThemeAnchorId same-commit lock on the TS side (D-11) ----------
+
+
+def test_only_vocabulary_schema_ts_declares_the_anchor_tuple() -> None:
+    """No other ``.ts`` file under ``src/rpc/contracts/`` may declare THEME_ANCHOR_IDS.
+
+    D-11 same-commit rule extension: every other schema module imports
+    ``THEME_ANCHOR_IDS`` from ``vocabulary.schema.ts``. A second literal
+    declaration (e.g. a hardcoded ``["primary", ...]`` in
+    ``catalogue.schema.ts``) is structural drift -- this scan catches
+    it before the bridge tests do.
+    """
+    offenders: list[str] = []
+    for ts_path in CONTRACTS_DIR.glob("*.ts"):
+        if ts_path.name == "vocabulary.schema.ts":
+            continue
+        if ts_path.name.endswith(".spec.ts"):
+            continue
+        text = ts_path.read_text(encoding="utf-8")
+        if re.search(r"export\s+const\s+THEME_ANCHOR_IDS\b", text):
+            offenders.append(ts_path.relative_to(REPO_ROOT).as_posix())
+    assert offenders == [], (
+        f"THEME_ANCHOR_IDS may only be declared in vocabulary.schema.ts "
+        f"(D-11 same-commit rule); offenders: {offenders}"
+    )
+
+
+def test_other_contracts_import_theme_anchor_id_schema_from_vocabulary() -> None:
+    """Downstream schemas must consume ``ThemeAnchorIdSchema`` via the canonical import.
+
+    D-11 same-commit extension of the RecipeId scan above -- any
+    downstream schema file referencing ``ThemeAnchorIdSchema`` must
+    import from ``vocabulary.schema.ts``. A bare ``z.enum(['primary',
+    ...])`` mirror is the exact drift this gate prevents.
+    """
+    files_to_check = [
+        p
+        for p in CONTRACTS_DIR.glob("*.ts")
+        if p.name not in {"vocabulary.schema.ts", "rejection-cases.ts"}
+        and not p.name.endswith(".spec.ts")
+    ]
+    offenders: list[str] = []
+    for ts_path in files_to_check:
+        text = ts_path.read_text(encoding="utf-8")
+        if "ThemeAnchorIdSchema" not in text:
+            continue  # OK: file does not reference anchor ids
+        if 'from "./vocabulary.schema' not in text and "from './vocabulary.schema" not in text:
+            offenders.append(ts_path.relative_to(REPO_ROOT).as_posix())
+    assert offenders == [], (
+        f"Files referencing ThemeAnchorIdSchema must import from "
+        f"vocabulary.schema.ts; offenders: {offenders}"
     )

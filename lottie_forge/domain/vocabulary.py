@@ -67,6 +67,55 @@ that :func:`get_args(RecipeId) == tuple(RECIPE_IDS)` -- the two sides stay in
 lockstep.
 """
 
+THEME_ANCHOR_IDS: Final[tuple[str, ...]] = (
+    "primary",
+    "secondary",
+    "accent",
+    "background",
+    "success",
+    "danger",
+)
+"""The closed set of 6 theme-anchor labels (D-10, MOT-03).
+
+Mirrors the ``RecipeId`` closure on the same-commit doctrine: the closed
+type ``ThemeAnchorId`` below is its Python mirror, and the TS mirror
+lives in ``src/rpc/contracts/vocabulary.schema.ts``. The Phase 4
+``CatalogRecipe.theme_anchors`` and the Phase 8 packager both consume
+this vocabulary; an unknown label is rejected at the type boundary,
+not after the fact.
+
+No count-invariant helper (``assert_recipe_count`` analogue) is
+defined -- the cardinality of 6 is fixed at design time (D-10). What
+is locked is the **lockstep** between this tuple and the ``Literal``
+below, asserted by ``tests/domain/test_vocabulary.py``.
+
+Order is canonical and matches the ``ThemeAnchorIdSchema`` enum on
+the TS side -- preserve when extending.
+"""
+
+ThemeAnchorId = Literal[
+    "primary",
+    "secondary",
+    "accent",
+    "background",
+    "success",
+    "danger",
+]
+"""Closed type of a theme-anchor label (D-10, D-11, MOT-03).
+
+Same doctrine as :data:`RecipeId`: no star-unpack of
+:data:`THEME_ANCHOR_IDS` at type-definition time so the resolved
+Literal arguments stay inspectable via ``typing.get_args``. The
+lockstep is asserted by ``tests/domain/test_vocabulary.py`` --
+``get_args(ThemeAnchorId) == THEME_ANCHOR_IDS``.
+
+Per D-12 the anchor labels are **independent** from the palette token
+names (``ink`` / ``accent`` / ``surface`` / ``success`` / ...) -- they
+live in two distinct namespaces and there is no cross-validation at
+the Phase 2 layer. The mapping anchor -> colour is a Phase 8 packaging
+concern (ADR-05); Phase 2 must not invent coupling.
+"""
+
 MIN_RECIPE_COUNT: Final[int] = 8
 """ADR-03 lower bound -- below this the catalogue is too narrow to be useful."""
 
@@ -105,6 +154,8 @@ __all__ = [
     "MIN_RECIPE_COUNT",
     "RECIPE_IDS",
     "RecipeId",
+    "THEME_ANCHOR_IDS",
+    "ThemeAnchorId",
     "assert_recipe_count",
     "get_args",
 ]

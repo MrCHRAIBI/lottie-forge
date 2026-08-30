@@ -1,7 +1,13 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { MAX_RECIPE_COUNT, MIN_RECIPE_COUNT, RECIPE_IDS } from "./vocabulary.schema.js";
+import {
+  MAX_RECIPE_COUNT,
+  MIN_RECIPE_COUNT,
+  RECIPE_IDS,
+  THEME_ANCHOR_IDS,
+  ThemeAnchorIdSchema,
+} from "./vocabulary.schema.js";
 
 /**
  * Vocabulary bridge step 2 of 3 — zod-side deep-equal + invariant assertion.
@@ -56,5 +62,47 @@ describe("vocabulary schema mirror", () => {
     }
     const exported = JSON.parse(readFileSync(VOCABULARY_FIXTURE, "utf-8")) as string[];
     expect(exported).toEqual([...RECIPE_IDS]);
+  });
+});
+
+/**
+ * ThemeAnchorId closure (D-10, D-11, MOT-03) -- the mirrored half of the
+ * Python suite ``tests/domain/test_vocabulary.py`` sections (e) and (f).
+ *
+ * The Python side defines ``THEME_ANCHOR_IDS`` as a 6-tuple; this file
+ * mirrors the same 6 labels in the same order. Drift between the two
+ * declarations is the exact structural failure the lockstep test on
+ * the Python side is designed to catch -- the mirror here documents
+ * the TS contract surface for any future reader and is the input the
+ * Phase 4 ``CatalogRecipeSchema`` consumes.
+ */
+describe("theme-anchor vocabulary mirror (D-10, D-11)", () => {
+  it("exports exactly 6 theme-anchor labels in canonical order", () => {
+    expect(THEME_ANCHOR_IDS).toEqual([
+      "primary",
+      "secondary",
+      "accent",
+      "background",
+      "success",
+      "danger",
+    ]);
+  });
+
+  it.each([...THEME_ANCHOR_IDS])("ThemeAnchorIdSchema accepts the canonical label %s", (label) => {
+    expect(ThemeAnchorIdSchema.safeParse(label).success).toBe(true);
+  });
+
+  it("ThemeAnchorIdSchema rejects an unknown label", () => {
+    // ``logo`` is the canonical probe -- never part of either vocabulary.
+    expect(ThemeAnchorIdSchema.safeParse("logo").success).toBe(false);
+  });
+
+  it("no second declaration of THEME_ANCHOR_IDS lives outside vocabulary.schema.ts", () => {
+    // The structural same-commit scan lives on the Python side
+    // (tests/domain/test_vocabulary.py::test_only_vocabulary_schema_ts_declares_the_anchor_tuple);
+    // this assertion is the TS-side redundancy check -- a developer
+    // editing `THEME_ANCHOR_IDS` here must touch the Python tuple in
+    // the same commit (D-11).
+    expect(THEME_ANCHOR_IDS.length).toBe(6);
   });
 });

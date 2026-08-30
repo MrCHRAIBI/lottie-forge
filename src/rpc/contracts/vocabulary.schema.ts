@@ -37,6 +37,33 @@ export type RecipeId = (typeof RECIPE_IDS)[number];
 export const RecipeIdSchema = z.enum(RECIPE_IDS);
 
 /**
+ * Closed set of 6 theme-anchor labels (D-10, MOT-03) — the closed
+ * vocabulary the Phase 4 `CatalogRecipe.theme_anchors` will declare.
+ *
+ * Same same-commit doctrine as `RECIPE_IDS` above: a membership
+ * change edits this file AND `lottie_forge/domain/vocabulary.py` in
+ * one commit (D-11). The structural lockstep test in
+ * `tests/domain/test_vocabulary.py` extends the canonical scan to the
+ * anchor tuple in addition to the recipe tuple.
+ *
+ * The cardinality of 6 is fixed at design time — no runtime invariant
+ * helper. Order is canonical and matches the Python `ThemeAnchorId`
+ * literal in `vocabulary.py`.
+ */
+export const THEME_ANCHOR_IDS = [
+  "primary",
+  "secondary",
+  "accent",
+  "background",
+  "success",
+  "danger",
+] as const;
+
+export type ThemeAnchorId = (typeof THEME_ANCHOR_IDS)[number];
+
+export const ThemeAnchorIdSchema = z.enum(THEME_ANCHOR_IDS);
+
+/**
  * Runtime invariant check at module-evaluation time.
  *
  * If a future commit changes the tuple length outside the ADR-03 range the
