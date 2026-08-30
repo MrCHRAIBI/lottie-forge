@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   CatalogRecipeSchema,
+  JointCatalogueStyleSchema,
   KEYFRAME_SHAPES,
   RecipeCatalogueSchema,
   SHAPE_NAMES,
@@ -169,5 +170,68 @@ describe("catalogue bilingual loading (MOT-04, §5.5.3)", () => {
     }
     // CatalogRecipeSchema is exported and usable standalone.
     expect(CatalogRecipeSchema.safeParse(committed.recipes[0]).success).toBe(true);
+  });
+});
+
+describe("D-17 joint load: easing cross-reference (catalogue + style)", () => {
+  const committed = JSON.parse(readFileSync(COMMITTED, "utf-8"));
+
+  function loadCommittedStyle(): unknown {
+    // The style fixture envelope is exported by pytest -k export (plan 02-01).
+    const envelopePath = join(REPO_ROOT, "fixtures", "bridge", "style-fixture.from-python.json");
+    const envelope = JSON.parse(readFileSync(envelopePath, "utf-8")) as {
+      style_sha256: string;
+      spec: unknown;
+    };
+    return envelope.spec;
+  }
+
+  it("parses the committed pair green (10 easings over standard/entrance)", () => {
+    const joint = JointCatalogueStyleSchema.parse({
+      catalogue: committed,
+      style: loadCommittedStyle(),
+    });
+    expect(joint.catalogue.recipes).toHaveLength(10);
+    expect(joint.style.easing_curves.map((c) => c.name).sort()).toEqual(["entrance", "standard"]);
+  });
+
+  it("rejects an unknown easing at [catalogue, recipes, idx, easing] (MOT-04 parity)", () => {
+    const mutatedCatalogue = {
+      ...committed,
+      recipes: committed.recipes.map((r: Record<string, unknown>, i: number) =>
+        i === 0 ? { ...r, easing: "overshoot" } : r,
+      ),
+    };
+    const result = JointCatalogueStyleSchema.safeParse({
+      catalogue: mutatedCatalogue,
+      style: loadCommittedStyle(),
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const paths = result.error.issues.map((issue) => issue.path.join("."));
+      expect(paths).toContain("catalogue.recipes.0.easing");
+    }
+  });
+
+  it("rejects entrance recipes when the style loses the entrance curve", () => {
+    const style = loadCommittedStyle() as {
+      easing_curves: Array<{ name: string; control_points: number[] }>;
+    };
+    const amputated = {
+      ...style,
+      easing_curves: style.easing_curves.filter((c) => c.name !== "entrance"),
+    };
+    const result = JointCatalogueStyleSchema.safeParse({
+      catalogue: committed,
+      style: amputated,
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const issues = result.error.issues.filter((issue) => issue.path.join(".").endsWith("easing"));
+      // draw-on (4), bounce (2), scale-pop (6) reference entrance.
+      // Path shape: ["catalogue", "recipes", idx, "easing"] -> idx = path[2].
+      const offending = issues.map((issue) => issue.path[2] as number).sort((a, b) => a - b);
+      expect(offending).toEqual([2, 4, 6]);
+    }
   });
 });

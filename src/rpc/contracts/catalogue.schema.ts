@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TOKEN_NAME_PATTERN } from "./style-spec.schema.js";
+import { StyleSpecSchema, TOKEN_NAME_PATTERN } from "./style-spec.schema.js";
 import { RecipeIdSchema, ThemeAnchorIdSchema } from "./vocabulary.schema.js";
 
 /**
@@ -123,3 +123,31 @@ export const RecipeCatalogueSchema = z
 
 export type CatalogRecipe = z.infer<typeof CatalogRecipeSchema>;
 export type RecipeCatalogue = z.infer<typeof RecipeCatalogueSchema>;
+
+/**
+ * D-17 joint load: a catalogue easing MUST name a curve declared in the
+ * loaded StyleSpec (§5.5.3 validator 3 -- cross-reference at joint
+ * catalogue + style loading). The Python counterpart is the pure
+ * `validate_easing_cross` in `lottie_forge/loading/catalogue.py`; the
+ * paths here carry the `catalogue` prefix: ["catalogue", "recipes", idx,
+ * "easing"] (MOT-04 "easing inconnu" rejection parity).
+ */
+export const JointCatalogueStyleSchema = z
+  .strictObject({
+    catalogue: RecipeCatalogueSchema,
+    style: StyleSpecSchema,
+  })
+  .superRefine((joint, ctx) => {
+    const easingNames = new Set(joint.style.easing_curves.map((c) => c.name));
+    joint.catalogue.recipes.forEach((recipe, idx) => {
+      if (!easingNames.has(recipe.easing)) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["catalogue", "recipes", idx, "easing"],
+          message: `easing ${recipe.easing} for recipe ${recipe.id} is not declared in the loaded StyleSpec.easing_curves`,
+        });
+      }
+    });
+  });
+
+export type JointCatalogueStyle = z.infer<typeof JointCatalogueStyleSchema>;

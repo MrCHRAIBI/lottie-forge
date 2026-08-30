@@ -26,6 +26,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+from pydantic_core import ValidationError
+
 from lottie_forge.domain.catalogue import (
     KEYFRAME_SHAPES,
     SHAPE_NAMES,
@@ -33,20 +36,25 @@ from lottie_forge.domain.catalogue import (
     CatalogRecipe,
     RecipeCatalogue,
 )
+from lottie_forge.loading.catalogue import (
+    CATALOGUE_FIXTURE_PATH,
+    COVERAGE_MAP_PATH,
+    load_catalogue_fixture,
+    load_catalogue_with_style,
+    validate_easing_cross,
+)
 from lottie_forge.loading.style import normalize_lf, sha256_hex
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-CATALOGUE_FIXTURE_PATH = REPO_ROOT / "fixtures" / "recipe-catalogue" / "catalogue.json"
-COVERAGE_MAP_PATH = REPO_ROOT / "fixtures" / "recipe-catalogue" / "coverage-map.json"
 BRIDGE_DIR = REPO_ROOT / "fixtures" / "bridge"
 FROM_PYTHON = BRIDGE_DIR / "catalogue.from-python.json"
 SCHEMA_KEYS = BRIDGE_DIR / "catalogue.schema-keys.json"
 
 
 def _load_committed_catalogue() -> RecipeCatalogue:
-    """Parse the committed catalogue bytes under the strict model."""
-    normalised = normalize_lf(CATALOGUE_FIXTURE_PATH.read_bytes())
-    return RecipeCatalogue.model_validate_json(normalised)
+    """Parse the committed catalogue bytes under the strict model (loader)."""
+    catalogue, _sha = load_catalogue_fixture()
+    return catalogue
 
 
 def test_export_catalogue() -> None:
@@ -136,3 +144,74 @@ def test_coverage_map_product_data_loads() -> None:
     assert len(set(state_ids)) == 16
     for state in all_states:
         assert len(state["recipes"]) >= 1
+
+
+# ---------------------------------------------------------------------------
+# D-17: joint (catalogue + style) easing cross-reference
+# ---------------------------------------------------------------------------
+
+
+def test_joint_load_on_committed_fixtures_is_green() -> None:
+    """The committed pair loads jointly -- 10 easings over standard/entrance."""
+    catalogue, style, style_sha, catalogue_sha = load_catalogue_with_style()
+
+    assert len(catalogue.recipes) == 10
+    assert style.style_version == "1.0.0"
+    assert {c.name for c in style.easing_curves} == {"standard", "entrance"}
+    assert len(style_sha) == 64
+    assert len(catalogue_sha) == 64
+
+
+def test_load_catalogue_fixture_returns_model_and_hash() -> None:
+    catalogue, sha = load_catalogue_fixture()
+
+    assert isinstance(catalogue, RecipeCatalogue)
+    assert len(sha) == 64
+    assert all(c in "0123456789abcdef" for c in sha)
+
+
+def test_unknown_easing_rejected_at_joint_load() -> None:
+    """Mutation: easing 'overshoot' -> ValidationError loc recipes.idx.easing."""
+    catalogue = _load_committed_catalogue()
+    mutated = catalogue.model_copy(
+        update={
+            "recipes": [
+                r.model_copy(update={"easing": "overshoot"}) if i == 0 else r
+                for i, r in enumerate(catalogue.recipes)
+            ]
+        }
+    )
+    with pytest.raises(ValidationError) as excinfo:
+        validate_easing_cross(mutated, {"standard", "entrance"})
+    locs = {tuple(e["loc"]) for e in excinfo.value.errors()}
+    assert ("recipes", 0, "easing") in locs
+
+
+def test_style_without_entrance_rejects_entrance_recipes() -> None:
+    """Mutation: amputate the entrance curve -> its 3 recipes fail, hard."""
+    catalogue = _load_committed_catalogue()
+    with pytest.raises(ValidationError) as excinfo:
+        validate_easing_cross(catalogue, {"standard"})
+    errors = excinfo.value.errors()
+    locs = {tuple(e["loc"]) for e in errors}
+    # draw-on, bounce, scale-pop are the entrance recipes (§5.5.2 table).
+    offending = {
+        loc[1]
+        for loc in locs
+        if len(loc) == 3 and loc[0] == "recipes" and loc[2] == "easing"
+    }
+    assert {catalogue.recipes[i].id for i in offending} == {
+        "draw-on",
+        "bounce",
+        "scale-pop",
+    }
+
+
+def test_validate_easing_cross_is_pure_and_green_on_valid_pair() -> None:
+    """Pure function: no I/O, returns None silently on a valid pair."""
+    catalogue = _load_committed_catalogue()
+    assert validate_easing_cross(catalogue, {"standard", "entrance"}) is None
+    # An empty name-set rejects every recipe (collect-all, one per recipe).
+    with pytest.raises(ValidationError) as excinfo:
+        validate_easing_cross(catalogue, set())
+    assert len(excinfo.value.errors()) == len(catalogue.recipes)
