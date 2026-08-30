@@ -85,7 +85,7 @@ Plans:
   5. Le catalogue verbatim + son hash sont câblés comme fixture du template de system prompt versionné (placeholder asserté par test ; l'enregistrement du hash au manifest est en place)
 
 **Canonical refs**: `docs/project/05_Style.md` (§5.1–§5.9) · `docs/project/04_Modeles.md` §4.4 (vocabulaire clos)
-**Plans:** 3/6 plans executed
+**Plans:** 4/6 plans executed
 
 Plans:
 **Wave 1**
@@ -96,7 +96,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [x] 02-03-PLAN.md — `AssetSpec.content_hashes` étendu à 4 champs, same-commit §4.14 (D-16) *(sequenced after 02-01 — shared builders edit)*
-- [ ] 02-04-PLAN.md — `CatalogRecipe`/`RecipeCatalogue` + validateurs collect-all §5.5.3 + fixtures catalogue.json/coverage-map.json verbatim + parité bilingue + cross-ref easing conjointe (D-01/D-15/D-17)
+- [x] 02-04-PLAN.md — `CatalogRecipe`/`RecipeCatalogue` + validateurs collect-all §5.5.3 + fixtures catalogue.json/coverage-map.json verbatim + parité bilingue + cross-ref easing conjointe (D-01/D-15/D-17)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -243,7 +243,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | In Progress|  |
-| 2. Style verrouillé & catalogue de recettes | 3/6 | In Progress|  |
+| 2. Style verrouillé & catalogue de recettes | 4/6 | In Progress|  |
 | 3. Motion Compiler & SVG Sanitizer | 0/0 | Not started | - |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |
