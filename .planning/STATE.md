@@ -3,11 +3,11 @@ gsd_state_version: 1.0
 current_phase: 02
 current_phase_name: Style verrouillé & catalogue de recettes
 status: executing
-stopped_at: Phase 02 wave 2 (--wave 2) paused — quota limit at 02-04 dispatch (no partial work; resume with /gsd-execute-phase 2 --wave 2)
-last_updated: "2026-08-30T16:40:08.989Z"
+stopped_at: Phase 02 wave 2 paused — quota limit at 02-04 dispatch x3 (no partial work; resume with /gsd-execute-phase 2)
+last_updated: "2026-08-30T18:05:30.270Z"
 last_activity: 2026-08-30
 last_activity_desc: Phase 02 execution started
-state_head: d6faeb217ef1becce100998b3f26ece44029c92d
+state_head: 76fff276e7f53aa5f89947615e9a3f7f5256a6a6
 progress:
   total_phases: 10
   completed_phases: 0
@@ -717,6 +717,6 @@ status: complete
 
 ## Session Continuity
 
-Last session: 2026-08-30T16:40:08.822Z
-Stopped at: Phase 02 wave 2 (--wave 2) paused — quota limit at 02-04 dispatch (no partial work; resume with /gsd-execute-phase 2 --wave 2)
+Last session: 2026-08-30T18:05:30.084Z
+Stopped at: Phase 02 wave 2 paused — quota limit at 02-04 dispatch x3 (no partial work; resume with /gsd-execute-phase 2)
 Resume file: None
