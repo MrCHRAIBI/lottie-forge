@@ -272,7 +272,10 @@ def test_coverage_audit_b_no_dead_recipe_plus_d15_coherences() -> None:
             mapped.update(state["recipes"])
 
     dead = sorted(catalogue_ids - mapped)
-    assert dead == [], f"dead recipes: {dead} -- every closed-catalogue slot must be justified (D-14 B)"
+    assert dead == [], (
+        f"dead recipes: {dead} -- every closed-catalogue slot must be "
+        f"justified (D-14 B)"
+    )
 
     # D-15 coherences (documentary, on the committed map).
     by_state = {
