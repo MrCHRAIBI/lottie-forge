@@ -36,6 +36,7 @@ from lottie_forge.domain.catalogue import (
     CatalogRecipe,
     RecipeCatalogue,
 )
+from tests.bridge.rejection_loader import load_rejection_cases
 from lottie_forge.loading.catalogue import (
     CATALOGUE_FIXTURE_PATH,
     COVERAGE_MAP_PATH,
@@ -215,3 +216,38 @@ def test_validate_easing_cross_is_pure_and_green_on_valid_pair() -> None:
     with pytest.raises(ValidationError) as excinfo:
         validate_easing_cross(catalogue, set())
     assert len(excinfo.value.errors()) == len(catalogue.recipes)
+
+
+# ---------------------------------------------------------------------------
+# Shared rejection harness (D-06/D-08): catalogue intrinsic rejections
+# ---------------------------------------------------------------------------
+
+
+_CATALOGUE_REJECTION_CASES = load_rejection_cases("catalogue")
+
+
+@pytest.mark.parametrize("case", _CATALOGUE_REJECTION_CASES, ids=lambda c: c.case_id)
+def test_catalogue_rejection_case(case) -> None:
+    """Every shared catalogue case is rejected by Pydantic strict (mirrored).
+
+    The TypeScript mirror in ``src/rpc/contracts/catalogue.spec.ts`` consumes
+    the same JSON via ``loadRejectionCases("catalogue")`` -- one source, zero
+    drift. Loc membership only, never message text (D-08). Literal-in-list
+    mutations carry the item index at the loc tail (pydantic v2 behaviour,
+    same as the zod array-index paths).
+    """
+    with pytest.raises(ValidationError) as exc_info:
+        RecipeCatalogue.model_validate_json(json.dumps(case.payload))
+
+    errors = exc_info.value.errors()
+    actual_locs = {tuple(e["loc"]) for e in errors}
+
+    if not case.expect_paths:
+        assert errors, f"Expected at least one ValidationError, got none for {case.case_id}"
+        return
+
+    for expected in case.expect_paths:
+        assert tuple(expected) in actual_locs, (
+            f"{case.case_id}: expected loc {tuple(expected)!r} not found in "
+            f"{sorted(actual_locs)!r}"
+        )

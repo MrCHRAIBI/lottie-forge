@@ -1,0 +1,3679 @@
+[
+  {
+    "case_id": "cat01-disco-spin-id",
+    "ref": "MOT-02",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "disco-spin",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "id"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat02-empty-theme-anchors",
+    "ref": "MOT-03",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": []
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "theme_anchors"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat03-duplicate-ids",
+    "ref": "IN-08",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "fade",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        1,
+        "id"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat04-too-few-recipes",
+    "ref": "ADR-03",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat05-too-many-recipes",
+    "ref": "ADR-03",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat06-unknown-anchor",
+    "ref": "MOT-03",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "logo"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "theme_anchors",
+        0
+      ]
+    ]
+  },
+  {
+    "case_id": "cat07-intensity-unordered",
+    "ref": "5.5.3",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            1.0,
+            0.2
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "intensity_range"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat08-intensity-out-of-bounds",
+    "ref": "5.5.3",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            -0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "intensity_range",
+        0
+      ]
+    ]
+  },
+  {
+    "case_id": "cat09-unknown-shape",
+    "ref": "5.5.3",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "circle"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "shapes_supported",
+        0
+      ]
+    ]
+  },
+  {
+    "case_id": "cat10-unknown-trigger",
+    "ref": "5.5.3",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "hover"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "trigger_points",
+        0
+      ]
+    ]
+  },
+  {
+    "case_id": "cat11-duration-below-pack-range",
+    "ref": "5.5.3",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 500,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "duration_ms"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat12-duration-above-pack-range",
+    "ref": "5.5.3",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 1600,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "duration_ms"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat13-unknown-keyframe-shape",
+    "ref": "5.5.2",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "spin-around",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "recipes",
+        0,
+        "keyframe_shape"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat14-bad-catalogue-version",
+    "ref": "5.5.3",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ]
+    },
+    "expect_paths": [
+      [
+        "catalogue_version"
+      ]
+    ]
+  },
+  {
+    "case_id": "cat15-extra-key-top-level",
+    "ref": "DM-05",
+    "model": "RecipeCatalogue",
+    "payload": {
+      "catalogue_version": "1.0.0",
+      "recipes": [
+        {
+          "id": "fade",
+          "family": "opacity",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "opacity-ramp",
+          "intensity_range": [
+            0.0,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "slide",
+          "family": "transform",
+          "duration_ms": 1000,
+          "easing": "standard",
+          "keyframe_shape": "translate-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "enter",
+            "exit"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "bounce",
+          "family": "transform",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "overshoot-settle",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "pulse",
+          "family": "scale",
+          "duration_ms": 900,
+          "easing": "standard",
+          "keyframe_shape": "scale-breath",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter",
+            "loop"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "draw-on",
+          "family": "stroke",
+          "duration_ms": 1200,
+          "easing": "entrance",
+          "keyframe_shape": "trim-path",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "rotate",
+          "family": "transform",
+          "duration_ms": 1100,
+          "easing": "standard",
+          "keyframe_shape": "angular-in",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "path",
+            "polyline",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary"
+          ]
+        },
+        {
+          "id": "scale-pop",
+          "family": "scale",
+          "duration_ms": 700,
+          "easing": "entrance",
+          "keyframe_shape": "pop-settle",
+          "intensity_range": [
+            0.2,
+            1.0
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "polystar"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        },
+        {
+          "id": "float",
+          "family": "transform",
+          "duration_ms": 1400,
+          "easing": "standard",
+          "keyframe_shape": "sine-drift",
+          "intensity_range": [
+            0.1,
+            0.8
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "background"
+          ]
+        },
+        {
+          "id": "wiggle",
+          "family": "transform",
+          "duration_ms": 800,
+          "easing": "standard",
+          "keyframe_shape": "damped-oscillation",
+          "intensity_range": [
+            0.1,
+            0.5
+          ],
+          "shapes_supported": [
+            "rect",
+            "ellipse",
+            "path",
+            "polyline"
+          ],
+          "trigger_points": [
+            "enter"
+          ],
+          "theme_anchors": [
+            "accent"
+          ]
+        },
+        {
+          "id": "orbit",
+          "family": "transform",
+          "duration_ms": 1500,
+          "easing": "standard",
+          "keyframe_shape": "circular-path",
+          "intensity_range": [
+            0.3,
+            1.0
+          ],
+          "shapes_supported": [
+            "ellipse",
+            "path",
+            "polystar"
+          ],
+          "trigger_points": [
+            "loop"
+          ],
+          "theme_anchors": [
+            "primary",
+            "accent"
+          ]
+        }
+      ],
+      "extra_key": "x"
+    }
+  }
+]

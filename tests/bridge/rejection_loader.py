@@ -31,6 +31,7 @@ CONTRACT_FILES: dict[str, str] = {
     "asset-spec": "asset-spec.json",
     "pack-manifest": "pack-manifest.json",
     "style-refinement": "style-refinement.json",
+    "catalogue": "catalogue.json",
 }
 
 

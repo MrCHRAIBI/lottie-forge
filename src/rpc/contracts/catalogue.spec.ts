@@ -2,14 +2,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import {
-  CatalogRecipeSchema,
-  JointCatalogueStyleSchema,
-  KEYFRAME_SHAPES,
-  RecipeCatalogueSchema,
-  SHAPE_NAMES,
-  TRIGGER_POINTS,
-} from "./catalogue.schema.js";
+import { CatalogRecipeSchema, JointCatalogueStyleSchema, KEYFRAME_SHAPES, RecipeCatalogueSchema, SHAPE_NAMES, TRIGGER_POINTS } from "./catalogue.schema.js";
+import { loadRejectionCases } from "./rejection-cases.js";
 import { RECIPE_IDS } from "./vocabulary.schema.js";
 
 /**
@@ -234,4 +228,34 @@ describe("D-17 joint load: easing cross-reference (catalogue + style)", () => {
       expect(offending).toEqual([2, 4, 6]);
     }
   });
+});
+
+/**
+ * Shared rejection harness (D-06/D-08) — mirror of the pytest suite
+ * `tests/bridge/test_catalogue_bridge.py::test_catalogue_rejection_case`.
+ *
+ * Both suites consume `fixtures/rejection-cases/catalogue.json`: 15
+ * intrinsic catalogue rejections, each payload = the full valid 10-recipe
+ * catalogue with ONE mutation. Assertion rules (D-08): zod safeParse must
+ * reject; each `expect_paths` entry must appear among the issue paths
+ * (membership only — never message text). Literal-in-list mutations carry
+ * the item index at the path tail, matching the pydantic v2 locs.
+ */
+describe("catalogue rejection harness (mirror of pytest)", () => {
+  const cases = loadRejectionCases("catalogue");
+
+  it.each(cases.map((c) => [c.case_id, c]))(
+    "%s -> zod rejects the shared payload",
+    (_caseId, c) => {
+      const result = RecipeCatalogueSchema.safeParse(c.payload);
+      expect(result.success).toBe(false);
+      if (result.success) return; // narrow for TS
+
+      const actualPaths = new Set(result.error.issues.map((issue) => JSON.stringify(issue.path)));
+      for (const expected of c.expect_paths) {
+        const key = JSON.stringify(expected);
+        expect(actualPaths.has(key)).toBe(true);
+      }
+    },
+  );
 });

@@ -30,6 +30,7 @@ export const CONTRACT_FILES: Record<string, string> = {
   "asset-spec": "asset-spec.json",
   "pack-manifest": "pack-manifest.json",
   "style-refinement": "style-refinement.json",
+  catalogue: "catalogue.json",
 };
 
 export interface RejectionCase {
