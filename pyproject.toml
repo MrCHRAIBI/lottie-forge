@@ -9,7 +9,7 @@ description = "lottie-forge — industrial factory for batch production of theme
 requires-python = ">=3.12,<3.14"
 dependencies = [
     "pydantic==2.13.4",
-    # pyyaml reserved for Phase 2 (RecipeCatalogue fixture loading, IN-02)
+    "pyyaml>=6.0.2,<7",
 ]
 
 [project.optional-dependencies]
