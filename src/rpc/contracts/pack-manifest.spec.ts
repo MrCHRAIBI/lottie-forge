@@ -210,6 +210,10 @@ describe("pack-manifest rejection harness (mirror of pytest)", () => {
      * one issue per index (``["assets", 0, "asset_id"]`` AND
      * ``["assets", 1, "asset_id"]``), never a single aggregated issue,
      * never silent deduplication.
+     *
+     * Payload carries 4 content_hashes fields (D-16) so the rejection
+     * is rooted at the IN-08 collect-all validator, not at the model
+     * missing-key gate.
      */
     const payload = {
       pack_id: "pack-nature-2026-03-15",
@@ -223,6 +227,8 @@ describe("pack-manifest rejection harness (mirror of pytest)", () => {
           content_hashes: {
             svg_sha256: "a".repeat(64),
             lottie_sha256: "0123456789abcdef".repeat(4),
+            style_sha256: "fedcba9876543210".repeat(4),
+            catalogue_sha256: "abcdef0123456789".repeat(4),
           },
         },
         {
@@ -233,6 +239,8 @@ describe("pack-manifest rejection harness (mirror of pytest)", () => {
           content_hashes: {
             svg_sha256: "a".repeat(64),
             lottie_sha256: "0123456789abcdef".repeat(4),
+            style_sha256: "fedcba9876543210".repeat(4),
+            catalogue_sha256: "abcdef0123456789".repeat(4),
           },
         },
       ],

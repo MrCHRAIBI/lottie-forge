@@ -194,6 +194,10 @@ def test_in08_duplicate_asset_id_collect_all_on_bridge() -> None:
     ``loc=("assets", 0, "asset_id")`` AND ``loc=("assets", 1, "asset_id")``
     -- one issue per duplicate, never a single aggregated issue, never
     silent deduplication.
+
+    Both assets carry the full 4-hash ``content_hashes`` envelope (D-16)
+    so the rejection is rooted at the IN-08 collect-all validator, not
+    the model missing-key gate.
     """
     style_version = make_style_spec().style_version
     payload = {
@@ -208,6 +212,8 @@ def test_in08_duplicate_asset_id_collect_all_on_bridge() -> None:
                 "content_hashes": {
                     "svg_sha256": "a" * 64,
                     "lottie_sha256": "0123456789abcdef" * 4,
+                    "style_sha256": "fedcba9876543210" * 4,
+                    "catalogue_sha256": "abcdef0123456789" * 4,
                 },
             },
             {
@@ -218,6 +224,8 @@ def test_in08_duplicate_asset_id_collect_all_on_bridge() -> None:
                 "content_hashes": {
                     "svg_sha256": "a" * 64,
                     "lottie_sha256": "0123456789abcdef" * 4,
+                    "style_sha256": "fedcba9876543210" * 4,
+                    "catalogue_sha256": "abcdef0123456789" * 4,
                 },
             },
         ],

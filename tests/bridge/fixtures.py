@@ -17,7 +17,9 @@ Members
 - :func:`make_asset` -- the ``AssetSpec`` fixture for the asset bridge
   chain (export + zod re-emit + re-import). The ``style_ref`` is pinned to
   the ``make_style_spec().style_version`` so the two fixtures stay
-  consistent across the bridge.
+  consistent across the bridge. ``content_hashes`` carries 4 distinct
+  64-hex lowercase digests (D-16); callers that have the real sha values
+  (plan 02-06) pass them via the optional ``content_hashes=`` keyword.
 - :func:`make_pack` -- the ``PackManifest`` fixture for the pack bridge
   chain. Composes two assets with distinct ``asset_id`` and the
   ``style_ref`` suffixed by the pack's ``style_version`` (mono-style
@@ -104,13 +106,19 @@ def make_recipe(recipe_id: RecipeId = "fade") -> MotionRecipe:
 
 
 # 64-character lowercase hex strings used as fixtures (distinct values so
-# the two ContentHashes fields carry independent identity through the
-# JSON hop).
+# the four ContentHashes fields carry independent identity through the
+# JSON hop). The two new digests (style_sha256, catalogue_sha256) use the
+# same deterministic placeholder regime -- the real sha values from the
+# committed fixtures will be supplied by plan 02-06 via the
+# ``content_hashes=`` override; this builder stays free of the
+# ``lottie_forge.loading.*`` modules (no fixture-product dependency).
 _ASSET_HASH_SVG = "a" * 64
 _ASSET_HASH_LOTTIE = "0123456789abcdef" * 4  # 64 chars, lowercase hex, distinct
+_ASSET_HASH_STYLE = "fedcba9876543210" * 4  # 64 chars, lowercase hex, distinct (D-16)
+_ASSET_HASH_CATALOGUE = "abcdef0123456789" * 4  # 64 chars, lowercase hex, distinct (D-16)
 
 
-def make_asset() -> AssetSpec:
+def make_asset(content_hashes: ContentHashes | None = None) -> AssetSpec:
     """The single source of fixture truth for the AssetSpec bridge chain.
 
     Defaults are stable so bridge tests can rely on them without restating:
@@ -123,8 +131,26 @@ def make_asset() -> AssetSpec:
       vocabulary).
     - ``composition_meta.shape_group_names`` = two kebab tokens of 8/11
       chars each (well inside the 3..32 envelope).
-    - ``content_hashes`` = distinct 64-char lowercase hex per field.
+    - ``content_hashes`` = 4 distinct 64-char lowercase hex digests
+      (D-16: ``svg_sha256``, ``lottie_sha256``, ``style_sha256``,
+      ``catalogue_sha256``).
+
+    Parameters
+    ----------
+    content_hashes:
+        Optional pre-built :class:`ContentHashes`. When provided the
+        caller's payload is used verbatim (plan 02-06 supplies the real
+        sha values from the style / catalogue loaders); when ``None``
+        (the default) the 4-literal block above is used -- so existing
+        call sites without an override stay byte-identical to Phase 1.
     """
+    if content_hashes is None:
+        content_hashes = ContentHashes(
+            svg_sha256=_ASSET_HASH_SVG,
+            lottie_sha256=_ASSET_HASH_LOTTIE,
+            style_sha256=_ASSET_HASH_STYLE,
+            catalogue_sha256=_ASSET_HASH_CATALOGUE,
+        )
     return AssetSpec(
         asset_id="a-001",
         style_ref=f"example-style@{make_style_spec().style_version}",
@@ -132,19 +158,18 @@ def make_asset() -> AssetSpec:
         composition_meta=CompositionMeta(
             shape_group_names=["bg-shape", "accent-shape"]
         ),
-        content_hashes=ContentHashes(
-            svg_sha256=_ASSET_HASH_SVG,
-            lottie_sha256=_ASSET_HASH_LOTTIE,
-        ),
+        content_hashes=content_hashes,
     )
 
 
 def _make_asset_for_pack(asset_id: str, style_version: str) -> AssetSpec:
     """Internal helper for ``make_pack`` -- an asset with custom id + pinned style_ref.
 
-    Distinct content_hashes from ``make_asset()`` so a 2-asset pack carries
-    independent identity for the two assets through the JSON hop (each
-    ``lottie_sha256`` is unique).
+    ``content_hashes`` carries the same 4 distinct digests as
+    :func:`make_asset` so :func:`make_pack` builds a pack whose all
+    assets stay byte-identical through the JSON hop (each field holds
+    its expected identity; the assets differ only on ``asset_id`` and
+    the ``style_ref`` version suffix).
     """
     return AssetSpec(
         asset_id=asset_id,
@@ -154,6 +179,8 @@ def _make_asset_for_pack(asset_id: str, style_version: str) -> AssetSpec:
         content_hashes=ContentHashes(
             svg_sha256=_ASSET_HASH_SVG,
             lottie_sha256=_ASSET_HASH_LOTTIE,
+            style_sha256=_ASSET_HASH_STYLE,
+            catalogue_sha256=_ASSET_HASH_CATALOGUE,
         ),
     )
 

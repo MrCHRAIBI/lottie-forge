@@ -10,7 +10,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["asset_id"]]
@@ -26,7 +28,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["asset_id"]]
@@ -42,7 +46,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["asset_id"]]
@@ -58,7 +64,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["asset_id"]]
@@ -74,7 +82,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["asset_id"]]
@@ -90,7 +100,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["style_ref"]]
@@ -106,7 +118,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["style_ref"]]
@@ -122,7 +136,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["style_ref"]]
@@ -138,7 +154,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["recipe_ref"]]
@@ -154,7 +172,9 @@
       "composition_meta": {"shape_group_names": []},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["composition_meta", "shape_group_names"]]
@@ -178,7 +198,9 @@
       },
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["composition_meta", "shape_group_names"]]
@@ -194,7 +216,9 @@
       "composition_meta": {"shape_group_names": ["ab"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["composition_meta", "shape_group_names", 0]]
@@ -210,7 +234,9 @@
       "composition_meta": {"shape_group_names": ["1-bad"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["composition_meta", "shape_group_names", 0]]
@@ -226,7 +252,9 @@
       "composition_meta": {"shape_group_names": ["café"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["composition_meta", "shape_group_names", 0]]
@@ -242,7 +270,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789ABCDEF0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["content_hashes", "svg_sha256"]]
@@ -258,7 +288,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcde",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["content_hashes", "svg_sha256"]]
@@ -274,14 +306,16 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     },
     "expect_paths": [["content_hashes", "svg_sha256"]]
   },
   {
-    "case_id": "dm03-content-hashes-champ-extra",
-    "ref": "DM-03",
+    "case_id": "as01-style-hash-uppercase",
+    "ref": "D-16",
     "model": "AssetSpec",
     "payload": {
       "asset_id": "a-001",
@@ -291,7 +325,63 @@
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
         "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
-        "rogue_hash": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+        "style_sha256": "ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
+      }
+    },
+    "expect_paths": [["content_hashes", "style_sha256"]]
+  },
+  {
+    "case_id": "as02-catalogue-hash-short",
+    "ref": "D-16",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef012345678"
+      }
+    },
+    "expect_paths": [["content_hashes", "catalogue_sha256"]]
+  },
+  {
+    "case_id": "as03-catalogue-hash-non-hex",
+    "ref": "D-16",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+      }
+    },
+    "expect_paths": [["content_hashes", "catalogue_sha256"]]
+  },
+  {
+    "case_id": "dm03-content-hashes-5e-cle",
+    "ref": "D-16",
+    "model": "AssetSpec",
+    "payload": {
+      "asset_id": "a-001",
+      "style_ref": "example-style@1.0.0",
+      "recipe_ref": "fade",
+      "composition_meta": {"shape_group_names": ["bg-shape"]},
+      "content_hashes": {
+        "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+        "dotlottie_sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
       }
     }
   },
@@ -306,7 +396,9 @@
       "composition_meta": {"shape_group_names": ["bg-shape"]},
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       },
       "rogue_field": "must be rejected"
     }
@@ -325,7 +417,9 @@
       },
       "content_hashes": {
         "svg_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+        "lottie_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "style_sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "catalogue_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
       }
     }
   }

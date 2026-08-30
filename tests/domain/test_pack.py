@@ -62,9 +62,12 @@ from lottie_forge.domain.pack import LicenseInfo, PackManifest, PackTotals
 from lottie_forge.domain.vocabulary import RECIPE_IDS
 from tests.bridge.fixtures import make_asset, make_style_spec
 
-# 64-character lowercase hex strings used as fixtures (distinct per field).
+# 64-character lowercase hex strings used as fixtures (distinct per field,
+# four fields total since D-16 extended ContentHashes to 4 fields).
 _VALID_HASH_A = "a" * 64
 _VALID_HASH_B = "0123456789abcdef" * 4  # 64 chars, lowercase hex, distinct
+_VALID_HASH_C = "fedcba9876543210" * 4  # 64 chars, lowercase hex, distinct (D-16)
+_VALID_HASH_D = "abcdef0123456789" * 4  # 64 chars, lowercase hex, distinct (D-16)
 
 
 def _loc_as_tuple(error: dict) -> tuple:
@@ -99,7 +102,8 @@ def _asset_payload(asset_id: str = "a-001", style_ref: str | None = None) -> dic
     """Build a fully-valid AssetSpec payload, pinned to ``make_style_spec()``.
 
     ``style_ref`` defaults to ``"example-style@<style_version>"`` so the
-    mono-style gate is satisfied by construction.
+    mono-style gate is satisfied by construction. ``content_hashes``
+    carries 4 distinct 64-hex lowercase digests (D-16).
     """
     if style_ref is None:
         style_ref = f"example-style@{make_style_spec().style_version}"
@@ -111,6 +115,8 @@ def _asset_payload(asset_id: str = "a-001", style_ref: str | None = None) -> dic
         "content_hashes": {
             "svg_sha256": _VALID_HASH_A,
             "lottie_sha256": _VALID_HASH_B,
+            "style_sha256": _VALID_HASH_C,
+            "catalogue_sha256": _VALID_HASH_D,
         },
     }
 
