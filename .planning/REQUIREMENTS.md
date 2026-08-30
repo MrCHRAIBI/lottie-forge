@@ -25,7 +25,7 @@ Requirements pour la sortie v1 (premier pack shippé via ship-gate humain). Chac
 ### Style (STY) — Partie 5
 
 - [x] **STY-01**: Mono-style par pack structurel + fixture `StyleSpec` YAML versionnée et hashée comme unique source de vérité du style
-- [ ] **STY-02**: `StyleRefinement` delta-only par construction (jamais de SVG/path data/hex libre) ; vérification `sub_palette ⊆ style.palette` au Translator
+- [x] **STY-02**: `StyleRefinement` delta-only par construction (jamais de SVG/path data/hex libre) ; vérification `sub_palette ⊆ style.palette` au Translator
 - [ ] **STY-03**: Gate de re-validation sur bump de `style_version` via l'ancre `style_ref` (assets pinnés flaggés : PATCH échantillonné, MINOR tokens touchés, MAJOR tous)
 
 ### Mouvement (MOT) — Partie 5
@@ -166,7 +166,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LIC-01 | Phase 10 (structurel : Phase 1) | Pending |
 | LIC-02 | Phase 10 (structurel : Phase 1) | Pending |
 | STY-01 | Phase 2 | Complete |
-| STY-02 | Phase 6 (type delta-only livré en Phase 2 ; complété au Translator Phase 7) | Pending |
+| STY-02 | Phase 6 (type delta-only livré en Phase 2 ; complété au Translator Phase 7) | Complete |
 | STY-03 | Phase 2 | Pending |
 | MOT-01 | Phase 2 | Pending |
 | MOT-02 | Phase 2 (clos structurel) + Phase 6 (côté agent) | Pending |
