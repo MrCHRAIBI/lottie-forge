@@ -1,0 +1,18 @@
+[
+  {
+    "name": "ink",
+    "hex": "#1F2430"
+  },
+  {
+    "name": "accent",
+    "hex": "#FF6B4A"
+  },
+  {
+    "name": "surface",
+    "hex": "#F5F1EA"
+  },
+  {
+    "name": "success",
+    "hex": "#3E9B6E"
+  }
+]

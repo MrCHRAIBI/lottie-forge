@@ -47,25 +47,34 @@ __all__ = ["make_asset", "make_pack", "make_recipe", "make_style_spec"]
 
 
 def make_style_spec() -> StyleSpec:
-    """The single source of fixture truth for the StyleSpec bridge chain.
+    """The single source of fixture truth for the StyleSpec bridge chain (DM-05).
 
-    Boundary-spanning values: width/height mid-range, stroke widths strictly
-    increasing (1.5 < 2.5 < 4.25), radii non-decreasing (2.5 <= 6.5 <= 12.75),
-    palette of two distinct kebab names, easing curves of two with all
-    control points inside [0, 1].
+    Phase 2 (plan 02-01) re-aligned this builder to the canonical values
+    declared verbatim in ``docs/project/05_Style.md`` \u00a75.2.2 -- 400\u00d7300
+    viewBox, bold stroke 4.0, radii 0.0/8.0/16.0, four palette tokens
+    (ink/accent/surface/success) and two easing curves (standard /
+    entrance with control points [0.2,0.0,0.2,1.0] / [0.0,0.0,0.2,1.0]).
+    The committed YAML fixture is the canon verbatim -- this builder is
+    the test-side mirror the bridge suite asserts deep-equality against.
+
+    02-01 is the sole owner of this edit within Phase 2; plan 02-03
+    (builders ``make_asset`` / ``_make_asset_for_pack``) consumes the
+    aligned ``style_version`` for STY-03 re-validation consistency.
     """
     return StyleSpec(
         style_version="1.0.0",
-        viewBox=Size(width=1200, height=800),
-        stroke_widths=StrokeWidths(thin=1.5, default=2.5, bold=4.25),
-        corner_radii=CornerRadii(small=2.5, medium=6.5, large=12.75),
+        viewBox=Size(width=400, height=300),
+        stroke_widths=StrokeWidths(thin=1.5, default=2.5, bold=4.0),
+        corner_radii=CornerRadii(small=0.0, medium=8.0, large=16.0),
         palette=[
-            PaletteToken(name="ink", hex="#1B1F3B"),
-            PaletteToken(name="accent", hex="#F26A4B"),
+            PaletteToken(name="ink", hex="#1F2430"),
+            PaletteToken(name="accent", hex="#FF6B4A"),
+            PaletteToken(name="surface", hex="#F5F1EA"),
+            PaletteToken(name="success", hex="#3E9B6E"),
         ],
         easing_curves=[
-            EasingCurve(name="standard", control_points=[0.4, 0.05, 0.2, 0.95]),
-            EasingCurve(name="entrance", control_points=[0.25, 0.1, 0.25, 0.95]),
+            EasingCurve(name="standard", control_points=[0.2, 0.0, 0.2, 1.0]),
+            EasingCurve(name="entrance", control_points=[0.0, 0.0, 0.2, 1.0]),
         ],
     )
 

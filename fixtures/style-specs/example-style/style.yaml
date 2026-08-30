@@ -1,0 +1,13 @@
+style_id: example-style
+style_version: 1.0.0
+viewBox: { width: 400, height: 300 }
+stroke_widths: { thin: 1.5, default: 2.5, bold: 4.0 }
+corner_radii: { small: 0.0, medium: 8.0, large: 16.0 }
+palette:
+  - { name: ink,     hex: "#1F2430" }
+  - { name: accent,  hex: "#FF6B4A" }
+  - { name: surface, hex: "#F5F1EA" }
+  - { name: success, hex: "#3E9B6E" }
+easing_curves:
+  - { name: standard,  control_points: [0.2, 0.0, 0.2, 1.0] }
+  - { name: entrance,  control_points: [0.0, 0.0, 0.2, 1.0] }
