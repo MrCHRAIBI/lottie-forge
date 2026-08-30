@@ -33,7 +33,7 @@ Requirements pour la sortie v1 (premier pack shippé via ship-gate humain). Chac
 - [ ] **MOT-01**: Catalogue fermé de 8–12 recettes en données versionnées (`catalogue.json`) possédant durées, easings, keyframe_shapes et ranges d'intensité
 - [ ] **MOT-02**: Les ids de recette choisis par tout agent ⊆ vocabulaire clos (jamais d'invention hors catalogue)
 - [x] **MOT-03**: `theme_anchors` ≥ 1 par recette, labels non-PII
-- [ ] **MOT-04**: Catalogue chargé bilingue (Python + TypeScript) sans drift + embarqué comme fixture de system prompt versionnée (hash au manifest)
+- [x] **MOT-04**: Catalogue chargé bilingue (Python + TypeScript) sans drift + embarqué comme fixture de system prompt versionnée (hash au manifest)
 
 ### Compilation (COM) — Partie 6
 
@@ -171,7 +171,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MOT-01 | Phase 2 | Pending |
 | MOT-02 | Phase 2 (clos structurel) + Phase 6 (côté agent) | Pending |
 | MOT-03 | Phase 2 | Complete |
-| MOT-04 | Phase 2 | Pending |
+| MOT-04 | Phase 2 | Complete |
 | COM-01 | Phase 3 | Pending |
 | COM-02 | Phase 3 | Pending |
 | COM-03 | Phase 3 | Pending |
