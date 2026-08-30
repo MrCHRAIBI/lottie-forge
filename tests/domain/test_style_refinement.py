@@ -23,10 +23,22 @@ this plan) drives the shared JSON harness
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 from pydantic import ValidationError
 
 from lottie_forge.domain.style_refinement import StyleRefinement
+
+
+# Bridge artifact paths -- see `tests/bridge/test_style_spec_bridge.py`
+# for the ordered chain pattern. The schema-keys artifact is the
+# parité-de-clés byte-identical contract: TS reads it and asserts
+# sorted(Object.keys(StyleRefinementSchema.shape)) == expectedKeys.
+REPO_ROOT = Path(__file__).resolve().parents[2]
+BRIDGE_DIR = REPO_ROOT / "fixtures" / "bridge"
+SCHEMA_KEYS = BRIDGE_DIR / "style-refinement.schema-keys.json"
 
 
 def _valid_default() -> StyleRefinement:
@@ -188,3 +200,24 @@ def test_sub_palette_too_long_is_rejected() -> None:
     too_long = [f"token-{i:02d}" for i in range(17)]
     with pytest.raises(ValidationError):
         StyleRefinement.model_validate({"sub_palette": too_long})
+
+
+# ---------- (f) Schema-keys artifact (parity contract with zod, Task 2) ----------
+
+
+def test_export_style_refinement_schema_keys() -> None:
+    """Write ``style-refinement.schema-keys.json`` for the zod mirror to consume.
+
+    Bridge artifact: ``fixtures/bridge/style-refinement.schema-keys.json``
+    is the byte-identical key set both sides of the bridge agree on. The
+    TS spec at ``src/rpc/contracts/style-refinement.spec.ts`` reads this
+    artifact and asserts ``sorted(Object.keys(StyleRefinementSchema.shape))
+    == expectedKeys`` -- a missing artifact raises hard, never silently
+    skips (§4.2).
+    """
+    BRIDGE_DIR.mkdir(parents=True, exist_ok=True)
+    SCHEMA_KEYS.write_text(
+        json.dumps(sorted(StyleRefinement.model_json_schema()["properties"].keys())),
+        encoding="utf-8",
+    )
+    assert SCHEMA_KEYS.exists()
