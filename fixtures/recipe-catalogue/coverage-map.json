@@ -1,0 +1,35 @@
+{
+  "verticals": [
+    {
+      "name": "fintech",
+      "states": [
+        { "state_id": "payment-success", "recipes": ["draw-on", "scale-pop"] },
+        { "state_id": "payment-declined", "recipes": ["wiggle", "slide"] },
+        { "state_id": "alert-dismissed", "recipes": ["slide", "fade"] },
+        { "state_id": "recurring-sync", "recipes": ["orbit"] },
+        { "state_id": "balance-milestone", "recipes": ["pulse", "scale-pop"] }
+      ]
+    },
+    {
+      "name": "dev-tools",
+      "states": [
+        { "state_id": "deploy-success", "recipes": ["draw-on", "bounce"] },
+        { "state_id": "pipeline-running", "recipes": ["orbit", "float"] },
+        { "state_id": "build-failed", "recipes": ["wiggle", "slide"] },
+        { "state_id": "commit-incoming", "recipes": ["fade", "slide"] },
+        { "state_id": "env-badge-ready", "recipes": ["scale-pop", "pulse"] }
+      ]
+    },
+    {
+      "name": "e-commerce",
+      "states": [
+        { "state_id": "cart-added", "recipes": ["scale-pop", "slide"] },
+        { "state_id": "favorite-added", "recipes": ["pulse"] },
+        { "state_id": "order-confirmed", "recipes": ["draw-on", "fade"] },
+        { "state_id": "promo-banner", "recipes": ["float", "slide"] },
+        { "state_id": "form-error", "recipes": ["wiggle"] },
+        { "state_id": "product-carousel", "recipes": ["rotate", "orbit"] }
+      ]
+    }
+  ]
+}
