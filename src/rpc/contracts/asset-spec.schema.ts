@@ -26,11 +26,14 @@ import { RecipeIdSchema } from "./vocabulary.schema.js";
  * - `composition_meta.shape_group_names` is a list of 1..24 kebab tokens
  *   matching `^[a-z][a-z0-9-]{2,31}$` (3..32 chars total). ASCII-anchored
  *   so non-ASCII tokens are rejected (CR-01 lock, DM-03 probe encoding).
- * - `content_hashes` is the **locked 2-field model** -- exactly
- *   `svg_sha256` and `lottie_sha256`, both 64-character lowercase hex
- *   (`^[a-f0-9]{64}$`). No third key, no uppercase, no 63/65-char
- *   digest. The Phase-8 `dotlottie_sha256` extension is added by editing
- *   this schema in the same commit (§4.14).
+ * - `content_hashes` is the **locked 4-field model** -- exactly
+ *   `svg_sha256`, `lottie_sha256`, `style_sha256` and `catalogue_sha256`,
+ *   all 64-character lowercase hex (`^[a-f0-9]{64}$`). No fifth key, no
+ *   uppercase, no 63/65-char digest. Phase 2 adds `style_sha256` and
+ *   `catalogue_sha256` so each manifest records the style + catalogue
+ *   digests it consumed (D-16, MOT-04, STY-01). The Phase-8
+ *   `dotlottie_sha256` extension is added by editing this schema in the
+ *   same commit (§4.14).
  *
  * Per ADR-01 no field describes a SMIL or CSS-keyframe animation channel.
  */
@@ -59,6 +62,8 @@ export const CompositionMetaSchema = z.strictObject({
 export const ContentHashesSchema = z.strictObject({
   svg_sha256: Sha256HexSchema,
   lottie_sha256: Sha256HexSchema,
+  style_sha256: Sha256HexSchema,
+  catalogue_sha256: Sha256HexSchema,
 });
 
 export const AssetSpecSchema = z.strictObject({

@@ -31,10 +31,11 @@ import { loadRejectionCases } from "./rejection-cases.js";
  * `tests/bridge/test_asset_bridge.py::test_bridge_rejection_case`. The
  * shared JSON file (`fixtures/rejection-cases/asset-spec.json`) drives
  * both the pytest parametrize and the vitest `test.each` -- one source,
- * zero drift. The 20 cases cover DM-03 (empty, encoding probes), STY-03
+ * zero drift. The cases cover DM-03 (empty, encoding probes), STY-03
  * (pin partial / 4-segment / non-kebab), DM-02 (recipe vocabulary
  * reuse -- disco-spin rejected at the asset level), CR-01 (non-ASCII
- * shape-group name), and the ContentHashes closed 2-field model.
+ * shape-group name), and the ContentHashes closed 4-field model
+ * (uppercase / short / non-hex / 5th-key injected).
  */
 
 const REPO_ROOT = join(__dirname, "..", "..", "..");

@@ -8,7 +8,7 @@ Two halves:
     id, ``composition_meta.shape_group_names`` at the inclusive 1 / 24
     bounds, ``content_hashes`` with 64 lowercase hex per field). Each
     bound is also tested one step out to prove the gate is strict
-    (DM-03, §4.7).
+    (DM-03, §4.7, D-16).
 
 (b) **Rejection suite** -- parametrised by behaviour, with the **shared
     harness** via :func:`tests.bridge.rejection_loader.load_rejection_cases`
@@ -36,10 +36,12 @@ with ``loc=["style_ref"]``.
 (ADR-03 same-commit, no second declaration here); ``"disco-spin"`` is
 rejected with ``loc=["recipe_ref"]``.
 
-`content_hashes` is a **closed 2-field model** (per §4.7, no open
-mapping); a third key is rejected (extra="forbid"). Per-hash pattern:
+`content_hashes` is a **closed 4-field model** (per §4.7 / D-16, no open
+mapping); a fifth key is rejected (extra="forbid"). Per-hash pattern:
 ``^[a-f0-9]{64}$`` lowercase -- 63 chars, uppercase, and non-hex all
-fail with ``loc=["content_hashes", "<field>"]``.
+fail with ``loc=["content_hashes", "<field>"]`` on each of the four
+fields (``svg_sha256``, ``lottie_sha256``, ``style_sha256``,
+``catalogue_sha256``).
 """
 
 from __future__ import annotations
@@ -55,10 +57,11 @@ from lottie_forge.domain.vocabulary import RECIPE_IDS
 from tests.bridge.rejection_loader import load_rejection_cases
 
 # 64-character lowercase hex strings used as fixtures (never reuse the same
-# string for the two fields to keep their semantic identity independent).
+# string for the four fields to keep their semantic identity independent).
 _VALID_HASH_A = "a" * 64
 _VALID_HASH_B = "0123456789abcdef" * 4  # 64 chars, lowercase hex, distinct
 _VALID_HASH_C = "fedcba9876543210" * 4  # 64 chars, lowercase hex, distinct
+_VALID_HASH_D = "abcdef0123456789" * 4  # 64 chars, lowercase hex, distinct
 
 
 def _loc_as_tuple(error: dict) -> tuple:
@@ -71,7 +74,8 @@ def _asset_payload(**overrides: Any) -> dict[str, Any]:
 
     The defaults pin ``style_ref`` to the same ``style_version`` as the
     ``make_style_spec()`` fixture (``1.0.0``) so re-imports stay
-    consistent without cross-fixture wiring.
+    consistent without cross-fixture wiring. ``content_hashes``
+    carries 4 distinct hex digests (D-16).
     """
     style_version = make_style_spec().style_version
     base: dict[str, Any] = {
@@ -84,6 +88,8 @@ def _asset_payload(**overrides: Any) -> dict[str, Any]:
         "content_hashes": {
             "svg_sha256": _VALID_HASH_A,
             "lottie_sha256": _VALID_HASH_B,
+            "style_sha256": _VALID_HASH_C,
+            "catalogue_sha256": _VALID_HASH_D,
         },
     }
     base.update(overrides)
@@ -140,17 +146,20 @@ def test_content_hashes_accepts_valid_lowercase_hex() -> None:
     # Distinct field values survive strict typing.
     assert asset.content_hashes.svg_sha256 == _VALID_HASH_A
     assert asset.content_hashes.lottie_sha256 == _VALID_HASH_B
+    assert asset.content_hashes.style_sha256 == _VALID_HASH_C
+    assert asset.content_hashes.catalogue_sha256 == _VALID_HASH_D
 
 
-def test_content_hashes_close_model_has_exactly_two_fields() -> None:
-    """`content_hashes` is the locked 2-field model -- the closed envelope (§4.7).
+def test_content_hashes_close_model_has_exactly_four_fields() -> None:
+    """`content_hashes` is the locked 4-field model -- the closed envelope (§4.7, D-16).
 
     A future extension (Phase 8 ``dotlottie_sha256``) is added by *editing
-    this model in the same commit* (§4.14); it is never a third key
-    accepted by the current contract.
+    this model in the same commit* (§4.14); it is never a fifth key
+    accepted by the current contract. Each of the four current fields
+    is locked to ``Sha256Hex`` (no second hash type introduced).
     """
     fields = set(ContentHashes.model_fields.keys())
-    assert fields == {"svg_sha256", "lottie_sha256"}
+    assert fields == {"svg_sha256", "lottie_sha256", "style_sha256", "catalogue_sha256"}
 
 
 # ---------- (b) Rejection suite (parametrised) ----------
@@ -244,31 +253,18 @@ def test_shape_group_name_with_accent_is_rejected() -> None:
     assert ("composition_meta", "shape_group_names", 0) in actual_locs
 
 
-def test_content_hash_uppercase_is_rejected() -> None:
-    payload = _asset_payload(
-        content_hashes={"svg_sha256": _VALID_HASH_C.upper(), "lottie_sha256": _VALID_HASH_B}
-    )
-    with pytest.raises(ValidationError) as exc_info:
-        AssetSpec.model_validate(payload)
-    actual_locs = {_loc_as_tuple(e) for e in exc_info.value.errors()}
-    assert ("content_hashes", "svg_sha256") in actual_locs
-
-
-def test_content_hash_too_short_is_rejected() -> None:
-    payload = _asset_payload(
-        content_hashes={"svg_sha256": "a" * 63, "lottie_sha256": _VALID_HASH_B}
-    )
-    with pytest.raises(ValidationError) as exc_info:
-        AssetSpec.model_validate(payload)
-    actual_locs = {_loc_as_tuple(e) for e in exc_info.value.errors()}
-    assert ("content_hashes", "svg_sha256") in actual_locs
-
-
-def test_content_hash_non_hex_character_is_rejected() -> None:
+def test_content_hash_svg_uppercase_is_rejected() -> None:
+    """Lock probe: a single ``ContentHashes`` field with an uppercase
+    digest is rejected (the lowercase invariant holds for every field,
+    not just ``svg_sha256``). The other three fields stay valid so the
+    rejection is rooted precisely at ``["content_hashes", "svg_sha256"]``.
+    """
     payload = _asset_payload(
         content_hashes={
-            "svg_sha256": "z" * 64,  # 'z' is not in [a-f0-9]
+            "svg_sha256": _VALID_HASH_C.upper(),
             "lottie_sha256": _VALID_HASH_B,
+            "style_sha256": _VALID_HASH_C,
+            "catalogue_sha256": _VALID_HASH_D,
         }
     )
     with pytest.raises(ValidationError) as exc_info:
@@ -277,18 +273,109 @@ def test_content_hash_non_hex_character_is_rejected() -> None:
     assert ("content_hashes", "svg_sha256") in actual_locs
 
 
-def test_content_hashes_extra_field_is_rejected() -> None:
-    """`ContentHashes` is a closed 2-field model -- a third key is forbidden (§4.7).
+def test_content_hash_svg_too_short_is_rejected() -> None:
+    payload = _asset_payload(
+        content_hashes={
+            "svg_sha256": "a" * 63,
+            "lottie_sha256": _VALID_HASH_B,
+            "style_sha256": _VALID_HASH_C,
+            "catalogue_sha256": _VALID_HASH_D,
+        }
+    )
+    with pytest.raises(ValidationError) as exc_info:
+        AssetSpec.model_validate(payload)
+    actual_locs = {_loc_as_tuple(e) for e in exc_info.value.errors()}
+    assert ("content_hashes", "svg_sha256") in actual_locs
 
-    The Phase-8 ``dotlottie_sha256`` extension is added by editing the
-    model in the same commit (rule 4.14), not by smuggling it past
-    ``extra="forbid"``.
+
+def test_content_hash_svg_non_hex_character_is_rejected() -> None:
+    payload = _asset_payload(
+        content_hashes={
+            "svg_sha256": "z" * 64,  # 'z' is not in [a-f0-9]
+            "lottie_sha256": _VALID_HASH_B,
+            "style_sha256": _VALID_HASH_C,
+            "catalogue_sha256": _VALID_HASH_D,
+        }
+    )
+    with pytest.raises(ValidationError) as exc_info:
+        AssetSpec.model_validate(payload)
+    actual_locs = {_loc_as_tuple(e) for e in exc_info.value.errors()}
+    assert ("content_hashes", "svg_sha256") in actual_locs
+
+
+def test_content_hash_style_uppercase_is_rejected() -> None:
+    """The uppercase invariant holds for ``style_sha256`` too (D-16).
+
+    Same lowercase-only pattern is reused -- no second hash type is
+    introduced. The other three fields stay valid.
     """
     payload = _asset_payload(
         content_hashes={
             "svg_sha256": _VALID_HASH_A,
             "lottie_sha256": _VALID_HASH_B,
-            "rogue_hash": _VALID_HASH_C,
+            "style_sha256": _VALID_HASH_C.upper(),
+            "catalogue_sha256": _VALID_HASH_D,
+        }
+    )
+    with pytest.raises(ValidationError) as exc_info:
+        AssetSpec.model_validate(payload)
+    actual_locs = {_loc_as_tuple(e) for e in exc_info.value.errors()}
+    assert ("content_hashes", "style_sha256") in actual_locs
+
+
+def test_content_hash_catalogue_too_short_is_rejected() -> None:
+    """Length 63 is rejected on ``catalogue_sha256`` (D-16).
+
+    Phase-2 ``catalogue_sha256`` consumes the committed catalogue
+    fixture's LF-normalised bytes (D-03). A 63-char digest would
+    silently break the sha256sum hand-verifiability contract.
+    """
+    payload = _asset_payload(
+        content_hashes={
+            "svg_sha256": _VALID_HASH_A,
+            "lottie_sha256": _VALID_HASH_B,
+            "style_sha256": _VALID_HASH_C,
+            "catalogue_sha256": "a" * 63,
+        }
+    )
+    with pytest.raises(ValidationError) as exc_info:
+        AssetSpec.model_validate(payload)
+    actual_locs = {_loc_as_tuple(e) for e in exc_info.value.errors()}
+    assert ("content_hashes", "catalogue_sha256") in actual_locs
+
+
+def test_content_hash_catalogue_non_hex_character_is_rejected() -> None:
+    """Non-hex character on ``catalogue_sha256`` is rejected (D-16, §4.7)."""
+    payload = _asset_payload(
+        content_hashes={
+            "svg_sha256": _VALID_HASH_A,
+            "lottie_sha256": _VALID_HASH_B,
+            "style_sha256": _VALID_HASH_C,
+            "catalogue_sha256": "z" * 64,
+        }
+    )
+    with pytest.raises(ValidationError) as exc_info:
+        AssetSpec.model_validate(payload)
+    actual_locs = {_loc_as_tuple(e) for e in exc_info.value.errors()}
+    assert ("content_hashes", "catalogue_sha256") in actual_locs
+
+
+def test_content_hashes_fifth_field_is_rejected() -> None:
+    """`ContentHashes` is the locked 4-field model -- a fifth key is forbidden (§4.7, D-16).
+
+    The Phase-8 ``dotlottie_sha256`` extension is added by editing the
+    model in the same commit (rule 4.14), not by smuggling it past
+    ``extra="forbid"``. Smuggling a 5th key such as ``dotlottie_sha256``
+    in the Phase-2 contract is rejected by ``extra="forbid"`` -- the
+    same gate that rejected ``rogue_hash`` in Phase 1.
+    """
+    payload = _asset_payload(
+        content_hashes={
+            "svg_sha256": _VALID_HASH_A,
+            "lottie_sha256": _VALID_HASH_B,
+            "style_sha256": _VALID_HASH_C,
+            "catalogue_sha256": _VALID_HASH_D,
+            "dotlottie_sha256": "f" * 64,
         }
     )
     with pytest.raises(ValidationError):
@@ -355,7 +442,14 @@ def test_composition_meta_constructor_accepts_valid_input() -> None:
 
 
 def test_content_hashes_constructor_accepts_valid_input() -> None:
-    """``ContentHashes`` is the locked 2-field model (no third arg)."""
-    hashes = ContentHashes(svg_sha256=_VALID_HASH_A, lottie_sha256=_VALID_HASH_B)
+    """``ContentHashes`` is the locked 4-field model (no fifth arg)."""
+    hashes = ContentHashes(
+        svg_sha256=_VALID_HASH_A,
+        lottie_sha256=_VALID_HASH_B,
+        style_sha256=_VALID_HASH_C,
+        catalogue_sha256=_VALID_HASH_D,
+    )
     assert hashes.svg_sha256 == _VALID_HASH_A
     assert hashes.lottie_sha256 == _VALID_HASH_B
+    assert hashes.style_sha256 == _VALID_HASH_C
+    assert hashes.catalogue_sha256 == _VALID_HASH_D

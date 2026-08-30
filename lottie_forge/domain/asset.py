@@ -35,10 +35,13 @@ for field.
   25-item list are rejected; names starting with a digit or carrying
   a non-ASCII letter are rejected (CR-01 lock, DM-03 probe encoding).
 
-- ``content_hashes`` is the **locked 2-field model** -- exactly
-  ``svg_sha256`` and ``lottie_sha256``, both 64-character lowercase
-  hex (``^[a-f0-9]{64}$``). No open mapping, no third key, no
-  uppercase, no 63-char or 65-char hash. The Phase-8
+- ``content_hashes`` is the **locked 4-field model** -- exactly
+  ``svg_sha256``, ``lottie_sha256``, ``style_sha256`` and
+  ``catalogue_sha256``, all 64-character lowercase hex
+  (``^[a-f0-9]{64}$``). No open mapping, no fifth key, no uppercase,
+  no 63-char or 65-char hash. Phase 2 adds ``style_sha256`` and
+  ``catalogue_sha256`` to record the consumed style + catalogue digests
+  on every manifest (D-16, MOT-04, STY-01). The Phase-8
   ``dotlottie_sha256`` extension is added by **editing this model in
   the same commit** (rule §4.14) -- smuggling it past ``extra="forbid"``
   is impossible by construction.
@@ -97,18 +100,26 @@ class CompositionMeta(BaseModel):
 
 
 class ContentHashes(BaseModel):
-    """The closed 2-field content-hash envelope (§4.7, §4.14).
+    """The closed 4-field content-hash envelope (§4.7, §4.14, D-16).
 
-    Phase 1 locks **exactly** ``svg_sha256`` and ``lottie_sha256`` --
-    each 64-character lowercase hex. The Phase-8 ``dotlottie_sha256``
-    extension is added by editing this model in the same commit (rule
-    §4.14), not by smuggling a third key past ``extra="forbid"``.
+    Phase 2 locks **exactly** ``svg_sha256``, ``lottie_sha256``,
+    ``style_sha256`` and ``catalogue_sha256`` -- each 64-character
+    lowercase hex. The same ``Sha256Hex`` annotation is reused for all
+    four fields; no second hash type is introduced. Every manifest
+    d'emet la ``digeste`` qu'il a consommée (style + catalogue --
+    MOT-04 / STY-01), permettant un audit de couverture et un re-build
+    reproductible (``sha256sum`` sur le YAML/catalogue committé,
+    D-02/D-03). The Phase-8 ``dotlottie_sha256`` extension is added by
+    editing this model in the same commit (rule §4.14), not by
+    smuggling a fifth key past ``extra="forbid"``.
     """
 
     model_config = STRICT_CONFIG
 
     svg_sha256: Sha256Hex
     lottie_sha256: Sha256Hex
+    style_sha256: Sha256Hex
+    catalogue_sha256: Sha256Hex
 
 
 class AssetSpec(BaseModel):
