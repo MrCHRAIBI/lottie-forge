@@ -29,6 +29,7 @@ export const CONTRACT_FILES: Record<string, string> = {
   recipe: "recipe.json",
   "asset-spec": "asset-spec.json",
   "pack-manifest": "pack-manifest.json",
+  "style-refinement": "style-refinement.json",
 };
 
 export interface RejectionCase {

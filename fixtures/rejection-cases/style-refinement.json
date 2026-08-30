@@ -1,0 +1,102 @@
+[
+  {
+    "case_id": "sr01-hex-like-sub-palette",
+    "ref": "T-02-05",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": ["#fff"]
+    },
+    "expect_paths": [["sub_palette", 0]]
+  },
+  {
+    "case_id": "sr02-svg-like-motif",
+    "ref": "T-02-05",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": ["accent"],
+      "motif": "<path"
+    },
+    "expect_paths": [["motif"]]
+  },
+  {
+    "case_id": "sr03-kebab-newline",
+    "ref": "CR-01",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": ["accent\n"]
+    },
+    "expect_paths": [["sub_palette", 0]]
+  },
+  {
+    "case_id": "sr04-unknown-stroke-pick",
+    "ref": "STY-02",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": ["accent"],
+      "stroke_pick": "thick"
+    },
+    "expect_paths": [["stroke_pick"]]
+  },
+  {
+    "case_id": "sr05-unknown-radius-pick",
+    "ref": "STY-02",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": ["accent"],
+      "radius_pick": "huge"
+    },
+    "expect_paths": [["radius_pick"]]
+  },
+  {
+    "case_id": "sr06-accent-weight-above",
+    "ref": "T-02-04",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": ["accent"],
+      "accent_weight": 1.5
+    },
+    "expect_paths": [["accent_weight"]]
+  },
+  {
+    "case_id": "sr07-accent-weight-below",
+    "ref": "T-02-04",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": ["accent"],
+      "accent_weight": -0.1
+    },
+    "expect_paths": [["accent_weight"]]
+  },
+  {
+    "case_id": "sr08-empty-sub-palette",
+    "ref": "T-02-04",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": []
+    },
+    "expect_paths": [["sub_palette"]]
+  },
+  {
+    "case_id": "sr09-oversized-sub-palette",
+    "ref": "T-02-04",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": [
+        "token-00", "token-01", "token-02", "token-03", "token-04",
+        "token-05", "token-06", "token-07", "token-08", "token-09",
+        "token-10", "token-11", "token-12", "token-13", "token-14",
+        "token-15", "token-16"
+      ]
+    },
+    "expect_paths": [["sub_palette"]]
+  },
+  {
+    "case_id": "sr10-extra-key",
+    "ref": "T-02-05",
+    "model": "StyleRefinement",
+    "payload": {
+      "sub_palette": ["accent"],
+      "hex_override": "#fff"
+    }
+  }
+]

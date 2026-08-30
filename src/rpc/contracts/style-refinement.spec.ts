@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+
+import { loadRejectionCases } from "./rejection-cases.js";
 import {
   RADIUS_PICK_VALUES,
   STROKE_PICK_VALUES,
@@ -10,11 +12,7 @@ import {
 /**
  * Local mirror of the pytest structural rejets in
  * `tests/domain/test_style_refinement.py` — Task 2 ships local mirror tests
- * here before the shared JSON harness (Task 3) wires both sides to the
- * same rejection fixture.
- *
- * The shared harness (`fixtures/rejection-cases/style-refinement.json`) is
- * added by Task 3 of this plan.
+ * here; Task 3 wires both sides to the same shared JSON rejection fixture.
  */
 
 const REPO_ROOT = join(__dirname, "..", "..", "..");
@@ -145,4 +143,38 @@ describe("style-refinement schema mirror", () => {
     });
     expect(result.success).toBe(false);
   });
+});
+
+/**
+ * Rejection harness (D-06/D-08) — mirror of the pytest suite
+ * `tests/domain/test_style_refinement.py::test_rejection_case`.
+ *
+ * Both suites consume the same JSON file
+ * (`fixtures/rejection-cases/style-refinement.json`) via the loaders in
+ * `tests/bridge/rejection_loader.py` and `src/rpc/contracts/rejection-cases.ts`
+ * — one source, zero drift.
+ *
+ * Assertion rules (D-08):
+ *   - The payload must always be rejected by zod safeParse.
+ *   - When `expect_paths` is present, each expected path must appear among
+ *     the `result.error.issues[].path` tuples (membership only — never a
+ *     message-text comparison).
+ */
+describe("style-refinement rejection harness (mirror of pytest)", () => {
+  const cases = loadRejectionCases("style-refinement");
+
+  it.each(cases.map((c) => [c.case_id, c]))(
+    "%s -> zod rejects the shared payload",
+    (_caseId, c) => {
+      const result = StyleRefinementSchema.safeParse(c.payload);
+      expect(result.success).toBe(false);
+      if (result.success) return; // narrow for TS
+
+      const actualPaths = new Set(result.error.issues.map((issue) => JSON.stringify(issue.path)));
+      for (const expected of c.expect_paths) {
+        const key = JSON.stringify(expected);
+        expect(actualPaths.has(key)).toBe(true);
+      }
+    },
+  );
 });

@@ -30,7 +30,7 @@ import pytest
 from pydantic import ValidationError
 
 from lottie_forge.domain.style_refinement import StyleRefinement
-
+from tests.bridge.rejection_loader import load_rejection_cases
 
 # Bridge artifact paths -- see `tests/bridge/test_style_spec_bridge.py`
 # for the ordered chain pattern. The schema-keys artifact is the
@@ -39,6 +39,11 @@ from lottie_forge.domain.style_refinement import StyleRefinement
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BRIDGE_DIR = REPO_ROOT / "fixtures" / "bridge"
 SCHEMA_KEYS = BRIDGE_DIR / "style-refinement.schema-keys.json"
+
+
+def _loc_as_tuple(error: dict) -> tuple:
+    """Pydantic v2 ``errors()`` returns loc as a tuple of str/int entries."""
+    return tuple(error["loc"])
 
 
 def _valid_default() -> StyleRefinement:
@@ -221,3 +226,35 @@ def test_export_style_refinement_schema_keys() -> None:
         encoding="utf-8",
     )
     assert SCHEMA_KEYS.exists()
+
+
+# ---------- (g) Rejection harness (mirror of vitest test.each, D-06/D-08) ----------
+
+
+_REJECTION_CASES = load_rejection_cases("style-refinement")
+
+
+@pytest.mark.parametrize("case", _REJECTION_CASES, ids=lambda c: c.case_id)
+def test_rejection_case(case) -> None:
+    """Every shared rejection case must be rejected by ``StyleRefinement``.
+
+    The TypeScript mirror in ``src/rpc/contracts/style-refinement.spec.ts``
+    consumes the same JSON file -- a drift here surfaces on both sides at
+    once.
+    """
+    with pytest.raises(ValidationError) as exc_info:
+        StyleRefinement.model_validate(case.payload)
+
+    errors = exc_info.value.errors()
+    actual_locs = {_loc_as_tuple(e) for e in errors}
+
+    if not case.expect_paths:
+        # No path constraint -- assert rejection only.
+        assert errors, f"Expected at least one ValidationError, got none for {case.case_id}"
+        return
+
+    for expected in case.expect_paths:
+        assert tuple(expected) in actual_locs, (
+            f"{case.case_id}: expected loc {tuple(expected)!r} not found in "
+            f"{sorted(actual_locs)!r}"
+        )
