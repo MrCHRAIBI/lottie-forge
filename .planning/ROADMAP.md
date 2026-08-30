@@ -92,10 +92,10 @@ Plans:
 
 - [ ] 02-01-PLAN.md — Gate légitimité PyYAML + tracer fixture style end-to-end (style.yaml hashé §5.2.2 → loader → bridge ordonné → palette.json sync) + vocabulaire `ThemeAnchorId` (D-02/D-04/D-10/D-11)
 - [ ] 02-02-PLAN.md — `StyleRefinement` delta-only deux côtés + harnais de rejet partagé (STY-02 partial)
-- [ ] 02-03-PLAN.md — `AssetSpec.content_hashes` étendu à 4 champs, same-commit §4.14 (D-16)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
+- [ ] 02-03-PLAN.md — `AssetSpec.content_hashes` étendu à 4 champs, same-commit §4.14 (D-16) *(sequenced after 02-01 — shared builders edit)*
 - [ ] 02-04-PLAN.md — `CatalogRecipe`/`RecipeCatalogue` + validateurs collect-all §5.5.3 + fixtures catalogue.json/coverage-map.json verbatim + parité bilingue + cross-ref easing conjointe (D-01/D-15/D-17)
 
 **Wave 3** *(blocked on Wave 2 completion)*
