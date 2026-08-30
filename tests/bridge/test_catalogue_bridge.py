@@ -36,7 +36,7 @@ from lottie_forge.domain.catalogue import (
     CatalogRecipe,
     RecipeCatalogue,
 )
-from tests.bridge.rejection_loader import load_rejection_cases
+from lottie_forge.domain.vocabulary import RECIPE_IDS
 from lottie_forge.loading.catalogue import (
     CATALOGUE_FIXTURE_PATH,
     COVERAGE_MAP_PATH,
@@ -45,6 +45,7 @@ from lottie_forge.loading.catalogue import (
     validate_easing_cross,
 )
 from lottie_forge.loading.style import normalize_lf, sha256_hex
+from tests.bridge.rejection_loader import load_rejection_cases
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BRIDGE_DIR = REPO_ROOT / "fixtures" / "bridge"
@@ -216,6 +217,77 @@ def test_validate_easing_cross_is_pure_and_green_on_valid_pair() -> None:
     with pytest.raises(ValidationError) as excinfo:
         validate_easing_cross(catalogue, set())
     assert len(excinfo.value.errors()) == len(catalogue.recipes)
+
+
+# ---------------------------------------------------------------------------
+# D-14 A/B: blocking motion-coverage audit (§5.6) over the committed map
+# ---------------------------------------------------------------------------
+
+
+def _load_coverage_map() -> dict:
+    return json.loads(COVERAGE_MAP_PATH.read_bytes())
+
+
+def _catalogue_id_set() -> set[str]:
+    return {r.id for r in _load_committed_catalogue().recipes}
+
+
+def test_coverage_audit_a_no_orphan_state_no_unknown_id() -> None:
+    """D-14 A: every state maps to >= 1 existing catalogue recipe id.
+
+    An orphan state (empty recipes list) or an unknown id (not in the
+    catalogue nor in RECIPE_IDS) fails verify -- the message cites the
+    vertical and the state_id so the gap is actionable.
+    """
+    coverage = _load_coverage_map()
+    catalogue_ids = _catalogue_id_set()
+
+    for vertical in coverage["verticals"]:
+        for state in vertical["states"]:
+            assert len(state["recipes"]) >= 1, (
+                f"orphan state: {vertical['name']}/{state['state_id']} maps to "
+                f"no recipe (D-14 A -- every state needs >= 1 recipe)"
+            )
+            for recipe_id in state["recipes"]:
+                assert recipe_id in catalogue_ids and recipe_id in RECIPE_IDS, (
+                    f"unknown recipe id {recipe_id!r} in "
+                    f"{vertical['name']}/{state['state_id']} "
+                    f"(D-14 A -- not a catalogue member)"
+                )
+
+
+def test_coverage_audit_b_no_dead_recipe_plus_d15_coherences() -> None:
+    """D-14 B: every catalogue recipe appears in >= 1 mapping (no dead slot).
+
+    Also asserts the D-15 documentary coherences on the committed map:
+    exit states reference exit-capable recipes (slide/fade) and the
+    continuous states reference loop recipes (orbit/float/pulse).
+    """
+    coverage = _load_coverage_map()
+    catalogue_ids = _catalogue_id_set()
+
+    mapped: set[str] = set()
+    for vertical in coverage["verticals"]:
+        for state in vertical["states"]:
+            mapped.update(state["recipes"])
+
+    dead = sorted(catalogue_ids - mapped)
+    assert dead == [], f"dead recipes: {dead} -- every closed-catalogue slot must be justified (D-14 B)"
+
+    # D-15 coherences (documentary, on the committed map).
+    by_state = {
+        s["state_id"]: set(s["recipes"])
+        for v in coverage["verticals"]
+        for s in v["states"]
+    }
+    assert by_state["alert-dismissed"] & {"slide", "fade"}, (
+        "D-15: the exit state must map to exit-capable recipes (slide/fade)"
+    )
+    loop_recipes = {"orbit", "float", "pulse"}
+    for continuous in ("recurring-sync", "pipeline-running", "promo-banner"):
+        assert by_state[continuous] & loop_recipes, (
+            f"D-15: continuous state {continuous} must map to a loop recipe"
+        )
 
 
 # ---------------------------------------------------------------------------

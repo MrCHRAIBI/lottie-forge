@@ -334,3 +334,31 @@ def test_other_contracts_import_theme_anchor_id_schema_from_vocabulary() -> None
         f"Files referencing ThemeAnchorIdSchema must import from "
         f"vocabulary.schema.ts; offenders: {offenders}"
     )
+
+
+# ---------- (f) D-14C: catalogue same-commit (4 files) ----------
+
+
+def test_catalogue_ids_match_recipe_ids_same_commit() -> None:
+    """D-14C: set(catalogue.json ids) == set(RECIPE_IDS).
+
+    The ADR-03 same-commit rule extended to 4 files: a membership swap
+    MUST touch ``vocabulary.py`` + ``vocabulary.schema.ts`` +
+    ``catalogue.json`` + ``coverage-map.json`` in ONE commit. This assert
+    fails when the catalogue data and the closed vocabulary drift apart
+    (e.g. the catalogue renamed an id without the vocabulary -- or the
+    reverse), reddening the verify job before any downstream consumer
+    sees the mismatch.
+    """
+    from lottie_forge.loading.catalogue import load_catalogue_fixture
+
+    catalogue, _sha = load_catalogue_fixture()
+    catalogue_ids = {recipe.id for recipe in catalogue.recipes}
+
+    assert catalogue_ids == set(RECIPE_IDS), (
+        "D-14C same-commit drift: catalogue.json ids and RECIPE_IDS diverge -- "
+        f"catalogue-only: {sorted(catalogue_ids - set(RECIPE_IDS))}, "
+        f"vocabulary-only: {sorted(set(RECIPE_IDS) - catalogue_ids)}. "
+        "A membership swap must touch vocabulary.py + vocabulary.schema.ts + "
+        "catalogue.json + coverage-map.json in the same commit (ADR-03/D-14C)."
+    )
