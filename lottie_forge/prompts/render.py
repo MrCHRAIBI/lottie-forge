@@ -32,11 +32,8 @@ import re
 from pathlib import Path
 from typing import Final
 
-from lottie_forge.loading.catalogue import (
-    CATALOGUE_FIXTURE_PATH,
-    load_catalogue_fixture,
-)
-from lottie_forge.loading.style import normalize_lf
+from lottie_forge.loading.catalogue import CATALOGUE_FIXTURE_PATH
+from lottie_forge.loading.style import normalize_lf, sha256_hex
 
 # Template path is a constant derived from this module's location — no
 # env override, no caller-supplied path (T-02-02). The template lives at
@@ -71,6 +68,7 @@ silently rewritten (``embarqué == hashé == committé``, §5.1 principe 2).
 __all__ = [
     "RECIPE_PICKER_TEMPLATE_PATH",
     "load_catalogue_prompt_fixture",
+    "load_catalogue_text_and_sha",
     "render_recipe_picker_prompt",
 ]
 
@@ -155,6 +153,35 @@ def render_recipe_picker_prompt(
     return _PLACEHOLDER_RE.sub(_substitute, template)
 
 
+def load_catalogue_text_and_sha(path: Path = CATALOGUE_FIXTURE_PATH) -> tuple[str, str]:
+    """Return ``(catalogue_text, catalogue_sha256)`` from a single read.
+
+    Reads the fixture bytes **once**, normalises line endings to LF,
+    and derives both the decoded text and its SHA-256 digest from the
+    same byte buffer. The invariant « embarqué == hashé == committé »
+    (§5.1 principe 2) is enforced **by construction**: a concurrent
+    write between two independent reads of the same path can no longer
+    let the embedded text diverge from the hashed bytes (IN-07).
+
+    Parameters
+    ----------
+    path:
+        Path to the catalogue fixture. Defaults to the committed
+        constant ``CATALOGUE_FIXTURE_PATH``. Overridable only in
+        tests that need to point at a fixture copy.
+
+    Returns
+    -------
+    tuple[str, str]:
+        ``(catalogue_text, catalogue_sha256)`` — ``catalogue_text`` is
+        the UTF-8 decoding of the LF-normalised bytes, ``catalogue_sha256``
+        is the 64-character lowercase hex digest of the same bytes
+        (matches ``AssetSpec.content_hashes.catalogue_sha256``).
+    """
+    normalised = normalize_lf(path.read_bytes())
+    return normalised.decode("utf-8"), sha256_hex(normalised)
+
+
 def load_catalogue_prompt_fixture() -> tuple[str, str]:
     """Return ``(catalogue_text, catalogue_sha256)`` for the committed fixture.
 
@@ -168,7 +195,9 @@ def load_catalogue_prompt_fixture() -> tuple[str, str]:
     Returned ``catalogue_text`` is the same string ``render_recipe_picker_prompt``
     expects as its ``catalogue_json`` parameter; round-tripping the two
     is the natural way to compose the system prompt.
+
+    Thin wrapper around :func:`load_catalogue_text_and_sha` -- the
+    single-read invariant is enforced there (IN-07); this function is
+    retained for its stable, recognisable name.
     """
-    _, sha = load_catalogue_fixture(CATALOGUE_FIXTURE_PATH)
-    catalogue_text = normalize_lf(CATALOGUE_FIXTURE_PATH.read_bytes()).decode("utf-8")
-    return catalogue_text, sha
+    return load_catalogue_text_and_sha()
