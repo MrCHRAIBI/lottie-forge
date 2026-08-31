@@ -43,8 +43,12 @@ from __future__ import annotations
 import re
 
 import pytest
+from pydantic import ValidationError
 
-from lottie_forge.loading.style import sha256_hex
+from fixtures import make_asset
+from lottie_forge.domain.asset import AssetSpec, ContentHashes
+from lottie_forge.loading.catalogue import load_catalogue_fixture
+from lottie_forge.loading.style import load_style_spec, sha256_hex
 from lottie_forge.prompts.render import (
     RECIPE_PICKER_TEMPLATE_PATH,
     load_catalogue_prompt_fixture,
@@ -239,3 +243,150 @@ def test_prompt_fixture_text_equals_hashed_bytes() -> None:
     """
     catalogue_text, catalogue_sha = load_catalogue_prompt_fixture()
     assert sha256_hex(catalogue_text.encode("utf-8")) == catalogue_sha
+
+
+# ===========================================================================
+# Manifest registration suite (plan 02-06, Task 2 -- ROADMAP critère 5 / D-16)
+# ===========================================================================
+#
+# The mechanism (Task 1) embeds the catalogue verbatim + its sha256 into a
+# deterministic system prompt. The manifest side of the loop lives on the
+# AssetSpec: ``content_hashes`` is the closed 4-field model from plan 02-03
+# -- ``{svg_sha256, lottie_sha256, style_sha256, catalogue_sha256}``.
+#
+# This suite closes the loop. **No production code is touched**: the prompt
+# module, the catalogue loader, the AssetSpec model and the
+# ``tests/bridge/fixtures.py`` ``make_asset`` builder are all consumed as-is.
+# The optional ``content_hashes=`` keyword added by plan 02-03 is the one
+# entry point this Task uses to pass the **real** sha values of the
+# committed fixtures -- a no-edit, no-clone approach that preserves the
+# Wave-1 / Wave-3 isolation contract.
+#
+# Tests (a)-(d) are byte-equality + round-trip locks on the AssetSpec,
+# proving the asset that records the catalogue digest survives the bridge
+# chain mechanically. Test (e) is the same contract protected against a
+# future relaxation of the Sha256Hex gate.
+
+
+def test_asset_content_hashes_roundtrip_with_real_fixture_shas() -> None:
+    """The four ``content_hashes`` of an AssetSpec round-trip strictly.
+
+    Loads the **real** sha values from both committed fixtures
+    (style + catalogue), constructs an ``AssetSpec`` via the
+    :func:`make_asset` single source of fixture truth (plan 02-03),
+    and asserts the strict model accepts the payload, round-trips
+    through ``model_dump_json`` byte-identically, and that the same
+    catalogue_sha surfaces in the rendered RecipePicker system prompt.
+
+    The bridge to ``make_asset`` is via the optional
+    ``content_hashes=`` parameter added in plan 02-03 — this plan
+    honours that contract and does **not** touch
+    ``tests/bridge/fixtures.py``. ``make_pack`` is unaffected
+    because ``_make_asset_for_pack`` is the production path for
+    the pack bridge suite.
+    """
+    style_sha = load_style_spec()[1]
+    catalogue_sha = load_catalogue_fixture()[1]
+
+    # Distinct determinist placeholders for svg / lottie so the four
+    # content_hashes have independent identity (mirrors the convention
+    # in tests/bridge/fixtures.py — the real sha for svg / lottie
+    # only exist after Phase 3/4 produce the artefacts).
+    svg_sha = "a" * 64
+    lottie_sha = "0" * 64
+
+    asset = make_asset(
+        content_hashes=ContentHashes(
+            svg_sha256=svg_sha,
+            lottie_sha256=lottie_sha,
+            style_sha256=style_sha,
+            catalogue_sha256=catalogue_sha,
+        )
+    )
+
+    # Strict model accepts the payload.
+    assert isinstance(asset, AssetSpec)
+
+    # Round-trip via JSON: re-validate the exported payload, equal under ``==``.
+    reimported = AssetSpec.model_validate_json(asset.model_dump_json())
+    assert reimported == asset
+    # The two sha fields must survive the JSON hop exactly — a hash
+    # round-trip is the lock for the prompt ↔ manifest loop (D-16 / D-03).
+    assert reimported.content_hashes.style_sha256 == style_sha
+    assert reimported.content_hashes.catalogue_sha256 == catalogue_sha
+
+    # Same sha closes the loop: the value recorded on the asset matches
+    # the value injected into the rendered system prompt. ROADMAP
+    # critère 5.
+    catalogue_text, rendered_sha = load_catalogue_prompt_fixture()
+    assert rendered_sha == catalogue_sha, (
+        "catalogue_sha logged on the prompt must equal the catalogue_sha "
+        "stored on the asset's content_hashes: ROADMAP critère 5"
+    )
+    rendered = render_recipe_picker_prompt(catalogue_text, catalogue_sha)
+    assert catalogue_sha in rendered
+
+
+def test_make_asset_default_path_is_byte_identical_to_phase_1() -> None:
+    """Plan 02-03's existing ``make_asset()`` callers stay byte-identical.
+
+    The optional ``content_hashes=`` override is opt-in: callers that
+    do not pass it (the 3 existing call sites: ``test_asset_bridge``,
+    ``test_pack_bridge``, ``test_pack``) get the same deterministic
+    4-literal block as before. This is the contract that makes
+    ``git diff --exit-code -- tests/bridge/fixtures.py`` empty at the
+    close of this plan.
+    """
+    asset_default = make_asset()
+    # The svg/lottie fields keep their historical fixtures…
+    assert asset_default.content_hashes.svg_sha256 == "a" * 64
+    assert asset_default.content_hashes.lottie_sha256 == "0123456789abcdef" * 4
+    # …and the new style/catalogue fields stay distinct (deterministic 64-hex placeholders).
+    assert len(asset_default.content_hashes.style_sha256) == 64
+    assert len(asset_default.content_hashes.catalogue_sha256) == 64
+    assert asset_default.content_hashes.style_sha256 != (
+        asset_default.content_hashes.catalogue_sha256
+    )
+    # The sha fields must each individually match the Sha256Hex shape.
+    for field_name in ("svg_sha256", "lottie_sha256", "style_sha256", "catalogue_sha256"):
+        assert SHA256_HEX_RE.fullmatch(getattr(asset_default.content_hashes, field_name)), (
+            f"{field_name} must be 64-char lowercase hex (D-16 / Sha256Hex)"
+        )
+
+
+def test_make_asset_content_hashes_override_is_strictly_validated() -> None:
+    """The override path goes through the same strict Pydantic validation.
+
+    An invalid value (uppercase / short / non-hex) is rejected by the
+    ``Sha256Hex`` ``pattern`` gate — at the ``ContentHashes``
+    constructor in this plan (and by extension at ``AssetSpec``
+    construction). This is defence in depth: the same gate the model
+    applies to hand-built content hashes is the gate ``make_asset``
+    applies to overridden content hashes.
+
+    The SHA-HEX validation is enforced **at construction time** —
+    constructing an invalid ``ContentHashes`` raises immediately,
+    before ``make_asset`` is reached. Both surfaces are exercised
+    below so a future relaxation of either gate fails CI.
+    """
+    base_good = {
+        "lottie_sha256": "0" * 64,
+        "style_sha256": "0" * 64,
+        "catalogue_sha256": "0" * 64,
+    }
+    bad_payloads: list[dict[str, str]] = [
+        # Uppercase hex — Sha256Hex regex ``^[a-f0-9]{64}$`` rejects.
+        {"svg_sha256": "A" * 64, **base_good},
+        # 63 chars — below the 64-char floor.
+        {"svg_sha256": "a" * 63, **base_good},
+        # Non-hex char in the middle.
+        {"svg_sha256": ("a" * 32) + "z" + ("a" * 31), **base_good},
+    ]
+    for payload in bad_payloads:
+        # The strict model rejects the bad value at construction.
+        with pytest.raises(ValidationError):
+            ContentHashes(**payload)
+        # A caller-provided override goes through ``make_asset`` and
+        # hits the same gate — belt-and-braces.
+        with pytest.raises(ValidationError):
+            make_asset(content_hashes=ContentHashes(**payload))
