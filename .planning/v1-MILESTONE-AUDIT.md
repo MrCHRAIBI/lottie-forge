@@ -216,9 +216,13 @@ Sources : VERIFICATION.md par phase × SUMMARY frontmatter (`requirements-comple
 
 **Findings intégration (0 critique, 4 mineurs) :**
 - **F-1** (minor, DM-04/STY-01/MOT-04) : la chaîne fixture→sha→pin→manifest est prouvée piecewise sur 3 suites, pas par un test unique de composition. Couvert transitivement (probe live positive) — se clôt naturellement en Phase 5 quand MFT-02 agrégera de vrais assets.
+  - **Disposition** (2026-08-31, quick 260831-l1s) : clôture planifiée en Phase 5 — le plan MFT-02 doit livrer un test de composition fixture→sha→pin→manifest (à relire au planning Phase 5, signal déjà tracé dans STATE.md decisions).
 - **F-2** (minor, DM-02/MOT-03) : `vocabulary.spec.ts` re-déclare les tuples canoniques en littéraux attendus — redondance *de détection de drift* intentionnelle ; un bump de vocabulaire = édition same-commit 3 fichiers. Compatible doctrine, à documenter pour le consommateur agent Phase 6.
+  - **Disposition** (2026-08-31, quick 260831-l1s) : redondance de détection de drift INTENTIONNELLE, pas une seconde source — un bump de vocabulaire = édition same-commit 3 fichiers (`vocabulary.py` + `vocabulary.schema.ts` + `vocabulary.spec.ts`), contraignant pour les consommateurs agents Phase 6.
 - **F-3** (minor, STY-03) : tests de bump simulé hardcodent `"1.0.0"` — découplage correct par design (la garde permanente couvre le sens live-fixture).
+  - **Disposition** (2026-08-31, quick 260831-l1s) : par design (découplage voulu) — aucune action requise, la garde permanente couvre déjà le sens live-fixture.
 - **F-4** (minor, DM-05) : `fixtures/bridge/` gitignoré — défendu par comparaisons committed-vs-exported ; ne pas « corriger » le gitignore.
+  - **Disposition** (2026-08-31, quick 260831-l1s) : gitignore de `fixtures/bridge/` DÉFENDU — ne jamais le « corriger », les comparaisons committed-vs-exported du harnais bridge en dépendent ; intouchable dans ce projet.
 
 ## Nyquist Coverage (§5.5 — hook validate-phase actif)
 
@@ -244,6 +248,20 @@ Sources : VERIFICATION.md par phase × SUMMARY frontmatter (`requirements-comple
 **Intégration (F-1..F-4) :** voir findings mineurs ci-dessus — aucunne action requise avant le planning Phase 3 ; F-1 se clôt en Phase 5.
 
 **Total : 7 items mineurs sur 3 sources — zéro dette de code, zéro stub, zéro anti-pattern (scans TBD/FIXME/stub : 0 hits sur les deux phases).**
+
+**Résolution (quick 260831-l1s, 2026-08-31) — solde des 7 items :**
+
+| # | Item | Résolution | Source |
+|---|------|------------|--------|
+| 1 | DM-03 `[ ]` REQUIREMENTS.md (audit l. 166) | déjà résolu par `909d05d` (phase-2 close-out) — case `[x]` + Status `Complete` posés avant l'audit `a85dcf4` ; ligne 166 ci-dessus était stale au moment de l'écriture de l'audit | git log `909d05d` (03:04) vs `a85dcf4` (15:03) |
+| 2 | Prose 01-01 « 20 cas » style-spec vs JSON = 19 | résolu par cette quick task — recompte JSON = 19 confirmé, sous-comptes Tests ré-alignés (17/19/1/19/1 = 57 cohérent `--collect-only`), entrée STATE 01-01 corrigée | quick `260831-l1s` Task 2 (commit `3bbe980`) |
+| 3 | STY-03/MOT-01/MOT-02 « Pending » en traceability REQUIREMENTS.md | déjà résolu par `909d05d` (phase-2 close-out) — case `[x]` + Status `Complete` posés avant l'audit | git log `909d05d` |
+| 4 | ROADMAP Phase 1 « In Progress » | résolu par cette quick task — ligne Progress Phase 1 = `Complete | 2026-08-29` (date 01-VERIFICATION `verified: 2026-08-29T22:19:29+01:00`, score 8/8 truths, 0 code gap) | quick `260831-l1s` Task 1 (commit `31416cc`) |
+| 5 | Premier run GitHub Actions de `verify` | **RESTE OUVERT** — item humain de vérification (01-VERIFICATION.md § human_verification), hors périmètre docs-only de cette quick task ; tracé ici pour traçabilité, l'entrée `Complete` de la ROADMAP ne dépend pas de cet item (décision utilisateur : 8/8 + 0 code gap suffisent) | 01-VERIFICATION.md l. 14-15 |
+| 6 | 02-VALIDATION.md reconstruit post-hoc (State B) | accepté — conformité réelle, classification documentée dans §Nyquist Coverage ci-dessus ; aucune action | l. 228 ci-dessus |
+| 7 | F-1..F-4 (4 findings mineurs) | dispositions explicites ajoutées sous chaque finding (voir bloc ci-dessus) ; F-1 clôt en Phase 5 (signal STATE), F-2 contraignant same-commit pour Phase 6, F-3 par design, F-4 intouchable | quick `260831-l1s` Task 3 |
+
+**Total soldé : 6/7 résolus (1 ouvert, humain CI hors périmètre docs-only).**
 
 ## Conclusion
 
