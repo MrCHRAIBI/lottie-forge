@@ -25,7 +25,7 @@ CSS-keyframe animation channel.
 
 from __future__ import annotations
 
-from typing import Final, Literal, get_args
+from typing import Final, Literal
 
 RECIPE_IDS: Final[tuple[str, ...]] = (
     "fade",
@@ -157,5 +157,4 @@ __all__ = [
     "THEME_ANCHOR_IDS",
     "ThemeAnchorId",
     "assert_recipe_count",
-    "get_args",
 ]
