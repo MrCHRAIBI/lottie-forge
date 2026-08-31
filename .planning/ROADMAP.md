@@ -242,7 +242,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | In Progress|  |
+| 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | Complete | 2026-08-29 |
 | 2. Style verrouillé & catalogue de recettes | 6/6 | Complete    | 2026-08-31 |
 | 3. Motion Compiler & SVG Sanitizer | 0/0 | Not started | - |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
