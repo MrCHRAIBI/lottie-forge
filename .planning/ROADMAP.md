@@ -117,7 +117,37 @@ Plans:
   5. `viewBox` et `<title>` survivent à SVGO 4 (test de régression ADR-02) et les IDs `{asset_id}_{component}_{role}` assignés par le compiler sont identiques entre deux régénérations (diff = ∅) (SAN-03, SAN-04)
 
 **Canonical refs**: `docs/project/06_Backbone.md` (§6.1–§6.8) · `docs/project/02_Architecture.md` §2.9 (ADR-01, ADR-02)
-**Plans**: TBD
+**Plans:** 8 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — Frontière npm légitimée (checkpoint:human-verify svgo+tsx, T-03-SC) + socle déterministe `format.ts` (D-23/D-24/D-35)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 03-02-PLAN.md — Contrats gelés RenderSpec/LottieJSON/Sanitizer (D-01/D-13, COM-03/COM-04 schema layer) + harnais de rejet D-29 (`expect_code`)
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 03-03-PLAN.md — `make_render_spec()` + 11 fixtures RenderSpec + checkpoint:decision galerie (conflit D-03 × D-05)
+
+**Wave 4** *(blocked on Wave 3)*
+
+- [ ] 03-04-PLAN.md — TRACER: a-001 (fade) → compile → re-validation zod → sanitize → IDs stables (seam compiler→sanitizer, D-17)
+
+**Wave 5** *(blocked on Wave 4)*
+
+- [ ] 03-05-PLAN.md — Motion complet: keyframe-emitter exhaustif 10 formes + 5 générateurs + markers/pose D-15 + feature gate svg-only (COM-04)
+
+**Wave 6** *(blocked on Wave 5)*
+
+- [ ] 03-06-PLAN.md — 11 goldens byte-exacts (D-03/D-24/D-25) + double-spawn déterminisme (D-26/D-37) + IDs stables (COM-01/SAN-03)
+- [ ] 03-07-PLAN.md — Sanitizer: matrice adversariale SAN-01/02/05 + régression ADR-02 SAN-04 + auto-consistance D-31/D-37
+
+**Wave 7** *(blocked on Wave 6)*
+
+- [ ] 03-08-PLAN.md — RPC NDJSON + client Python §6.6 (D-27/D-28/D-30/D-36) + gate grep COM-02
 
 ### Phase 4: Anim QA pinnée
 
