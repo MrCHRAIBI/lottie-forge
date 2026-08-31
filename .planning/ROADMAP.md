@@ -19,7 +19,7 @@ Usine industrielle de production de packs de 50 illustrations vectorielles anim�
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Contrats de données & frontière Pydantic↔zod (reconstruction)** - Les 4 modèles Pydantic + miroirs zod stricts + bridge ordonné + CI `verify`, reconstruits depuis zéro
-- [ ] **Phase 2: Style verrouillé & catalogue de recettes** - StyleSpec YAML hashée + catalogue fermé de 10 recettes versionnées + gate de re-validation
+- [x] **Phase 2: Style verrouillé & catalogue de recettes** - StyleSpec YAML hashée + catalogue fermé de 10 recettes versionnées + gate de re-validation (completed 2026-08-31)
 - [ ] **Phase 3: Motion Compiler & SVG Sanitizer** - Le seul producteur de Lottie JSON (backbone TS déterministe) + la gate dure d'hygiène SVG
 - [ ] **Phase 4: Anim QA pinnée** - La seule gate « shippable » par asset : Playwright pinné, frame walk, pixelmatch, QAReport
 - [ ] **Phase 5: Manifest Store & checkpointer** - Mémoire durable SQLite + crash-recovery LangGraph sans travail dupliqué
@@ -85,7 +85,7 @@ Plans:
   5. Le catalogue verbatim + son hash sont câblés comme fixture du template de system prompt versionné (placeholder asserté par test ; l'enregistrement du hash au manifest est en place)
 
 **Canonical refs**: `docs/project/05_Style.md` (§5.1–§5.9) · `docs/project/04_Modeles.md` §4.4 (vocabulaire clos)
-**Plans:** 6/6 plans executed
+**Plans:** 6/6 plans complete
 
 Plans:
 **Wave 1**
@@ -243,7 +243,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | In Progress|  |
-| 2. Style verrouillé & catalogue de recettes | 6/6 | In Progress|  |
+| 2. Style verrouillé & catalogue de recettes | 6/6 | Complete    | 2026-08-31 |
 | 3. Motion Compiler & SVG Sanitizer | 0/0 | Not started | - |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |
