@@ -23,7 +23,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** Un style visuel verrouillé + un vocabulaire de mouvement catalogué + des exports dev-ready — first-pass yield > 70 % et coût < €0,05 / asset.
-**Current focus:** Phase 3 � Motion Compiler & SVG Sanitizer
+**Current focus:** Phase 3 — Motion Compiler & SVG Sanitizer
 
 ## Current Position
 
