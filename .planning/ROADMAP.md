@@ -85,7 +85,7 @@ Plans:
   5. Le catalogue verbatim + son hash sont câblés comme fixture du template de system prompt versionné (placeholder asserté par test ; l'enregistrement du hash au manifest est en place)
 
 **Canonical refs**: `docs/project/05_Style.md` (§5.1–§5.9) · `docs/project/04_Modeles.md` §4.4 (vocabulaire clos)
-**Plans:** 4/6 plans executed
+**Plans:** 5/6 plans executed
 
 Plans:
 **Wave 1**
@@ -100,7 +100,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 02-05-PLAN.md — Gates bloquantes : rejets catalogue harnais partagé, audit de couverture D-14 (A/B), same-commit 4 fichiers (C), gate `scan_stale_pins` + 2 tests bloquants (D-06..D-09)
+- [x] 02-05-PLAN.md — Gates bloquantes : rejets catalogue harnais partagé, audit de couverture D-14 (A/B), same-commit 4 fichiers (C), gate `scan_stale_pins` + 2 tests bloquants (D-06..D-09)
 - [ ] 02-06-PLAN.md — Mécanisme prompt-fixture verbatim + hash (D-13) + enregistrement au manifest (critère 5)
 
 ### Phase 3: Motion Compiler & SVG Sanitizer
@@ -243,7 +243,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | In Progress|  |
-| 2. Style verrouillé & catalogue de recettes | 4/6 | In Progress|  |
+| 2. Style verrouillé & catalogue de recettes | 5/6 | In Progress|  |
 | 3. Motion Compiler & SVG Sanitizer | 0/0 | Not started | - |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |
