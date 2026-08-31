@@ -35,8 +35,9 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from lottie_forge.domain.asset import STYLE_REF_PATTERN, AssetSpec
+from lottie_forge.domain.asset import ASSET_ID_PATTERN, STYLE_REF_PATTERN, AssetSpec
 from lottie_forge.domain.pack import PackManifest
+from lottie_forge.gates import stale_pins
 from lottie_forge.gates.stale_pins import PinRecord, scan_stale_pins
 from lottie_forge.loading.style import load_style_spec
 from tests.bridge.fixtures import make_asset, make_pack, make_style_spec
@@ -150,6 +151,24 @@ def test_numeric_tie_with_different_strings_fails_closed() -> None:
     identical versions 'never reach this function': they did.)"""
     with pytest.raises(ValueError, match="tie on all three numeric components"):
         scan_stale_pins([_pin(version="1.0.0")], "01.0.0")
+
+
+# ---------------------------------------------------------------------------
+# (a-ter) imported, not re-derived -- WR-03 single-source doctrine
+# ---------------------------------------------------------------------------
+
+
+def test_gate_imports_asset_id_pattern_verbatim_no_rederivation() -> None:
+    """WR-03 regression: ``PinRecord.asset_id`` validates against the
+    domain's ``ASSET_ID_PATTERN`` imported verbatim (``is`` identity) --
+    never a re-derived local copy.
+
+    A future edit to the domain pattern (e.g. the §4.7 note reserving
+    ``a-050``…``a-999`` for later phases -- a plausible widening) can no
+    longer leave the gate silently pinned to a stale 3-digit literal:
+    the gate module must not declare ``ASSET_ID_GATE_PATTERN`` at all."""
+    assert stale_pins.ASSET_ID_PATTERN is ASSET_ID_PATTERN
+    assert not hasattr(stale_pins, "ASSET_ID_GATE_PATTERN")
 
 
 # ---------------------------------------------------------------------------

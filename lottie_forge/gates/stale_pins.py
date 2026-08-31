@@ -37,11 +37,8 @@ from typing import Annotated, Final, Literal
 from pydantic import BaseModel, Field, StringConstraints, TypeAdapter
 
 from lottie_forge.domain._shared import STRICT_CONFIG
-from lottie_forge.domain.asset import STYLE_REF_PATTERN
+from lottie_forge.domain.asset import ASSET_ID_PATTERN, STYLE_REF_PATTERN
 from lottie_forge.domain.style import STYLE_VERSION_PATTERN
-
-ASSET_ID_GATE_PATTERN = r"^a-\d{3}$"
-"""50-slot asset id lock -- the same shape the AssetSpec contract enforces."""
 
 BumpClass = Literal["patch", "minor", "major"]
 StaleScope = Literal["sampled", "tokens_touched", "all"]
@@ -73,13 +70,16 @@ class PinRecord(BaseModel):
     """One injectable pin -- decoupled from AssetSpec on purpose (D-06).
 
     Only the two fields the gate needs: the asset identity and the
-    ``name@X.Y.Z`` style_ref. ``STYLE_REF_PATTERN`` is **imported** from
-    ``lottie_forge.domain.asset`` verbatim (no re-derivation).
+    ``name@X.Y.Z`` style_ref. Both patterns -- ``ASSET_ID_PATTERN`` and
+    ``STYLE_REF_PATTERN`` -- are **imported** from
+    ``lottie_forge.domain.asset`` verbatim (no re-derivation, WR-03): a
+    future edit to the AssetSpec contract cannot leave this gate
+    silently pinned to a stale copy.
     """
 
     model_config = STRICT_CONFIG
 
-    asset_id: Annotated[str, Field(pattern=ASSET_ID_GATE_PATTERN)]
+    asset_id: Annotated[str, Field(pattern=ASSET_ID_PATTERN)]
     style_ref: Annotated[str, Field(pattern=STYLE_REF_PATTERN, max_length=128)]
 
 
