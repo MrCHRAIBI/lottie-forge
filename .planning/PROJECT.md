@@ -78,11 +78,15 @@ Un style visuel verrouillé + un vocabulaire de mouvement catalogué + des expor
 |----------|-----------|---------|
 | ADR-01 : Lottie = seule source de mouvement ; SVG = compagnon statique | Cross-renderers ; SMIL/CSS incohérents | — Pending |
 | ADR-02 : SVGO 4 avec `removeViewBox`/`removeTitle` désactivés + test de régression | Casse responsive + a11y sinon | — Pending |
-| ADR-03 : catalogue fermé 8–12 recettes (10 verrouillés) | Le LLM ne peut que `Literal[...]` un id | — Pending |
+| ADR-03 : catalogue fermé 8–12 recettes (10 verrouillés) | Le LLM ne peut que `Literal[...]` un id | ✓ Phase 2 — catalogue.json versionné + audit couverture D-14 bloquant |
 | ADR-04 : Vite 7.x (pas Vite 8) | Écosystème subdeps aligné sur 7 | — Pending |
 | ADR-05 : dark-mode dotLottie `themeId` + `theme_anchors` primaire ; `currentColor` fallback HTML/SVG pur | Bundle/DX confirmés par spike | — Pending |
 | ADR-06 : ship-gate humain avant release ; pas de Temporal | « Humain = éditeur, pas producteur » | — Pending |
-| Dépôt réellement à zéro : le §1.8 « Phase 1 complète » est à reconstruire | Contradiction docs/repo tranchée avec l'utilisateur (2026-08-29) | — Pending |
+| Dépôt réellement à zéro : le §1.8 « Phase 1 complète » est à reconstruire | Contradiction docs/repo tranchée avec l'utilisateur (2026-08-29) | ✓ Phase 1 |
+| Gate style_id côté loader (option b, D-16) : KebabToken + match répertoire, contrats intouchés | La frontière Py↔zod reste stable ; validation d'identité au chargement | ✓ Phase 2 |
+| ContentHashes 4-champ same-commit §4.14 (D-16) + override `make_asset(content_hashes=None)` | Un seul régime sha256 (Sha256Hex réutilisé) ; les vrais sha branchés par 02-06 sans dupliquer le builder | ✓ Phase 2 |
+| Gates bloquantes = tests ordinaires dans verify.yml existant (D-18) ; `scan_stale_pins` pure sans miroir zod (D-08) | Zéro edit CI ; la logique de re-validation s'écrit une fois (fixtures Ph2 → store Ph5+) | ✓ Phase 2 |
+| Prompt-fixture catalogue verbatim : octets committés == texte embarqué == sha au manifest (D-13) | Pas de re-sérialisation — le LLM voit exactement les données hashées (§5.1 principe 2) | ✓ Phase 2 |
 | Monorepo deux couches à la racine du dépôt | docs/ et .planning/ cohabitent avec le code | — Pending |
 | Découpage 2 milestones : M1 déterministe sans agents, M2 agents + orchestration + ship | Le spine déterministe avant les agents = erreur la plus coûteuse évitée (§2.1) | — Pending |
 | Roadmap suivant l'ordre de construction §2.8 | Séquencement justifié dans le cahier des charges | — Pending |
@@ -105,4 +109,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-08-29 after initialization*
+*Last updated: 2026-08-31 after Phase 2*
