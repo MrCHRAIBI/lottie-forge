@@ -41,6 +41,54 @@ export interface RejectionCase {
   expect_paths: ReadonlyArray<ReadonlyArray<string | number>>;
 }
 
+/**
+ * Raw (pre-validation) shape of one JSON fixture entry. Every required
+ * field is `unknown` until `assertRejectionEntryShape` proves otherwise --
+ * a fixture file is data, never a type guarantee.
+ */
+interface RawRejectionEntry {
+  case_id?: unknown;
+  ref?: unknown;
+  model?: unknown;
+  payload?: unknown;
+  expect_paths?: ReadonlyArray<ReadonlyArray<string | number>>;
+}
+
+/**
+ * Fail-loud shape guard for one fixture entry (IN-07, D-06).
+ *
+ * A fixture entry whose `payload` is absent would slide through the
+ * `test.each` suites as `Schema.safeParse(undefined)` -> rejection -> a
+ * VACUOUS green, while the Python loader (`tests/bridge/rejection_loader.py`)
+ * raises `KeyError` at load time. The one-source-zero-drift harness would
+ * silently diverge in exactly the scenario it exists to prevent. Mirror
+ * the Python strictness: all four required fields must be present
+ * (`payload` must be a non-null object); anything else aborts the vitest
+ * run at load time.
+ *
+ * Additive wrapper (IN-07): `loadRejectionCases` keeps its exported
+ * signature -- spec files are untouched. Exported so the guard itself is
+ * unit-testable without mutating the committed (locked) fixture files.
+ */
+export function assertRejectionEntryShape(entry: RawRejectionEntry, filename: string): void {
+  const missing: string[] = [];
+  if (typeof entry.case_id !== "string") missing.push("case_id");
+  if (typeof entry.ref !== "string") missing.push("ref");
+  if (typeof entry.model !== "string") missing.push("model");
+  if (entry.payload === undefined || entry.payload === null || typeof entry.payload !== "object") {
+    missing.push("payload");
+  }
+  if (missing.length > 0) {
+    const caseId = typeof entry.case_id === "string" ? entry.case_id : "<missing case_id>";
+    throw new Error(
+      `Rejection fixture ${filename}, case ${caseId}: missing or malformed ` +
+        `required field(s): ${missing.join(", ")} -- the Python loader ` +
+        `(rejection_loader.py) raises KeyError on the same shape; the TS ` +
+        `side must fail loud too instead of asserting rejection vacuously`,
+    );
+  }
+}
+
 export function loadRejectionCases(contract: string): RejectionCase[] {
   const filename = CONTRACT_FILES[contract];
   if (!filename) {
@@ -50,18 +98,17 @@ export function loadRejectionCases(contract: string): RejectionCase[] {
   if (!existsSync(path)) {
     throw new Error(`Rejection fixture file missing: ${path}`);
   }
-  const raw = JSON.parse(readFileSync(path, "utf-8")) as Array<{
-    case_id: string;
-    ref: string;
-    model: string;
-    payload: Record<string, unknown>;
-    expect_paths?: ReadonlyArray<ReadonlyArray<string | number>>;
-  }>;
-  return raw.map((entry) => ({
-    case_id: entry.case_id,
-    ref: entry.ref,
-    model: entry.model,
-    payload: entry.payload,
-    expect_paths: entry.expect_paths ?? [],
-  }));
+  const raw = JSON.parse(readFileSync(path, "utf-8")) as RawRejectionEntry[];
+  return raw.map((entry) => {
+    assertRejectionEntryShape(entry, filename);
+    // Validate-then-cast: the guard above proved each required field's
+    // type at runtime; the casts only re-state it for the compiler.
+    return {
+      case_id: entry.case_id as string,
+      ref: entry.ref as string,
+      model: entry.model as string,
+      payload: entry.payload as Record<string, unknown>,
+      expect_paths: entry.expect_paths ?? [],
+    };
+  });
 }
