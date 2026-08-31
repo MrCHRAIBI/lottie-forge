@@ -34,10 +34,11 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Annotated, Final, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StringConstraints, TypeAdapter
 
 from lottie_forge.domain._shared import STRICT_CONFIG
 from lottie_forge.domain.asset import STYLE_REF_PATTERN
+from lottie_forge.domain.style import STYLE_VERSION_PATTERN
 
 ASSET_ID_GATE_PATTERN = r"^a-\d{3}$"
 """50-slot asset id lock -- the same shape the AssetSpec contract enforces."""
@@ -53,6 +54,19 @@ BUMP_SCOPE: Final[dict[str, StaleScope]] = {
 """§5.4 table, declarative in Phase 2 (D-09): the per-asset token-usage
 resolution that would turn ``tokens_touched`` into a concrete asset set
 requires the Phase 5+ store."""
+
+_SEMVER: Final[TypeAdapter[str]] = TypeAdapter(
+    Annotated[str, StringConstraints(pattern=STYLE_VERSION_PATTERN)]
+)
+"""Fail-closed entry guard for injected version strings (WR-01).
+
+The pattern is **imported** from ``lottie_forge.domain.style`` (no
+re-derivation): a malformed version -- ``"1.0"``, ``"abc"``,
+``"1.0.0.0"`` -- is rejected with a loud ``pydantic.ValidationError`` at
+the gate boundary instead of crashing mid-scan (``IndexError`` / bare
+``ValueError``) or silently misclassifying a 4-segment diff down to
+``patch``/``sampled``.
+"""
 
 
 class PinRecord(BaseModel):
@@ -87,6 +101,10 @@ def _classify_bump(pinned: str, current: str) -> BumpClass:
     Major first, then minor, then patch -- the first differing component
     names the class. A downgrade (pinned > current) classifies as
     ``major`` by safety: the conservative scope re-validates everything.
+
+    Fail-closed: strings that tie on all three numeric components but
+    differ as text (``1.0.0`` vs ``01.0.0``) raise ``ValueError`` -- they
+    can never masquerade as a ``patch`` bump.
     """
     pinned_parts = [int(p) for p in pinned.split(".")]
     current_parts = [int(p) for p in current.split(".")]
@@ -96,7 +114,11 @@ def _classify_bump(pinned: str, current: str) -> BumpClass:
             if name == "major" or diff < 0:
                 return "major"
             return name  # type: ignore[return-value]
-    return "patch"  # identical versions never reach this function
+    raise ValueError(
+        f"unclassifiable version pair: pinned {pinned!r} and current "
+        f"{current!r} tie on all three numeric components but differ as "
+        f"strings -- refusing to classify as a patch bump (fail-closed)"
+    )
 
 
 def scan_stale_pins(
@@ -108,10 +130,20 @@ def scan_stale_pins(
     never merged. Up-to-date pins produce nothing. The version half is
     extracted with ``rsplit("@", 1)`` -- the WR-01 string discipline, no
     regex re-derivation.
+
+    Fail-closed entry guard (WR-01): ``current_version`` is validated
+    against the imported ``STYLE_VERSION_PATTERN`` before the scan, and
+    the pinned half extracted from each ``PinRecord.style_ref`` is
+    validated too (defence in depth -- ``STYLE_REF_PATTERN`` already
+    guarantees the shape). A malformed version raises a loud
+    ``pydantic.ValidationError``: never an ``IndexError`` / bare
+    ``ValueError`` mid-scan, never a silent misclassification.
     """
+    _SEMVER.validate_python(current_version)
     flags: list[StalePinFlag] = []
     for pin in pins:
         pinned_version = pin.style_ref.rsplit("@", 1)[1]
+        _SEMVER.validate_python(pinned_version)
         if pinned_version == current_version:
             continue
         bump_class = _classify_bump(pinned_version, current_version)

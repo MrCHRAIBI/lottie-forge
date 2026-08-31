@@ -33,6 +33,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from pydantic import ValidationError
 
 from lottie_forge.domain.asset import STYLE_REF_PATTERN, AssetSpec
 from lottie_forge.domain.pack import PackManifest
@@ -98,6 +99,57 @@ def test_duplicate_pins_never_merge() -> None:
     """Adjacency probe: identical stale pins each produce their own flag."""
     flags = scan_stale_pins([_pin("a-001", "0.9.9"), _pin("a-001", "0.9.9")], "1.0.0")
     assert len(flags) == 2
+
+
+# ---------------------------------------------------------------------------
+# (a-bis) Fail-closed injected-version guard (WR-01)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "bad_version",
+    ["1.0", "abc", "1.0.x", "1.0.0.0", "", "v1.0.0", "1..0"],
+    ids=[
+        "two-segments",
+        "non-numeric",
+        "non-numeric-patch",
+        "four-segments",
+        "empty",
+        "v-prefix",
+        "empty-segment",
+    ],
+)
+def test_malformed_current_version_fails_closed(bad_version: str) -> None:
+    """WR-01: a malformed injected ``current_version`` is a loud rejection.
+
+    Before the entry guard these inputs crashed mid-scan (``IndexError``
+    for ``1.0``, bare ``ValueError: invalid literal for int()`` for
+    ``abc`` / ``1.0.x``) or -- worst -- silently misclassified the
+    4-segment ``1.0.0.0`` diff down to ``patch``/``sampled``. Each case
+    fails if the validation disappears: the pre-fix behaviour either
+    raises a bare (non-ValidationError) exception or returns a flag.
+    """
+    with pytest.raises(ValidationError):
+        scan_stale_pins([_pin(version="1.0.0")], bad_version)
+
+
+def test_four_segment_diff_is_rejected_not_downscoped() -> None:
+    """WR-01 review probe: ``1.0.0.0`` is rejected at the entry guard.
+
+    It must never reach the classifier, where it used to be flagged but
+    classified ``patch``/``sampled`` -- the narrowest (wrong) scope.
+    """
+    with pytest.raises(ValidationError, match="String should match pattern"):
+        scan_stale_pins([_pin(version="1.0.0")], "1.0.0.0")
+
+
+def test_numeric_tie_with_different_strings_fails_closed() -> None:
+    """WR-01: ``1.0.0`` vs ``01.0.0`` tie on all three numeric components
+    but differ as strings -- the classifier must raise, never masquerade
+    as a ``patch`` bump. (The removed fall-through comment claimed
+    identical versions 'never reach this function': they did.)"""
+    with pytest.raises(ValueError, match="tie on all three numeric components"):
+        scan_stale_pins([_pin(version="1.0.0")], "01.0.0")
 
 
 # ---------------------------------------------------------------------------
