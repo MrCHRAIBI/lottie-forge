@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 Phase: 3 — Motion Compiler & SVG Sanitizer
 Plan: Not started
 Status: Ready to plan
-Last activity: 2026-08-31 — Completed quick task 260831-jnx: Hardening résiduel 02-REVIEW (IN-01/02/03/04/06/07)
+Last activity: 2026-08-31 — Completed quick task 260831-l1s: Bookkeeping audit M1 (planning-only docs — DM-03/STY-03/MOT-01/MOT-02 vérifiés, Phase 1 Complete, recompte 19 cas, dispositions F-1..F-4)
 Progress: [██████████] 100% (11/11 plans — Phases 1–2 complete, Milestone 1 spine)
 
 **Milestone 1 = Phases 1–5** (spine déterministe sans agents) · **Milestone 2 = Phases 6–10** (agents + orchestration + packager + observabilité + ship).
@@ -111,6 +111,7 @@ Recent decisions affecting current work:
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260831-jnx | Hardening résiduel 02-REVIEW — IN-01/02/03/04/06/07 (6 items Info, zéro comportement produit) | 2026-08-31 | b9b9726 | [260831-jnx-hardening-residuel-02-review-in-01-02-03](./quick/260831-jnx-hardening-residuel-02-review-in-01-02-03/) |
+| 260831-l1s | Bookkeeping audit M1 — REQUIREMENTS vérifié (déjà à jour 909d05d), ROADMAP Phase 1 Complete, recompte JSON 19 cas style-spec (prose alignée), dispositions F-1..F-4 | 2026-08-31 | da3acdc | [260831-l1s-bookkeeping-audit-m1-planning-only-docs](./quick/260831-l1s-bookkeeping-audit-m1-planning-only-docs/) |
 
 ## Deferred Items
 
