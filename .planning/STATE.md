@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 Phase: 3 — Motion Compiler & SVG Sanitizer
 Plan: Not started
 Status: Ready to plan
-Last activity: 2026-08-31 — Phase 02 complete, transitioned to Phase 3
+Last activity: 2026-08-31 — Completed quick task 260831-jnx: Hardening résiduel 02-REVIEW (IN-01/02/03/04/06/07)
 Progress: [██████████] 100% (11/11 plans — Phases 1–2 complete, Milestone 1 spine)
 
 **Milestone 1 = Phases 1–5** (spine déterministe sans agents) · **Milestone 2 = Phases 6–10** (agents + orchestration + packager + observabilité + ship).
@@ -103,7 +103,13 @@ Recent decisions affecting current work:
 
 ### Blockers/Concerns
 
-- None blocking — Phases 01–02 delivered (bridge pattern replicated across 6 contrats, rejection harness 6 fixtures, gates bloquantes vertes 485 pytest / 157 vitest). 02-REVIEW.md : les 3 warnings de durcissement (WR-01/02/03) + IN-05 loader ont été fixés avec tests de régression mutation-checkés (02-REVIEW-FIX.md, commits 6e070cb/e1f2aff/072dcd8/49c3c17) ; les 5 Info restants sont adoucis/hors scope.
+- None blocking — Phases 01–02 delivered (bridge pattern replicated across 6 contrats, rejection harness 6 fixtures, gates bloquantes vertes 485 pytest / 156 vitest). 02-REVIEW.md : 10/10 findings résolus — WR-01/02/03 + IN-05 fixés avec tests de régression mutation-checkés (02-REVIEW-FIX.md), IN-01/02/03/04/06/07 fixés en quick task 260831-jnx.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260831-jnx | Hardening résiduel 02-REVIEW — IN-01/02/03/04/06/07 (6 items Info, zéro comportement produit) | 2026-08-31 | b9b9726 | [260831-jnx-hardening-residuel-02-review-in-01-02-03](./quick/260831-jnx-hardening-residuel-02-review-in-01-02-03/) |
 
 ## Deferred Items
 
