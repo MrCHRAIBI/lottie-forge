@@ -211,7 +211,7 @@ status: complete
 - **Completed:** 2026-08-29T17:24:14+01:00
 - **Tasks:** 3 (T-01-SC gate, T-01 tracer, T-02 rejection harness)
 - **Files modified:** 20 created, 0 modified
-- **Tests:** 57 pytest passed (15 positive boundary + 20 rejection domain + 1 export + 20 bridge rejection + 1 re-import), 22 vitest tests passed (3 bridge + 19 rejection), 0 skipped
+- **Tests:** 57 pytest passed (17 positive boundary + 19 rejection domain + 1 export + 19 bridge rejection + 1 re-import), 22 vitest tests passed (3 bridge + 19 rejection), 0 skipped
 
 ## Accomplishments
 
