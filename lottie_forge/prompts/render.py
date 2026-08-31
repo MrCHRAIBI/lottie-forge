@@ -28,7 +28,9 @@ LLM ever sees in this slot is a byte that was committed to the repo
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
+from typing import Final
 
 from lottie_forge.loading.catalogue import (
     CATALOGUE_FIXTURE_PATH,
@@ -53,6 +55,17 @@ render without code change. The placeholders
 ``{{catalogue_json}}`` / ``{{catalogue_hash}}`` are the only contractual
 elements; the surrounding wording is at the agent's discretion
 (``02-CONTEXT.md`` "the agent's Discretion").
+"""
+
+_PLACEHOLDER_RE: Final[re.Pattern[str]] = re.compile(
+    r"\{\{(catalogue_json|catalogue_hash)\}\}"
+)
+"""The two contractual placeholders (§5.5.3 l.151), compiled once.
+
+Substitution through this pattern is **single-pass** (WR-02): ``re.sub``
+never re-scans inserted text, so catalogue bytes containing the literal
+token ``{{catalogue_hash}}`` are embedded verbatim instead of being
+silently rewritten (``embarqué == hashé == committé``, §5.1 principe 2).
 """
 
 __all__ = [
@@ -83,10 +96,12 @@ def render_recipe_picker_prompt(
 
     The function is **pure** (no I/O-network, no globals beyond the
     template-path constant): reads the template, substitutes the two
-    placeholders, and raises ``ValueError`` if any placeholder token
-    remains after substitution — a belt-and-braces guard so a partial
-    catalogue never ships embedded in a prompt (T-02-10, low severity,
-    mitigate by construction).
+    placeholders in a **single pass** (WR-02 — inserted text is never
+    re-scanned, so catalogue bytes carrying a literal placeholder token
+    stay verbatim), and raises ``ValueError`` if the template declares
+    any placeholder beyond the two contractual ones — a belt-and-braces
+    guard so a partial catalogue never ships embedded in a prompt
+    (T-02-10, low severity, mitigate by construction).
 
     Parameters
     ----------
@@ -108,23 +123,36 @@ def render_recipe_picker_prompt(
     Raises
     ------
     ValueError:
-        If a placeholder token remains in the rendered prompt after
-        substitution (malformed-template guard, T-02-10).
+        If the template declares a placeholder other than
+        ``{{catalogue_json}}`` / ``{{catalogue_hash}}``
+        (malformed-template guard, T-02-10).
     """
     template = _read_template(template_path)
-    rendered = template.replace("{{catalogue_json}}", catalogue_json).replace(
-        "{{catalogue_hash}}", catalogue_hash
-    )
-    # Belt-and-braces: every place the catalogue replaced, the substring
-    # is gone. A leftover ``{{...}}`` in the rendered prompt means the
-    # template declared a placeholder we did not satisfy — fail loud so
-    # it cannot silently ship as a literal token the LLM would echo back.
-    if "{{" in rendered or "}}" in rendered:
+
+    # Malformed-template guard (fail-closed, T-02-10): the template may
+    # declare ONLY the two contractual placeholders. Strip them from the
+    # TEMPLATE — before any substitution — and any leftover brace is a
+    # declared-but-unsatisfiable token: fail loud. The guard lives on the
+    # template, not on the rendered output, so catalogue text that itself
+    # carries braces is embedded verbatim (WR-02) without a false alarm.
+    residual_template = _PLACEHOLDER_RE.sub("", template)
+    if "{{" in residual_template or "}}" in residual_template:
         raise ValueError(
             "recipe_picker.system.md left an unsubstituted placeholder "
-            f"after rendering; rendered prompt head: {rendered[:200]!r}"
+            f"(only {{{{catalogue_json}}}} / {{{{catalogue_hash}}}} are "
+            f"supported); template head: {template[:200]!r}"
         )
-    return rendered
+
+    # Single-pass substitution (WR-02): one scan over the template, each
+    # placeholder replaced by its value, inserted text NEVER re-scanned.
+    # A catalogue containing the literal token {{catalogue_hash}} stays
+    # byte-verbatim instead of being rewritten with the real digest —
+    # sequential str.replace calls would corrupt it silently (the hash
+    # appearing twice, verbatim membership broken) with zero guard fire.
+    def _substitute(match: re.Match[str]) -> str:
+        return catalogue_json if match.group(1) == "catalogue_json" else catalogue_hash
+
+    return _PLACEHOLDER_RE.sub(_substitute, template)
 
 
 def load_catalogue_prompt_fixture() -> tuple[str, str]:

@@ -184,6 +184,57 @@ def test_residual_placeholder_guard() -> None:
 
 
 # ---------------------------------------------------------------------------
+# (b-bis) single-pass substitution -- WR-02 verbatim guarantee
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "token",
+    ["{{catalogue_hash}}", "{{catalogue_json}}"],
+    ids=["hash-token-in-catalogue", "json-token-in-catalogue"],
+)
+def test_catalogue_text_carrying_placeholder_tokens_stays_verbatim(token: str) -> None:
+    """WR-02 regression: catalogue text carrying a literal placeholder
+    token is embedded **verbatim**, never rewritten by the substitution
+    machinery.
+
+    Fails if the renderer regresses to sequential ``str.replace`` calls:
+    the second replace would rewrite ``{{catalogue_hash}}`` *inside* the
+    already-substituted catalogue text — verbatim membership breaks and
+    the digest appears twice (both asserted below) with zero guard fire.
+    """
+    evil_catalogue = f'{{"note": "subst me: {token}"}}'
+    fake_hash = "c" * 64
+    rendered = render_recipe_picker_prompt(evil_catalogue, fake_hash)
+
+    # (i) Verbatim membership: the catalogue bytes are in the prompt,
+    # token included, byte for byte.
+    assert evil_catalogue in rendered, (
+        "catalogue text carrying a placeholder token must be embedded "
+        "verbatim (WR-02: no re-scanning of inserted text)"
+    )
+    assert rendered.count(token) == 1
+    # (ii) The digest is injected exactly once (its own template slot),
+    # never duplicated by a rewrite inside the catalogue text.
+    assert rendered.count(fake_hash) == 1
+
+
+def test_catalogue_text_with_foreign_braces_is_verbatim_not_rejected() -> None:
+    """WR-02: braces in the catalogue text are data, not placeholders.
+
+    The residual guard polices the TEMPLATE only; a catalogue embedding
+    ``{{weird}}`` ships verbatim (``embarqué == committé``) instead of
+    being corrupted (sequential-replace era) or tripping the guard.
+    """
+    catalogue = '{"note": "{{weird}}"}'
+    fake_hash = "d" * 64
+    rendered = render_recipe_picker_prompt(catalogue, fake_hash)
+    assert catalogue in rendered
+    assert "{{weird}}" in rendered
+    assert rendered.count(fake_hash) == 1
+
+
+# ---------------------------------------------------------------------------
 # (c) determinism: two consecutive renders produce byte-identical output
 # ---------------------------------------------------------------------------
 
