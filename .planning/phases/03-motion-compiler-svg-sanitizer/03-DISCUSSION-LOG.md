@@ -257,6 +257,25 @@
 
 ---
 
+## Ajouts utilisateur post-discussion (2026-08-31)
+
+> Décisions fournies free-text par l'utilisateur après clôture des 4 areas — numérotées D-31 → D-37, reportées verbatim dans CONTEXT.md.
+
+| # | Sujet |
+|---|-------|
+| D-31 | Gates SVG complètes du sanitizer : allow-list étendue (`<title>`, `<desc>`, racine `<svg>`) ; rejet dur commentaires XML, `data-*`, width/height racine, préfixes namespace ; self-consistance sur chaque golden |
+| D-32 | IDs 2/3 segments : 3 segments sur les shapes, préfixe 2 segments sur le `<g>` ; unicité (component, role) par superRefine, jamais de dedup implicite |
+| D-33 | Gate de features : 2 catégories jamais confondues (rejet dur `unsupported_feature` vs `renderer_support: svg-only`) ; expressions = rejet dur ; `// lottie:bake` différé v2 |
+| D-34 | Motion/géométrie : duration/easing jamais copiés (recipe_ref + catalogue pinné) ; triggers émis par le compiler ; ranges deltas séparés des coords 0..1 ; cross-field superRefine |
+| D-35 | Formateur canonique : sémantique `toFixed(4)`, `-0 → 0`, trailing zeros stripés ; même formateur pour le SVG ; tests à cas exacts |
+| D-36 | Robustesse RPC : stdout réservé au protocole, `protocol_error` sans crash, 3 codes en sus (8 total), pipelining permis / client lockstep |
+| D-37 | Preuves : diff trois-voies + délai ≥ 1 s, code attendu par cas de rejet, switch exhaustif sans default, ink visible, isomorphisme Lottie↔SVG, `goldens:update` refuse si `CI=true` |
+
+**User's choice:** free-text (les 7 décisions, acceptées telles quelles)
+**Notes:** D-33 est un écart volontaire vs §6.3.4 (bake différé v2, aucune expression bakée en Ph 3) — signalé dans CONTEXT.md §specifics.
+
+---
+
 ## the agent's Discretion
 
 - Précision décimale exacte du formateur canonique (D-23) et valeurs des ranges fermés (D-06/D-07)

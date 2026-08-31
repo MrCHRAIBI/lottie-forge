@@ -51,8 +51,21 @@ La moitié déterministe TypeScript prend vie : le **Motion Compiler**, seul pro
 - **D-29:** Parité de rejet RenderSpec/LottieJSON : **`fixtures/rejection-cases/render-spec.json` (+ `lottie-json.json`) au format D-08 dès la Phase 3**, consommés par vitest ; en Ph 7 le pytest les branche en parametrize sans réécriture. Gel §6.3.1 respecté (miroir Pydantic en Ph 7, pas avant).
 - **D-30:** Client Python Phase 3 = **`lottie_forge/rpc/client.py` transport + enveloppe générique** (spawn serveur, cold-start, NDJSON, enveloppe D-28) ; la re-validation typée se branche en Ph 7 avec les miroirs, sans refactor du transport. Le test d'intégration §6.6 passe dès la Phase 3.
 
+### Sanitizer & IDs — compléments
+- **D-31:** **Gates SVG complètes du sanitizer** : l'allow-list inclut explicitement `<title>`, `<desc>` et la racine `<svg>` ; rejet dur des commentaires XML, des attributs `data-*`, des `width`/`height` sur la racine (cohérent D-22), et de tout élément/attribut préfixé (namespace unique `xmlns`, pas de `xmlns:xlink`). Test de self-consistance : pour chaque golden, `svg.sanitize(raw_svg)` rapporte **zéro élément rejeté**.
+- **D-32:** **IDs 2/3 segments** : le schéma 3 segments SAN-03 (`{asset_id}_{component}_{role}`) porte sur les **éléments shape** ; le `<g>` component porte le **préfixe 2 segments** (`{asset_id}_{component}`) ; `stabilize-ids` asserte shape ID = ID du `<g>` parent + `_{role}` ; unicité `(component, role)` par asset enforce par `superRefine`, rejet dur, **jamais de dedup implicite**.
+
+### Feature gate & motion/géométrie — compléments
+- **D-33:** **Gate de features** : enum `SupportedLottieFeature` dérivé au planning depuis les docs lottie-web 5.13 ; deux catégories **jamais confondues** — post-5.7.0 ou hors subset → rejet dur (code `unsupported_feature`) ; ≤ 5.7.0 non supporté par un renderer secondaire → `renderer_support: svg-only` (test unitaire forçant la branche). Zéro expression vivante en sortie ; toute expression en entrée = **rejet dur** ; `// lottie:bake` **différé v2** (aucun code mort en Ph 3) — écart volontaire vs §6.3.4.
+- **D-34:** **Compléments motion/géométrie** : `duration`/`easing` **jamais copiés dans la RenderSpec** (`recipe_ref` + catalogue pinné) ; markers/triggers **émis par le compiler** depuis `keyframe_shape` + catalogue, aucun trigger libre en entrée ; les deltas de transform/motion ont leurs **propres ranges fermés, séparés des coords 0..1** (sinon slide interdit ou brèche dans la borne) ; cross-field `superRefine` (ex. `corner_radius ≤ min(w,h)/2`).
+
+### Formateur, RPC & preuves — compléments
+- **D-35:** **Formateur canonique** : sémantique **`toFixed(4)`** (tie spec-ES, déterministe cross-engine), `-0 → 0`, trailing zeros stripés, jamais de notation exponentielle ; **même formateur pour les attributs numériques du SVG** ; matrice de tests unitaires à cas exacts (ties, négatifs, `-0`, bornes).
+- **D-36:** **Robustesse RPC** : stdout réservé au protocole (logs → stderr) ; ligne malformée → `{id: null, ok: false, error: {code: "protocol_error"}}` **sans crash** ; enum de codes complété : `protocol_error`, `method_not_found`, `unsupported_feature` en sus des cinq de D-28 ; pipelining permis par le protocole, **client Ph 3 lockstep**.
+- **D-37:** **Preuves** : double process avec **diff trois-voies** (A vs B vs golden) et **délai inter-process ≥ 1 s** (anti-horodatage) ; chaque cas de rejet D-29 porte le **code d'erreur attendu** ; pose = **switch exhaustif sans default** sur `keyframe_shape` + test de non-dégénérescence (ink visible) par golden + test d'**isomorphisme Lottie↔SVG** ; `goldens:update` **refuse si `CI=true`** et régénère les 11 atomiquement.
+
 ### the agent's Discretion
-- Précision décimale exacte du formateur canonique (D-23) et valeurs précises des ranges fermés (points, opacité, borne 1..8 affinée)
+- Valeurs précises des ranges fermés (points, opacité, borne 1..8, deltas transform/motion — D-06/D-07/D-34) ; la précision du formateur est **fixée par D-35** (`toFixed(4)`)
 - Organisation interne des modules (fichiers §6.2 déjà nommés par le doc, découpage fin libre)
 - Encodage paramétrique précis des shapes (noms de champs selon D-13, valeurs par défaut)
 - Contenu exact des fixtures `render-specs/` (poses représentatives, cas galerie)
@@ -113,7 +126,8 @@ La moitié déterministe TypeScript prend vie : le **Motion Compiler**, seul pro
 - **Jamais de float libre pour les largeurs de trait** — référence token `stroke_widths` uniquement (D-14)
 - Les fills Lottie restent neutres `[0.5,0.5,0.5,1.0]` pour que `setTheme` ait un effet (§5.1 #5) — à ne pas contredire dans fixtures ni goldens
 - Les goldens sont **exactement les bytes livrés** (compact + EOF) — pas de pretty-print de revue
-- La CI ne régénère jamais les goldens : elle compare seulement (D-25)
+- La CI ne régénère jamais les goldens : elle compare seulement (D-25) ; `goldens:update` refuse en CI et ne tourne qu'en local (D-37)
+- **`// lottie:bake` différé v2 — aucun code mort en Phase 3** : une expression en entrée est rejetée dur, jamais bakée (D-33, écart volontaire vs §6.3.4)
 
 </specifics>
 
