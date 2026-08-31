@@ -413,7 +413,13 @@ rl.on("line", (line) => {
 | A5 | La sortie SVGO est déterministe pour (input, config, version) fixes — pas documenté explicitement, couvert par design et par le double-spawn D-26 si l'étendue inclut sanitize | Déterminisme | Si faux : goldens SVG sanitizés instables — le diff trois-voies le révélerait immédiatement |
 | A6 | svgo exporte ses types TS (`import { optimize }`) compatibles NodeNext/verbatimModuleSyntax | Stack | tsc signalerait à la première compile ; contournement trivial (déclaration locale) |
 
-## Open Questions
+## Open Questions (RESOLVED)
+
+> RESOLVED at planning (all four pinned in the phase plans):
+> - **Q1 (fr/op)** → plan 03-04 (`meta.ts`: fr = 60, ip = 0, op = Math.round(duration_ms × 60 / 1000) — the A4 rule, unit-tested).
+> - **Q2 (golden container)** → plan 03-06 (combined envelope `{ lottie, svg, renderer_support }`, one file per fixture, 11 files).
+> - **Q3 (svg-only set)** → plan 03-05 (branch forced synthetically via a masks/matting classification fixture; the real set fills in Ph 4/8).
+> - **Q4 (SVGO floatPrecision)** → plan 03-04 (`config.ts`: override `floatPrecision: 4` on `cleanupNumericValues` + `convertPathData` — research recommendation adopted for D-35 fidelity).
 
 1. **fr / op : cadence et arrondi des frames**
    - What we know: `duration_ms` catalogue 600..1500 (envelope pack) ; spec `fr`/`ip`/`op` libres.
