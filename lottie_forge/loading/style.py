@@ -50,6 +50,7 @@ import hashlib
 from pathlib import Path
 
 import yaml
+from pydantic import TypeAdapter
 
 from lottie_forge.domain._shared import KebabToken
 from lottie_forge.domain.style import StyleSpec
@@ -132,21 +133,17 @@ def _enforce_style_id_gate(mapping: dict, fixture_path: Path) -> None:
         )
     value = mapping["style_id"]
     expected_dir_name = fixture_path.parent.name
-    # KebabToken is an ``Annotated[str, StringConstraints(pattern=..., max_length=64)]``;
-    # calling ``KebabToken(value)`` runs pydantic-core's anchored regex (CR-01) and
-    # raises ``TypeError`` (or similar) on a bad value. We translate that into
+# KebabToken is an ``Annotated[str, StringConstraints(pattern=..., max_length=64)]``;
+    # calling ``TypeAdapter(KebabToken).validate_python(value)`` runs
+    # pydantic-core's anchored regex (CR-01) and raises
+    # ``pydantic.ValidationError`` on a bad value. We translate that into
     # a ValueError whose message names the rule that's failed.
     try:
-        # ``pydantic.TypeAdapter`` is the canonical runtime validator
-        # for non-BaseModel annotated types -- the pydantic-core engine
-        # runs the same anchored regex both schemas and the type use.
-        from pydantic import TypeAdapter
-
         TypeAdapter(KebabToken).validate_python(value)
     except Exception as exc:  # noqa: BLE001 -- the gate owns the message; the underlying type only contributes "invalid"
         raise ValueError(
             f"style fixture gate: 'style_id' value {value!r} is not a "
-            f"kebab-case token (KebabToken / \u00a75.2.2: lowercase letter, "
+            f"kebab-case token (KebabToken / §5.2.2: lowercase letter, "
             f"then lowercase/digit/-; max 64 chars; CR-01)"
         ) from exc
     if value != expected_dir_name:

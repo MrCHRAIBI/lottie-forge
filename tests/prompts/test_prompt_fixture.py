@@ -41,6 +41,7 @@ decomposition, no edit to the production module.
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -150,21 +151,24 @@ def test_rendered_prompt_embeds_full_catalogue_text_and_64hex_hash() -> None:
     assert "}}" not in rendered
 
 
-def test_residual_placeholder_guard() -> None:
+def test_residual_placeholder_guard(tmp_path: Path) -> None:
     """A template that declares an extra placeholder triggers the guard.
 
     Uses an on-disk temporary template (no edit to the committed
     artefact) carrying an unrendered ``{{unsupported}}`` token. The
-    renderer's residual-guard must raise ``ValueError`` loudly — a
-    literal ``{{unsupported}}`` slipping into the LLM system prompt is
-    not an acceptable failure mode (T-02-10 mitigation, ``mitigate``).
+    synthetic template is isolated to ``tmp_path`` so no file is left
+    inside the packaged ``templates/`` directory (safer under
+    pytest-xdist and on a hard kill). The renderer's residual-guard
+    must raise ``ValueError`` loudly — a literal ``{{unsupported}}``
+    slipping into the LLM system prompt is not an acceptable failure
+    mode (T-02-10 mitigation, ``mitigate``).
 
     The committed template triggers the guard with frequency zero — a
     well-formed call substitutes both placeholders and the rendered
     string carries no ``{{...}}`` residue; this property is asserted
     in `test_rendered_prompt_embeds_full_catalogue_text_and_64hex_hash`.
     """
-    synthetic = RECIPE_PICKER_TEMPLATE_PATH.parent / "_unsupported_template.md"
+    synthetic = tmp_path / "_unsupported_template.md"
     synthetic.write_text(
         "Real placeholders: {{catalogue_json}} {{catalogue_hash}}\n"
         "Stray placeholder: {{unsupported}}\n",

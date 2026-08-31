@@ -412,7 +412,11 @@ def test_triple_duplicate_asset_id_yields_one_issue_per_pair_in08() -> None:
     actual_locs = {_loc_as_tuple(e) for e in exc_info.value.errors()}
     # collect-all: the validator emits one issue per asset that shares its
     # asset_id with at least one other -- so idx 1 (dup with 0) and idx 2
-    # (dup with 0 and 1) both surface, but idx 0 itself does not.
+    # (dup with 0 and 1) both surface. idx 0 itself also surfaces, via the
+    # ``duplicate_asset_id_first`` first-occurrence issue (asserted by the
+    # sibling test ``test_duplicate_asset_id_is_rejected_in08`` above); this
+    # test only asserts the duplicate indices (1, 2) per the collect-all
+    # contract.
     assert ("assets", 1, "asset_id") in actual_locs
     assert ("assets", 2, "asset_id") in actual_locs
 
