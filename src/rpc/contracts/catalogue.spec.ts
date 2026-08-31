@@ -2,7 +2,14 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { CatalogRecipeSchema, JointCatalogueStyleSchema, KEYFRAME_SHAPES, RecipeCatalogueSchema, SHAPE_NAMES, TRIGGER_POINTS } from "./catalogue.schema.js";
+import {
+  CatalogRecipeSchema,
+  JointCatalogueStyleSchema,
+  KEYFRAME_SHAPES,
+  RecipeCatalogueSchema,
+  SHAPE_NAMES,
+  TRIGGER_POINTS,
+} from "./catalogue.schema.js";
 import { loadRejectionCases } from "./rejection-cases.js";
 import { RECIPE_IDS } from "./vocabulary.schema.js";
 
