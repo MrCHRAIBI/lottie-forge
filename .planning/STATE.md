@@ -103,7 +103,7 @@ Recent decisions affecting current work:
 
 ### Blockers/Concerns
 
-- None blocking — Phases 01–02 delivered (bridge pattern replicated across 6 contrats, rejection harness 6 fixtures, gates bloquantes vertes 472 pytest / 150 vitest). Advisory : 02-REVIEW.md — 3 warnings de durcissement (validation `current_version`, substitution `.replace()` du template, `ASSET_ID_GATE_PATTERN` ré-dérivé) → `/gsd-code-review 02 --fix` quand souhaité.
+- None blocking — Phases 01–02 delivered (bridge pattern replicated across 6 contrats, rejection harness 6 fixtures, gates bloquantes vertes 485 pytest / 157 vitest). 02-REVIEW.md : les 3 warnings de durcissement (WR-01/02/03) + IN-05 loader ont été fixés avec tests de régression mutation-checkés (02-REVIEW-FIX.md, commits 6e070cb/e1f2aff/072dcd8/49c3c17) ; les 5 Info restants sont adoucis/hors scope.
 
 ## Deferred Items
 
