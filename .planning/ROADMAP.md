@@ -126,7 +126,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 03-02-PLAN.md — Contrats gelés RenderSpec/LottieJSON/Sanitizer (D-01/D-13, COM-03/COM-04 schema layer) + harnais de rejet D-29 (`expect_code`)
+- [x] 03-02-PLAN.md — Contrats gelés RenderSpec/LottieJSON/Sanitizer (D-01/D-13, COM-03/COM-04 schema layer) + harnais de rejet D-29 (`expect_code`)
 
 **Wave 3** *(blocked on Wave 2)*
 
