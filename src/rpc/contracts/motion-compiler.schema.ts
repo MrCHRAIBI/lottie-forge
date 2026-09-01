@@ -577,21 +577,25 @@ const LottieShapeItemSchema = z.union([
   z
     .strictObject({
       ty: z.literal("tm"),
-      s: StaticPropertyValueSchema,
-      e: StaticPropertyValueSchema,
-      o: StaticPropertyValueSchema,
+      s: AnimatablePropertySchema,
+      e: AnimatablePropertySchema,
+      o: AnimatablePropertySchema,
       m: z.literal(1),
       ix: z.number().int(),
     })
     .superRefine((tm, ctx) => {
-      // Trim s/e unit gate 0..100 (Pitfall 2).
-      for (const key of ["s", "e"] as const) {
-        const v = tm[key] as unknown[];
-        if (v.some((x) => typeof x === "number" && (x < 0 || x > 100))) {
+      // Trim s/e/o unit gate 0..100 (Pitfall 2) — applies to both
+      // static (a: 0) and animated (a: 1) properties. The draw-on
+      // recipe animates `e` 0→100 (D-14, plan 03-05).
+      for (const key of ["s", "e", "o"] as const) {
+        const prop = tm[key];
+        const values: readonly unknown[] =
+          prop.a === 0 ? (Array.isArray(prop.k) ? prop.k : [prop.k]) : prop.k.flatMap((kf) => kf.s);
+        if (values.some((x) => typeof x === "number" && (x < 0 || x > 100))) {
           ctx.addIssue({
             code: "custom",
             path: [key],
-            message: `trim property ${key} must be within 0..100 (Pitfall 2); got ${v}`,
+            message: `trim property ${key} must be within 0..100 (Pitfall 2); got ${values}`,
           });
         }
       }

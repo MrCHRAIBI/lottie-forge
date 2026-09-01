@@ -21,23 +21,22 @@
  *
  * 3. **Lottie + SVG emission:** each component becomes one Lottie
  *    shape layer + one SVG `<g>`. The layers are emitted in
- *    **reversed** component order (D-10 + Pitfall 1: Lottie's
- *    first layer renders on top, so components[0] = background
- *    becomes layers[N-1]). The layer `nm` is the component
- *    `role` (D-02 — theming anchor). The Lottie `ks` block is
- *    built by `transform-builder.ts`; the shape item is built by
- *    `shape-builder.ts`; the keyframes (currently `opacity-ramp`
- *    only) come from `keyframe-emitter.ts`.
+ *    **reversed** component order (D-10 + Pitfall 1). The layer
+ *    `nm` is the component `role` (D-02).
  *
- * **COM-03 — re-validation before return.** The emitted Lottie
- * JSON is `safeParse`-d through `LottieJSONSchema` as the **last
- * act** of `compile()`. A failure throws a `CompileError` —
- * never returns a partial result.
+ * **COM-03 — re-validation as the LAST act.** The emitted Lottie
+ * JSON is `safeParse`-d through `LottieJSONSchema`. A failure
+ * throws a `CompileError` — never returns a partial result.
+ *
+ * **Phase 3 TASK 1 (plan 03-05) state:** the keyframe emitter
+ * and transform-builder are widened to all 10 KEYFRAME_SHAPES
+ * and animated transform deltas. buildShapeItem still uses the
+ * pre-widening signature (no trim threading — that's Task 2);
+ * markers.ts and feature-gate.ts are still in the pre-widening
+ * form (Tasks 2 and 3 widen them).
  *
  * **Pure module orchestrator, but calls the keyframe emitter +
- * builders** which are themselves pure. The compile result is
- * deterministic across invocations (COM-01 — same `RenderSpec`
- * → same bytes, modulo `renderer_support` which is constant).
+ * builders** which are themselves pure.
  */
 
 import type { RecipeCatalogue } from "../rpc/contracts/catalogue.schema.js";
@@ -57,17 +56,9 @@ import { buildShapeItem } from "./shape-builder.js";
 import { buildSvg } from "./svg-builder.js";
 import { buildTransform } from "./transform-builder.js";
 
-/**
- * Lookup the resolved recipe from the catalogue by its id. The
- * catalogue is small (8..12 recipes, ADR-03 invariant); the linear
- * scan is faster than a Map build + lookup at this scale and keeps
- * the orchestrator's allocation footprint small.
- */
 function findRecipe(catalogue: RecipeCatalogue, id: RecipeId) {
   const recipe = catalogue.recipes.find((r) => r.id === id);
   if (recipe === undefined) {
-    // Should be impossible — the RenderSpecSchema gates `recipe_id`
-    // to the locked vocabulary. Defensive throw anyway.
     throw new CompileError(
       `recipe ${id} not found in catalogue (recipe count: ${catalogue.recipes.length})`,
     );
@@ -75,22 +66,11 @@ function findRecipe(catalogue: RecipeCatalogue, id: RecipeId) {
   return recipe;
 }
 
-/**
- * Compile a `RenderSpec` into the closed `CompileResult` envelope.
- *
- * Throws `CompileError` on any validation failure (cross-ref,
- * keyframe-shape not implemented, LottieJSON re-validation
- * failure). The caller — the RPC server — maps the throw into a
- * `compile_error` envelope per D-28/D-36.
- */
 export function compile(
   renderSpec: RenderSpec,
   catalogue: RecipeCatalogue,
   style: StyleSpec,
 ): CompileResult {
-  // D-17 — joint validation through the existing schema. The
-  // schema carries the easing cross-ref and the catalogue's
-  // structural invariants.
   const joint = JointCatalogueStyleSchema.safeParse({ catalogue, style });
   if (!joint.success) {
     throw new CompileError(
@@ -101,33 +81,36 @@ export function compile(
   const recipe = findRecipe(catalogue, renderSpec.recipe_id);
   const op = Math.round((recipe.duration_ms * FRAME_RATE) / 1000);
 
-  // D-05 — per-component cross-references (collect-all).
   validateComponentCrossRefs(renderSpec, recipe);
 
-  // Per-component emission.
   const emittedLayers = renderSpec.components.map((component, index) => {
-    // Keyframes: only the recipe's animated property carries
-    // keyframes; static channels get their default from
-    // transform-builder. Phase 3 TRACER: only `opacity-ramp`
-    // is implemented in keyframe-emitter.
     const motion = renderSpec.motion;
     const easing = style.easing_curves.find((c) => c.name === recipe.easing);
     if (easing === undefined) {
-      // Should be impossible — the joint validation above
-      // already gates this.
       throw new CompileError(
         `easing ${recipe.easing} not found in StyleSpec.easing_curves — joint validation should have caught this`,
       );
     }
+    const restPx =
+      style.viewBox.width / 2 + (component.transform?.translate_dx ?? 0) * style.viewBox.width;
+    const restPy =
+      style.viewBox.height / 2 + (component.transform?.translate_dy ?? 0) * style.viewBox.height;
+    const restScale = component.transform?.scale ?? 1;
+    const restRotation = component.transform?.rotation_deg ?? 0;
     const emitted = emitKeyframes(
       recipe.keyframe_shape,
-      motion.amplitude,
+      motion,
       recipe.duration_ms,
       FRAME_RATE,
       easing,
+      style.viewBox,
+      { px: restPx, py: restPy, s: restScale, r: restRotation },
     );
+    // TASK 1 STATE: buildShapeItem is called WITHOUT the trim
+    // argument (the trim threading is widened in Task 2). The
+    // emitted.trim is computed but not yet threaded.
     const shapes = buildShapeItem(component, style);
-    const ks = buildTransform(component, emitted.keyframes, emitted.property, style.viewBox);
+    const ks = buildTransform(component, emitted.property, emitted.keyframes, style.viewBox);
     return {
       ddd: 0 as const,
       ind: index + 1,
@@ -140,10 +123,6 @@ export function compile(
     };
   });
 
-  // D-10 + Pitfall 1 — Lottie layers render in REVERSE array
-  // order (first list element renders on top). Components[0] =
-  // background → layers[N-1] = first to render = behind. Reverse
-  // the emitted layers.
   const layers = [...emittedLayers].reverse();
 
   const lottieEnvelope = {
@@ -156,8 +135,6 @@ export function compile(
     layers,
   };
 
-  // COM-03 — re-validation as the last act. A failure throws —
-  // never returns a partial result.
   const lottieResult = LottieJSONSchema.safeParse(lottieEnvelope);
   if (!lottieResult.success) {
     throw new CompileError(
@@ -176,18 +153,6 @@ export function compile(
   };
 }
 
-/**
- * Collect-all cross-ref validator (D-05).
- *
- * Two structural invariants per component:
- *
- * 1. The component's `shape.shape` discriminator is in the recipe's
- *    `shapes_supported` set.
- * 2. The `motion.amplitude` lies in the recipe's `intensity_range`.
- *
- * The collector accumulates every violation into one throw — a
- * partial pass is not allowed.
- */
 function validateComponentCrossRefs(
   spec: RenderSpec,
   recipe: {
@@ -222,6 +187,4 @@ function validateComponentCrossRefs(
   }
 }
 
-// Re-export the vocabulary tuple for callers that need to drive
-// the compiler in a loop (the test suite).
 export { RECIPE_IDS };
