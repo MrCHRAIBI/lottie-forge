@@ -1,0 +1,1 @@
+{"asset_id":"a-001","recipe_id":"fade","style_ref":"example-style@1.0.0","components":[{"component":"primary-rect","role":"primary","shape":{"shape":"rect","x":0.25,"y":0.25,"w":0.5,"h":0.5,"corner_radius":0.0625},"paint":{"kind":"fill","color":"#1c57cb"}}],"motion":{"amplitude":0.5,"direction":"none","loops":1}}

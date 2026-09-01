@@ -1,0 +1,1 @@
+{"asset_id":"a-005","recipe_id":"draw-on","style_ref":"example-style@1.0.0","components":[{"component":"accent-path","role":"accent","shape":{"shape":"path","points":[[0.25,0.25],[0.75,0.25],[0.75,0.75],[0.25,0.75]],"closed":true},"paint":{"kind":"stroke","color":"#1c57cb","stroke_width_token":"default"}}],"motion":{"amplitude":0.5,"direction":"none","loops":1}}

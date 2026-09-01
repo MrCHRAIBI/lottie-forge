@@ -1,0 +1,1 @@
+{"asset_id":"a-009","recipe_id":"wiggle","style_ref":"example-style@1.0.0","components":[{"component":"accent-ellipse","role":"accent","shape":{"shape":"ellipse","cx":0.5,"cy":0.5,"rx":0.25,"ry":0.25},"paint":{"kind":"fill","color":"#1c57cb"},"transform":{"translate_dx":0.1,"translate_dy":0,"rotation_deg":0,"scale":1}}],"motion":{"amplitude":0.25,"direction":"none","loops":1}}
