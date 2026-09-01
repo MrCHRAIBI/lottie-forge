@@ -3,16 +3,16 @@ gsd_state_version: 1.0
 current_phase: 3
 current_phase_name: Motion Compiler & SVG Sanitizer
 status: executing
-stopped_at: Phase 3 Wave 4 complete (plan 03-04) — 3 more waves remain (Wave 5 unblocked)
-last_updated: "2026-09-01T17:35:00Z"
+stopped_at: Phase 3 Wave 5 complete (plan 03-05) — 2 more waves remain (Wave 6 with 03-06+03-07 unblocked)
+last_updated: "2026-09-01T22:30:00Z"
 last_activity: 2026-09-01
-last_activity_desc: Phase 3 Wave 4 complete — TRACER compiler→sanitizer seam proven end-to-end on a-001/fade (22 new pipeline tests; 359/359 vitest green)
-state_head: 1b5c260
+last_activity_desc: Phase 3 Wave 5 complete — keyframe-emitter widened to all 10 KEYFRAME_SHAPES + 5 shape generators + D-15 pose rule + COM-04/D-33 feature gate (76 new vitest cases; 435/435 green)
+state_head: 394b465
 progress:
   total_phases: 10
   completed_phases: 1
   total_plans: 19
-  completed_plans: 15
+  completed_plans: 16
   percent: 11
 ---
 
@@ -27,11 +27,11 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 
 ## Current Position
 
-Phase: 3 (Motion Compiler & SVG Sanitizer) — Wave 4/7 complete
-Plan: 03-04 ✓ (Wave 4) — TRACER compiler→sanitizer seam proven end-to-end on a-001/fade
-Status: Wave 4 done; Wave 5 (03-05, motion complet: keyframe-emitter exhaustif 10 formes + 5 générateurs) unblocked
-Last activity: 2026-09-01 — Completed plan 03-04 (22 min, single TRACER task): 17 new modules (10 motion-compiler + 7 svg-sanitizer) + 2 schema type-only additions (RendererSupport, LottieShapeItem — runtime schema untouched); compile() orchestrator with COM-03 LottieJSONSchema re-validation as last act; D-10 layer inversion (components[0]→back of layers), D-02 nm = role anchor, D-32 2/3-segment IDs (built by compiler, asserted by stabilize-ids without rewriting — cleanupIds:false in preset override), D-18 title/desc derived from asset_id+recipe_id only (no user-supplied text leakage), D-22 viewBox-only regime (root has no width/height), D-09 neutral fills [0.5,0.5,0.5] for Lottie emit (Pitfall 8 symmetric headroom) + concrete hex for SVG emit (D-16). Two-pass sanitizer strategy (collect-then-reject BEFORE preset-default mutation; pass 1 forbid-* collectors only, pass 2 only on known-clean tree). Locked SVGO 4 config (multipass:true, floatPrecision:4, plugin order gates→preset-default→stabilize-ids, preset overrides removeDesc:false/cleanupIds:false/collapseGroups:false). Exhaustive switch sans default on keyframe_shape (9 typed-throw CompileError, D-37) and shape discriminator (3 typed-throw); opacity-ramp real. 22-case pipeline seam test green (12 seam assertions + 10 sanitizer rejection paths); 359/359 vitest total (337 prior + 22 new); tsc + biome clean. Documented deviation: option-b inline 2-component TRACER fixture (existing fade.json pinned at 1 component per 03-03 fixtures.spec.ts; extending would break 65-case spec — Plan 03-06 will resolve the goldens story).
-Progress: [██████████] 100% (15/19 plans — Phases 1–2 complete, Phase 3 Waves 1+2+3+4 done)
+Phase: 3 (Motion Compiler & SVG Sanitizer) — Wave 5/7 complete
+Plan: 03-05 ✓ (Wave 5) — Motion Compiler widened to full surface (10 KEYFRAME_SHAPES + 5 SHAPE_NAMES + D-15 + COM-04 gate)
+Status: Wave 5 done; Wave 6 (03-06: 11 goldens byte-exacts + D-26/D-37 double-spawn proof, 03-07: sanitizer adversarial matrix + ADR-02 regression + D-31/D-37 self-consistency) unblocked
+Last activity: 2026-09-01 — Completed plan 03-05 (47 min, 3 atomic task commits): widening of the TRACER to the full motion surface. **Task 1** (keyframe-emitter exhaustive, 10 shapes) — `dd8d0c6` — opacity-ramp/translate-in/overshoot-settle/scale-breath/trim-path/angular-in/pop-settle/sine-drift/damped-oscillation/circular-path ALL real with exhaustive switch sans default + `never`-typed exhaustiveness guard (D-37). Easing handles `o`/`i` from `EasingCurve.control_points` on every segment's STARTING keyframe, last keyframe bare (Pitfall 4/11). Animated transform deltas keep OWN closed ranges (D-34) — never reinterpreting 0..1 coord bounds. Draw-on emits a trim item `{ty: "tm", s: static 0, e: animated 0→100, o: static 0, m: 1}` threaded by shape-builder into `gr.it` between geometry and paint. Auto-fixed Pitfall 11 violation: `frameStep = lastFrame / (totalSamples + 1)` ensures strictly ascending `t` for scale-breath/sine-drift/circular-path/damped-oscillation. **Task 2** (5 SHAPE_NAMES + D-15 + triggers) — `899c448` — all 5 generators (rect/ellipse/path/polyline/polystar) with lottie spec vertex order. KAPPA constant imported as single source (spec pin `0.5519150244935105707435627` rounded to IEEE-754 double `0.5519150244935106`, parsed via `Number.parseFloat` to silence biome precision-loss warning). D-15 pose rule = closed mapping 7 finale / 3 t=0, exhaustive switch sans default. Trigger markers from `trigger_points + recipe_id` (e.g. `cm: "enter-fade"`). **Task 3** (feature gate) — `69b51b1` — `assertSupportedComposition` + `assertSupportedLayer` hard-reject 3D/audio-video-image-sequences/negative-stretch/track-matte-canvas-html/expression-channels; `classify(emitted)` returns `"all" | "svg-only"` with svg-only branch forced synthetically via masks/matting fixture (D-33 — no Phase 3 emission produces svg-only naturally; the real set fills in Ph 4/8). **D-33 deliberate deviation**: NO bake-marker convention, NO expression-baking path; expression in input is hard-rejected with `unsupported_feature` (deferred v2). Grep `lottie:bake` across `src/motion-compiler` returns ZERO matches (acceptance criterion verified). Schema widening (auto-fixed during tsc clean): `tm` variant extended to `AnimatablePropertySchema` (animated trim) + `sh` variant extended to bezier description object `{i, o, v, c}` (path/polyline). 76 new vitest cases (39 keyframe-emitter + 20 shape-builder + 17 feature-gate); 435/435 total green; tsc + biome clean. 3 documented deviations (D-33 bake-deferral, schema widening, KAPPA precision) + 3 auto-fixed issues (Pitfall 11 frame-step, zod tuple narrowing, schema widening). 
+Progress: [██████████] 100% (16/19 plans — Phases 1–2 complete, Phase 3 Waves 1+2+3+4+5 done)
 
 **Milestone 1 = Phases 1–5** (spine déterministe sans agents) · **Milestone 2 = Phases 6–10** (agents + orchestration + packager + observabilité + ship).
 
@@ -39,9 +39,9 @@ Progress: [██████████] 100% (15/19 plans — Phases 1–2 co
 
 **Velocity:**
 
-- Total plans completed: 8
-- Average duration: 18.5 min
-- Total execution time: 218 min
+- Total plans completed: 9
+- Average duration: 22 min
+- Total execution time: 265 min
 
 **By Phase:**
 
@@ -49,12 +49,12 @@ Progress: [██████████] 100% (15/19 plans — Phases 1–2 co
 |-------|-------|-------|----------|
 | 01 | 4 plans | 74 min | 18.5 min |
 | 02 | 6 | - | - |
-| 03 | 3 | 52 min | 17.3 min |
+| 03 | 4 | 99 min | 24.8 min |
 
 **Recent Trend:**
 
-- Last 4 plans: 03-01 (12 min) → 03-02 (18 min) → 03-03 (14 min) → 03-04 (22 min)
-- Trend: 03-02 (frozen contracts + D-29 harness) shipped within low-confidence 30-45min estimate band. 89 new vitest cases added (76 motion-compiler + 13 sanitizer); tsc/biome clean throughout; Pitfall 11 follow-up fix (LottieJSON easing handles accept hybrid per-dimension array form) landed as separate commit. No gateway blocks for Wave 3.
+- Last 5 plans: 03-01 (12 min) → 03-02 (18 min) → 03-03 (14 min) → 03-04 (22 min) → 03-05 (47 min)
+- Trend: 03-05 (widening — full motion surface) shipped within the high-end of the low-confidence 30-45min estimate band (actual 47 min, +19% over estimate upper bound). 76 new vitest cases added (39 keyframe-emitter + 20 shape-builder + 17 feature-gate); tsc/biome clean throughout. D-33 bake-deferral grep verified zero matches. Pitfall 11 auto-fix (frame-step divisor +1) prevents duplicate `t` for scale-breath/sine-drift/circular-path/damped-oscillation. Two schema-widening deviations (tm AnimatableProperty + sh bezier description) — the COM-03 gate now accepts the real Lottie structures the widening emits. Plan 03-06 will pick up goldens; no Wave 6 blockers.
 
 *Updated after each plan completion*
 **Per-Plan Metrics:**
@@ -73,6 +73,7 @@ Progress: [██████████] 100% (15/19 plans — Phases 1–2 co
 | Phase 03-01 P03-01 | 12 min | 3 tasks | 4 files (1 checkpoint approved) |
 | Phase 03-02 P03-02 | 18 min | 3 tasks | 9 files (4 schema/spec pairs + 1 loader + 2 fixtures + 2 additive extensions) |
 | Phase 03-04 P03-04 | 22 min | 1 task | 19 files (10 motion-compiler + 7 svg-sanitizer + 1 pipeline spec + 2 schema type-only) |
+| Phase 03-05 P03-05 | 47 min | 3 tasks | 11 files (3 spec + 7 modules + 1 schema) |
 
 ## Accumulated Context
 
@@ -128,6 +129,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-09-01T17:35:00Z
-Stopped at: Phase 3 Wave 4 complete (plan 03-04) — 3 more waves remain (Wave 5 unblocked)
-Resume file: .planning/phases/03-motion-compiler-svg-sanitizer/03-05-PLAN.md
+Last session: 2026-09-01T22:30:00Z
+Stopped at: Phase 3 Wave 5 complete (plan 03-05) — 2 more waves remain (Wave 6 with 03-06+03-07 unblocked)
+Resume file: .planning/phases/03-motion-compiler-svg-sanitizer/03-06-PLAN.md
