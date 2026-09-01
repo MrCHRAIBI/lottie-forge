@@ -335,14 +335,18 @@ export { KeyframeShapeSchema };
 
 /**
  * Keyframe-easing handle pair. `i` (in) and `o` (out) carry per-dimension
- * scalars `{x, y}` or arrays of same. We accept either scalar or array
- * because Lottie's emit format uses scalars for linear easings and arrays
- * for bezier curves; the structural shape is identical (Pitfall 11).
+ * values `{x, y}` where each is either a scalar (linear easings) or a
+ * 1-element array (bezier curves — the Lottie spec nests per-dimension
+ * arrays even when there is a single per-dimension point). The hybrid
+ * form is the actual emit shape; we accept it.
  */
-const EaseHandleSchema = z.union([
-  z.strictObject({ x: z.number(), y: z.number() }),
-  z.array(z.strictObject({ x: z.number(), y: z.number() })).min(1),
-]);
+const EaseHandlePerDimensionSchema = z.union([z.number(), z.array(z.number()).min(1)]);
+const EaseHandleScalarSchema = z.strictObject({
+  x: EaseHandlePerDimensionSchema,
+  y: EaseHandlePerDimensionSchema,
+});
+
+const EaseHandleSchema = z.union([EaseHandleScalarSchema, z.array(EaseHandleScalarSchema).min(1)]);
 
 /**
  * Pitfall 3 + COM-04: `s` is always a 1-element array (NOT a bare scalar)
