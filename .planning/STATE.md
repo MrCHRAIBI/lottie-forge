@@ -3,16 +3,16 @@ gsd_state_version: 1.0
 current_phase: 3
 current_phase_name: Motion Compiler & SVG Sanitizer
 status: executing
-stopped_at: Phase 3 Wave 2 complete (plan 03-02) — 6 more waves remain
-last_updated: "2026-09-01T15:08:00Z"
+stopped_at: Phase 3 Wave 3 complete (plan 03-03) — 5 more waves remain
+last_updated: "2026-09-01T16:30:00Z"
 last_activity: 2026-09-01
-last_activity_desc: Phase 3 Wave 2 complete — frozen contracts (RenderSpec/LottieJSON/Sanitizer) + D-29 rejection harness
-state_head: 29fe4a3
+last_activity_desc: Phase 3 Wave 3 complete — make_render_spec() builder + 11 fixtures (option-b galerie) + 65-case consistency spec
+state_head: 8f0b6a8
 progress:
   total_phases: 10
   completed_phases: 1
   total_plans: 19
-  completed_plans: 13
+  completed_plans: 14
   percent: 10
 ---
 
@@ -27,11 +27,11 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 
 ## Current Position
 
-Phase: 3 (Motion Compiler & SVG Sanitizer) — Wave 2/7 complete
-Plan: 03-02 ✓ (Wave 2) — frozen contracts (RenderSpec/LottieJSON/Sanitizer) + D-29 rejection harness
-Status: Wave 2 done; Wave 3 (03-03, make_render_spec + 11 fixtures + galerie decision checkpoint) unblocked
-Last activity: 2026-09-01 — Completed plan 03-02 (18 min): src/rpc/contracts/motion-compiler.schema.ts (RenderSpec with D-13 strictObject + D-32 superRefine + D-34 cross-field; LottieJSON gate with D-12 v="5.7.0" pin + expression-channel structurally impossible + Pitfall 11 array-level invariants; CompileResult closes the envelope; AnimatableProperty discriminatedUnion), sanitizer.schema.ts (SanitizeRequest+Report+Result with closed SANITIZER_VIOLATION_CATEGORIES + cross-field ok⇔empty+svg invariant), render-spec-rejection.ts typed facade, render-spec.json (14 cases) + lottie-json.json (11 cases) shared D-29 fixtures, rejection-cases.ts additive expect_code with closed RPC enum + load-time guard. 89 new vitest cases (272/272 green total), npx tsc --noEmit clean, npx @biomejs/biome check . clean. Gate for Phase 7: pytest consumes the same JSON files via parametrize without rewrite (D-29).
-Progress: [██████████] 100% (13/19 plans — Phases 1–2 complete, Phase 3 Waves 1+2 done)
+Phase: 3 (Motion Compiler & SVG Sanitizer) — Wave 3/7 complete
+Plan: 03-03 ✓ (Wave 3) — make_render_spec() builder + 11 fixtures + galerie decision checkpoint (option-b)
+Status: Wave 3 done; Wave 4 (03-04, TRACER: a-001/fade → compile → re-validation → sanitize → IDs stables) unblocked
+Last activity: 2026-09-01 — Completed plan 03-03 (14 min): D-04 single-source TS builder `make_renderSpec(recipeId)` + `makeGalerieFixture()` mirroring `tests/bridge/fixtures.py` doctrine (canonical defaults, per-recipe shape documented inline, deliberate fractional floats 0.0625/0.5/0.25 per Phase 1 §4.1 #6); 11 fixtures committed under `fixtures/render-specs/` (fade/slide/bounce/pulse/draw-on/rotate/scale-pop/float/wiggle/orbit/galerie) all LF-terminated; galerie = option-b (4 components under wiggle covering rect/ellipse/path/polyline, polystar rides on pulse/rotate/scale-pop/orbit — zero Phase-2 churn); draw-on uses paint.kind="stroke" + stroke_width_token="default" per D-14; bounce fixture = 2 components (multi-layer D-10 + D-32 exercise); 65-case consistency spec at `src/motion-compiler/__tests__/fixtures.spec.ts` (builder invariants + committed-files schema + cross-ref consistency + byte-stable regeneration); regenerator `scripts/regenerate-render-spec-fixtures.mts` via tsx + `writeDeterministicJson`. 65 new vitest cases (337/337 green total), npx tsc --noEmit clean, npx @biomejs/biome check . clean. **Galerie decision recorded verbatim in 03-03-SUMMARY.md** (option-b letter + user words: "option-b (Recommandée)").
+Progress: [██████████] 100% (14/19 plans — Phases 1–2 complete, Phase 3 Waves 1+2+3 done)
 
 **Milestone 1 = Phases 1–5** (spine déterministe sans agents) · **Milestone 2 = Phases 6–10** (agents + orchestration + packager + observabilité + ship).
 
@@ -109,7 +109,7 @@ Recent decisions affecting current work:
 
 ### Blockers/Concerns
 
-- None blocking — Phases 01–03 Wave 1 delivered (bridge pattern replicated across 6 contrats, rejection harness 6 fixtures, gates bloquantes vertes 485 pytest / 156 vitest, format.ts byte-authority verrouillé). 02-REVIEW.md : 10/10 findings résolus — WR-01/02/03 + IN-05 fixés avec tests de régression mutation-checkés (02-REVIEW-FIX.md), IN-01/02/03/04/06/07 fixés en quick task 260831-jnx. **Note SDK** : `gsd_run query state.*` commands retournent "Cannot parse Current Plan or Total Plans in Phase from STATE.md" parce que STATE.md est en format stale pré-Phase-3 ("Plan: Not started", pas de compteur numérique) ; le tracking d'infrastructure state n'a pas été bootstrappé pour Phase 3. Les shared-file writes sont faites manuellement par l'orchestrator après chaque wave. À corriger via une quick task si la friction grossit.
+- None blocking — Phases 01–03 Wave 3 delivered (bridge pattern replicated across 6 contrats, rejection harness 6 fixtures, gates bloquantes vertes 485 pytest / 156 vitest, format.ts byte-authority verrouillé, make_render_spec() builder + 11 fixtures RenderSpec + 65-case consistency spec landed). 02-REVIEW.md : 10/10 findings résolus — WR-01/02/03 + IN-05 fixés avec tests de régression mutation-checkés (02-REVIEW-FIX.md), IN-01/02/03/04/06/07 fixés en quick task 260831-jnx. **Note SDK** : `gsd_run query state.*` commands retournent "Cannot parse Current Plan or Total Plans in Phase from STATE.md" parce que STATE.md est en format stale pré-Phase-3 ("Plan: Not started", pas de compteur numérique) ; le tracking d'infrastructure state n'a pas été bootstrappé pour Phase 3. Les shared-file writes sont faites manuellement par l'orchestrator après chaque wave. À corriger via une quick task si la friction grossit.
 
 ### Quick Tasks Completed
 
@@ -126,6 +126,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-09-01T15:08:00Z
-Stopped at: Phase 3 Wave 2 complete (plan 03-02) — 6 more waves remain
-Resume file: .planning/phases/03-motion-compiler-svg-sanitizer/03-03-PLAN.md
+Last session: 2026-09-01T16:30:00Z
+Stopped at: Phase 3 Wave 3 complete (plan 03-03) — 5 more waves remain
+Resume file: .planning/phases/03-motion-compiler-svg-sanitizer/03-04-PLAN.md

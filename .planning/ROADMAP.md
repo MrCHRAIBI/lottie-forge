@@ -130,7 +130,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 03-03-PLAN.md — `make_render_spec()` + 11 fixtures RenderSpec + checkpoint:decision galerie (conflit D-03 × D-05)
+- [x] 03-03-PLAN.md — `make_render_spec()` + 11 fixtures RenderSpec + checkpoint:decision galerie (option-b : zero Phase-2 churn, set-level D-03)
 
 **Wave 4** *(blocked on Wave 3)*
 
@@ -274,7 +274,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | Complete | 2026-08-29 |
 | 2. Style verrouillé & catalogue de recettes | 6/6 | Complete    | 2026-08-31 |
-| 3. Motion Compiler & SVG Sanitizer | 1/8 | In Progress (Wave 1 ✓) | 2026-09-01 |
+| 3. Motion Compiler & SVG Sanitizer | 3/8 | In Progress (Wave 3 ✓) | 2026-09-01 |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |
 | 6. Agents LLM (un par un) *(M2)* | 0/0 | Not started | - |
