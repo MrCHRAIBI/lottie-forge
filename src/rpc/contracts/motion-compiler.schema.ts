@@ -284,6 +284,7 @@ export const RenderSpecSchema = z
  * by the Phase 8 packager.
  */
 export const RendererSupportSchema = z.enum(["all", "svg-only"] as const);
+export type RendererSupport = z.infer<typeof RendererSupportSchema>;
 
 /**
  * Closed envelope of `CompileResult` — frozen at the Phase 3 gate.
@@ -645,6 +646,7 @@ export const LottieJSONSchema = z
 
 export type LottieJSON = z.infer<typeof LottieJSONSchema>;
 export type LottieShapeLayer = z.infer<typeof LottieShapeLayerSchema>;
+export type LottieShapeItem = z.infer<typeof LottieShapeItemSchema>;
 
 /**
  * CompileResult — the compiler's emit envelope. `lottie` carries the
