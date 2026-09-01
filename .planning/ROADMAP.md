@@ -122,7 +122,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 03-01-PLAN.md — Frontière npm légitimée (checkpoint:human-verify svgo+tsx, T-03-SC) + socle déterministe `format.ts` (D-23/D-24/D-35)
+- [x] 03-01-PLAN.md — Frontière npm légitimée (checkpoint:human-verify svgo+tsx, T-03-SC) + socle déterministe `format.ts` (D-23/D-24/D-35)
 
 **Wave 2** *(blocked on Wave 1)*
 
@@ -274,7 +274,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | Complete | 2026-08-29 |
 | 2. Style verrouillé & catalogue de recettes | 6/6 | Complete    | 2026-08-31 |
-| 3. Motion Compiler & SVG Sanitizer | 0/0 | Not started | - |
+| 3. Motion Compiler & SVG Sanitizer | 1/8 | In Progress (Wave 1 ✓) | 2026-09-01 |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |
 | 6. Agents LLM (un par un) *(M2)* | 0/0 | Not started | - |
