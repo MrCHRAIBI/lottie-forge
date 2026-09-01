@@ -196,6 +196,20 @@ None — no external service configuration. Both new packages (`svgo`, `tsx`) co
 - **Plan 03-06** has its byte substrate ready: every golden the plan pins will be byte-compared against outputs that flow through `fmt()` + `writeDeterministicJson()`.
 - **No blockers, no deferred items, no stubs.**
 
+## Self-Check
+
+- **Files created/modified exist:**
+  - `src/shared/format.ts` — FOUND
+  - `src/shared/format.spec.ts` — FOUND
+  - `package.json` — FOUND
+  - `package-lock.json` — FOUND
+- **Task commits in git log:**
+  - `ee2ae89` — FOUND (`feat(03-01): install svgo (dep) + tsx (devDep), commit lockfile`)
+  - `1360885` — FOUND (`feat(03-01): canonical formatter + deterministic JSON serializer`)
+  - `5191e10` — FOUND (`docs(03-01): complete npm legitimacy + format.ts socle plan`)
+
+## Self-Check: PASSED
+
 ---
 
 *Phase: 03-motion-compiler-svg-sanitizer*
