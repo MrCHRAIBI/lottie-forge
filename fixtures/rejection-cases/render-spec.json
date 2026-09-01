@@ -1,0 +1,299 @@
+[
+  {
+    "case_id": "render-spec-missing-asset-id",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["asset_id"]],
+    "payload": {
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-malformed-asset-id",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["asset_id"]],
+    "payload": {
+      "asset_id": "b-12",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-unknown-top-level-key",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 },
+      "bogus_extra_key": "value"
+    }
+  },
+  {
+    "case_id": "render-spec-zero-components",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-nine-components",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        { "component": "c0", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } },
+        { "component": "c1", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } },
+        { "component": "c2", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } },
+        { "component": "c3", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } },
+        { "component": "c4", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } },
+        { "component": "c5", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } },
+        { "component": "c6", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } },
+        { "component": "c7", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } },
+        { "component": "c8", "role": "primary", "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.1, "h": 0.1, "corner_radius": 0 }, "paint": { "kind": "fill", "color": "#1c57cb" } }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-coord-out-of-range",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components", 0, "shape", "x"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 1.5, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-negative-radius",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components", 0, "shape", "rx"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-ellipse",
+          "role": "primary",
+          "shape": { "shape": "ellipse", "cx": 0.5, "cy": 0.5, "rx": -0.1, "ry": 0.2 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-duplicate-component-role",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components", 1, "role"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        },
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 0.5, "y": 0.5, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-invalid-role",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components", 0, "role"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "marquee",
+          "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-free-float-stroke-width",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components", 0, "paint"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "draw-on",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-stroke",
+          "role": "primary",
+          "shape": { "shape": "path", "points": [[0.1, 0.1], [0.2, 0.5], [0.9, 0.9]], "closed": false },
+          "paint": { "kind": "stroke", "color": "#1c57cb", "stroke_width": 2.5 }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-corner-radius-exceeds-half-min",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components", 0, "shape", "corner_radius"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "fade",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.3 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-transform-scale-negative",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components", 0, "transform", "scale"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "scale-pop",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" },
+          "transform": { "translate_dx": 0, "translate_dy": 0, "rotation_deg": 0, "scale": -1 }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-polystar-inner-equals-outer",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["components", 0, "shape", "r_inner"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "pulse",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-star",
+          "role": "primary",
+          "shape": { "shape": "polystar", "cx": 0.5, "cy": 0.5, "points_count": 5, "r_outer": 0.4, "r_inner": 0.4, "rotation_deg": 0 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  },
+  {
+    "case_id": "render-spec-unknown-recipe-id",
+    "ref": "example-style@1.0.0",
+    "model": "RenderSpec",
+    "expect_code": "validation_error",
+    "expect_paths": [["recipe_id"]],
+    "payload": {
+      "asset_id": "a-001",
+      "recipe_id": "disco-spin",
+      "style_ref": "example-style@1.0.0",
+      "components": [
+        {
+          "component": "primary-rect",
+          "role": "primary",
+          "shape": { "shape": "rect", "x": 0.1, "y": 0.1, "w": 0.4, "h": 0.4, "corner_radius": 0.05 },
+          "paint": { "kind": "fill", "color": "#1c57cb" }
+        }
+      ],
+      "motion": { "amplitude": 0.5, "direction": "up", "loops": 1 }
+    }
+  }
+]

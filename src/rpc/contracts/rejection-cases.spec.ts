@@ -67,7 +67,14 @@ describe("rejection-case loader shape guard (IN-07)", () => {
   it("loads every committed fixture with non-empty, shape-valid cases", () => {
     // Non-vacuity: the real committed files still load through the
     // guarded loader -- the guard must never reject the shipped data.
-    for (const contract of ["asset-spec", "pack-manifest", "style-refinement", "catalogue"]) {
+    for (const contract of [
+      "asset-spec",
+      "pack-manifest",
+      "style-refinement",
+      "catalogue",
+      "render-spec",
+      "lottie-json",
+    ]) {
       const cases = loadRejectionCases(contract);
       expect(cases.length).toBeGreaterThan(0);
       for (const c of cases) {

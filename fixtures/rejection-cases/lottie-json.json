@@ -1,0 +1,335 @@
+[
+  {
+    "case_id": "lottie-json-wrong-version-5_9_0",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["v"]],
+    "payload": {
+      "v": "5.9.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": { "o": { "a": 0, "k": 100 }, "r": { "a": 0, "k": 0 }, "p": { "a": 0, "k": [50, 50] } },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-ddd-not-zero",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["ddd"]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 1,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 1,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": { "o": { "a": 0, "k": 100 }, "r": { "a": 0, "k": 0 }, "p": { "a": 0, "k": [50, 50] } },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-layer-ty-2-not-4",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["layers", 0, "ty"]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 2,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": { "o": { "a": 0, "k": 100 }, "r": { "a": 0, "k": 0 }, "p": { "a": 0, "k": [50, 50] } },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-expression-channel-x",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["layers", 0, "ks", "o"]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": {
+            "o": {
+              "a": 1,
+              "k": [
+                { "t": 0, "s": [100], "i": { "x": [0], "y": [0] }, "o": { "x": [30], "y": [30] } },
+                { "t": 60, "s": [100] }
+              ],
+              "x": "transform.opacity"
+            },
+            "r": { "a": 0, "k": 0 },
+            "p": { "a": 0, "k": [50, 50] }
+          },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-legacy-endpoint-e-keyframe",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["layers", 0, "ks", "o", "k", 0]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": {
+            "o": {
+              "a": 1,
+              "k": [{ "t": 0, "s": [100], "e": { "x": [100], "y": [100] } }]
+            },
+            "r": { "a": 0, "k": 0 },
+            "p": { "a": 0, "k": [50, 50] }
+          },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-scalar-s-in-keyframe",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["layers", 0, "ks", "o", "k", 0, "s"]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": {
+            "o": { "a": 1, "k": [{ "t": 0, "s": 100 }] },
+            "r": { "a": 0, "k": 0 },
+            "p": { "a": 0, "k": [50, 50] }
+          },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-descending-keyframe-t",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["layers", 0, "ks", "o", "k", 0, "t"]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": {
+            "o": {
+              "a": 1,
+              "k": [
+                { "t": 30, "s": [100], "i": { "x": [0], "y": [0] }, "o": { "x": [30], "y": [30] } },
+                { "t": 30, "s": [100] }
+              ]
+            },
+            "r": { "a": 0, "k": 0 },
+            "p": { "a": 0, "k": [50, 50] }
+          },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-handles-on-last-keyframe",
+    "ref": "a-001",
+    "model": "LottieJSON",
+"expect_code": "validation_error",
+      "expect_paths": [["layers", 0, "ks", "o", "k", 1]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": {
+            "o": {
+              "a": 1,
+              "k": [
+                { "t": 0, "s": [100], "i": { "x": [0], "y": [0] }, "o": { "x": [30], "y": [30] } },
+                { "t": 60, "s": [50], "i": { "x": [0], "y": [0] }, "o": { "x": [30], "y": [30] } }
+              ]
+            },
+            "r": { "a": 0, "k": 0 },
+            "p": { "a": 0, "k": [50, 50] }
+          },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-op-less-than-ip",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["op"]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 60,
+      "op": 0,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": { "o": { "a": 0, "k": 100 }, "r": { "a": 0, "k": 0 }, "p": { "a": 0, "k": [50, 50] } },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-negative-scale",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["layers", 0, "ks", "s", "k"]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 4,
+          "nm": "primary",
+          "ip": 0,
+          "op": 60,
+          "ks": {
+            "o": { "a": 0, "k": 100 },
+            "r": { "a": 0, "k": 0 },
+            "p": { "a": 0, "k": [50, 50] },
+            "s": { "a": 0, "k": [-100, 100, 100] }
+          },
+          "shapes": [{ "ty": "gr", "it": [] }]
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "lottie-json-empty-layers",
+    "ref": "a-001",
+    "model": "LottieJSON",
+    "expect_code": "validation_error",
+    "expect_paths": [["layers"]],
+    "payload": {
+      "v": "5.7.0",
+      "fr": 30,
+      "ip": 0,
+      "op": 60,
+      "ddd": 0,
+      "assets": [],
+      "layers": []
+    }
+  }
+]

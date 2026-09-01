@@ -17,6 +17,8 @@ import {
   StrokeWidthTokenSchema,
   TransformDeltaSchema,
 } from "./motion-compiler.schema.js";
+import { isRejectionExpectCode } from "./rejection-cases.js";
+import { loadRenderSpecRejectionCases, type Phase3RejectionCase } from "./render-spec-rejection.js";
 import { THEME_ANCHOR_IDS } from "./vocabulary.schema.js";
 
 /**
@@ -556,6 +558,121 @@ describe("KeyframeShapeSchema — imported from catalogue, exhaustive over 10 sh
       "circular-path",
     ] as const) {
       expect(KeyframeShapeSchema.safeParse(shape).success).toBe(true);
+    }
+  });
+});
+
+/**
+ * Phase 3 shared rejection harness (D-29) — `render-spec.json` cases drive
+ * the zod gate here; the same fixture is the pytest parametrize source in
+ * Phase 7. `it.each` mirrors the recipe.spec.ts pattern (lines 113-130).
+ * `expect_code` is asserted via `isRejectionExpectCode` membership against
+ * the closed RPC code set.
+ */
+describe("RenderSpec rejection harness (D-29)", () => {
+  const cases = loadRenderSpecRejectionCases("render-spec");
+
+  it("ships at least 14 cases (one per behavior bullet + buffer)", () => {
+    expect(cases.length).toBeGreaterThanOrEqual(14);
+  });
+
+  it.each(cases.map((c: Phase3RejectionCase) => [c.case_id, c]))(
+    "%s -> RenderSpecSchema.safeParse rejects (and code path matches)",
+    (_caseId, c) => {
+      const result = RenderSpecSchema.safeParse(c.payload);
+      expect(result.success).toBe(false);
+      if (result.success) return;
+      const actualPaths = new Set(
+        result.error.issues.map((issue) =>
+          JSON.stringify(issue.path.map((p) => (typeof p === "symbol" ? String(p) : p))),
+        ),
+      );
+      for (const expected of c.expect_paths) {
+        expect(actualPaths.has(JSON.stringify(expected))).toBe(true);
+      }
+      if (c.expect_code !== null) {
+        expect(isRejectionExpectCode(c.expect_code)).toBe(true);
+      }
+    },
+  );
+});
+
+/**
+ * Phase 3 LottieJSON rejection harness (D-29) — `lottie-json.json` cases
+ * drive the gate; same JSON is the pytest source in Phase 7.
+ */
+describe("LottieJSON rejection harness (D-29)", () => {
+  const cases = loadRenderSpecRejectionCases("lottie-json");
+
+  it("ships at least 11 cases (one per behavior bullet)", () => {
+    expect(cases.length).toBeGreaterThanOrEqual(11);
+  });
+
+  it.each(cases.map((c: Phase3RejectionCase) => [c.case_id, c]))(
+    "%s -> LottieJSONSchema.safeParse rejects",
+    (_caseId, c) => {
+      const result = LottieJSONSchema.safeParse(c.payload);
+      expect(result.success).toBe(false);
+      if (result.success) return;
+      const actualPaths = new Set(
+        result.error.issues.map((issue) =>
+          JSON.stringify(issue.path.map((p) => (typeof p === "symbol" ? String(p) : p))),
+        ),
+      );
+      for (const expected of c.expect_paths) {
+        expect(actualPaths.has(JSON.stringify(expected))).toBe(true);
+      }
+      if (c.expect_code !== null) {
+        expect(isRejectionExpectCode(c.expect_code)).toBe(true);
+      }
+    },
+  );
+});
+
+/**
+ * The closed-typed facade — the loader MUST throw on an out-of-set
+ * `expect_code` so a stray string never silently passes a case in vitest
+ * while the Python mirror would error in Phase 7.
+ */
+describe("loadRenderSpecRejectionCases — closed enum guard", () => {
+  it("throws when an expect_code is not a member of the closed RPC code set", async () => {
+    const { readFileSync, writeFileSync, mkdtempSync, rmSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const dir = mkdtempSync("gsd-load-");
+    try {
+      const fixture = join(dir, "bogus-render-spec.json");
+      writeFileSync(
+        fixture,
+        JSON.stringify([
+          {
+            case_id: "bogus",
+            ref: "example-style@1.0.0",
+            model: "RenderSpec",
+            expect_code: "totally-unknown-code",
+            payload: {},
+          },
+        ]),
+      );
+      // Use the underlying loader directly to bypass the contract-name
+      // gate; the assertion is on the closed-code detection in
+      // assertRejectionEntryShape.
+      const { assertRejectionEntryShape } = await import("./rejection-cases.js");
+      expect(() =>
+        assertRejectionEntryShape(
+          {
+            case_id: "bogus",
+            ref: "r",
+            model: "m",
+            payload: {},
+            expect_code: "totally-unknown-code",
+          },
+          "bogus.json",
+        ),
+      ).toThrow(/expect_code.*not a member/);
+      // Reference unused imports to satisfy linters without altering the catch.
+      void readFileSync;
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
     }
   });
 });
