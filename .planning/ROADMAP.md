@@ -134,7 +134,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3)*
 
-- [ ] 03-04-PLAN.md — TRACER: a-001 (fade) → compile → re-validation zod → sanitize → IDs stables (seam compiler→sanitizer, D-17)
+- [x] 03-04-PLAN.md — TRACER: a-001 (fade) → compile → re-validation zod → sanitize → IDs stables (seam compiler→sanitizer, D-17)
 
 **Wave 5** *(blocked on Wave 4)*
 
@@ -274,7 +274,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | Complete | 2026-08-29 |
 | 2. Style verrouillé & catalogue de recettes | 6/6 | Complete    | 2026-08-31 |
-| 3. Motion Compiler & SVG Sanitizer | 3/8 | In Progress (Wave 3 ✓) | 2026-09-01 |
+| 3. Motion Compiler & SVG Sanitizer | 4/8 | In Progress (Wave 4 ✓) | 2026-09-01 |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |
 | 6. Agents LLM (un par un) *(M2)* | 0/0 | Not started | - |
