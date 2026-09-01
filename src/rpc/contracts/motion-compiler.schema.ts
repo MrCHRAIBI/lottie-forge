@@ -549,7 +549,18 @@ const LottieShapeItemSchema = z.union([
   }),
   z.strictObject({
     ty: z.literal("sh"),
-    ks: StaticPropertyValueSchema,
+    // The Lottie `ks` field for shape items is the bezier
+    // description `{ i, o, v, c }` (Lottie spec, shapes page —
+    // path bezier object). The phase 3 widening makes path +
+    // polyline real; the schema accepts the bezier description.
+    // `i` and `o` are per-vertex in/out tangents (2-tuples), `v`
+    // is the per-vertex position array, `c` is the closed flag.
+    ks: z.strictObject({
+      i: z.array(z.tuple([z.number(), z.number()])),
+      o: z.array(z.tuple([z.number(), z.number()])),
+      v: z.array(z.tuple([z.number(), z.number()])),
+      c: z.boolean(),
+    }),
   }),
   z.strictObject({
     ty: z.literal("sr"),

@@ -28,12 +28,10 @@
  * JSON is `safeParse`-d through `LottieJSONSchema`. A failure
  * throws a `CompileError` — never returns a partial result.
  *
- * **Phase 3 TASK 1 (plan 03-05) state:** the keyframe emitter
- * and transform-builder are widened to all 10 KEYFRAME_SHAPES
- * and animated transform deltas. buildShapeItem still uses the
- * pre-widening signature (no trim threading — that's Task 2);
- * markers.ts and feature-gate.ts are still in the pre-widening
- * form (Tasks 2 and 3 widen them).
+ * **Phase 3 TASK 2 (plan 03-05) state:** all 5 shape generators
+ * implemented (rect, ellipse, path, polyline, polystar); D-15
+ * pose rule + trigger marker emission wired into markers.ts. The
+ * feature-gate is still in the TRACER state (Task 3 widens it).
  *
  * **Pure module orchestrator, but calls the keyframe emitter +
  * builders** which are themselves pure.
@@ -51,6 +49,7 @@ import { RECIPE_IDS, type RecipeId } from "../rpc/contracts/vocabulary.schema.js
 
 import { classify } from "./feature-gate.js";
 import { CompileError, emitKeyframes } from "./keyframe-emitter.js";
+import { markersFor } from "./markers.js";
 import { FRAME_RATE } from "./meta.js";
 import { buildShapeItem } from "./shape-builder.js";
 import { buildSvg } from "./svg-builder.js";
@@ -106,10 +105,9 @@ export function compile(
       style.viewBox,
       { px: restPx, py: restPy, s: restScale, r: restRotation },
     );
-    // TASK 1 STATE: buildShapeItem is called WITHOUT the trim
-    // argument (the trim threading is widened in Task 2). The
-    // emitted.trim is computed but not yet threaded.
-    const shapes = buildShapeItem(component, style);
+    // TASK 2 STATE: the trim item (D-14, draw-on) is now threaded
+    // into the layer's gr.it array by shape-builder.
+    const shapes = buildShapeItem(component, style, emitted.trim);
     const ks = buildTransform(component, emitted.property, emitted.keyframes, style.viewBox);
     return {
       ddd: 0 as const,
@@ -141,6 +139,13 @@ export function compile(
       `LottieJSON re-validation failed: ${JSON.stringify(lottieResult.error.issues)}`,
     );
   }
+
+  // TASK 2 STATE: trigger markers derived from catalogue (D-34).
+  // The Phase 3 frozen LottieJSONSchema does not embed a
+  // `markers` field; the helper is exported for plan 03-06
+  // (goldens) + 03-07 (RPC) when the schema widens.
+  const _markers = markersFor(recipe, op);
+  void _markers;
 
   const svg = buildSvg(renderSpec, style);
 
