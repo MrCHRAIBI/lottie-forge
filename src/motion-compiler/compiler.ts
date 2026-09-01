@@ -47,7 +47,7 @@ import {
 import type { StyleSpec } from "../rpc/contracts/style-spec.schema.js";
 import { RECIPE_IDS, type RecipeId } from "../rpc/contracts/vocabulary.schema.js";
 
-import { classify } from "./feature-gate.js";
+import { assertSupportedComposition, classify } from "./feature-gate.js";
 import { CompileError, emitKeyframes } from "./keyframe-emitter.js";
 import { markersFor } from "./markers.js";
 import { FRAME_RATE } from "./meta.js";
@@ -139,6 +139,11 @@ export function compile(
       `LottieJSON re-validation failed: ${JSON.stringify(lottieResult.error.issues)}`,
     );
   }
+
+  // COM-04 — defense-in-depth feature gate (D-33). The schema
+  // pins the structural rules; the gate re-asserts any feature
+  // outside the lottie-web 5.13 subset.
+  assertSupportedComposition(lottieResult.data);
 
   // TASK 2 STATE: trigger markers derived from catalogue (D-34).
   // The Phase 3 frozen LottieJSONSchema does not embed a
