@@ -401,15 +401,34 @@ const KeyframeArraySchema = z
           message: `every intermediate keyframe must carry i and o (Pitfall 11); missing at index ${i}`,
         });
       }
-      if (nextKf.i !== undefined || nextKf.o !== undefined) {
-        ctx.addIssue({
-          code: "custom",
-          path: [i + 1],
-          message: `the last keyframe must carry no i or o (Pitfall 11); present at index ${i + 1}`,
-        });
+      // Only flag "nextKf has i/o" when nextKf IS the last
+      // keyframe — intermediate keyframes MUST carry i+o (Pitfall
+      // 4). For arrays of length >= 3 (overshoot-settle, scale-breath,
+      // sine-drift, damped-oscillation, circular-path), the previous
+      // implementation incorrectly flagged every intermediate
+      // keyframe, breaking LottieJSON re-validation for 3+ keyframe
+      // shapes. Fix: only emit this issue when nextKf is the last.
+      if (i + 1 === keyframes.length - 1) {
+        if (nextKf.i !== undefined || nextKf.o !== undefined) {
+          ctx.addIssue({
+            code: "custom",
+            path: [i + 1],
+            message: `the last keyframe must carry no i or o (Pitfall 11); present at index ${i + 1}`,
+          });
+        }
+      } else {
+        // nextKf is intermediate — it MUST carry i+o.
+        if (nextKf.i === undefined || nextKf.o === undefined) {
+          ctx.addIssue({
+            code: "custom",
+            path: [i + 1],
+            message: `every intermediate keyframe must carry i and o (Pitfall 11); missing at index ${i + 1}`,
+          });
+        }
       }
     }
-    // Final last-keyframe check (in case of single-keyframe arrays).
+    // Final last-keyframe check (covers single-keyframe arrays where
+    // the loop above doesn't run).
     const last = keyframes[keyframes.length - 1];
     if (last !== undefined && (last.i !== undefined || last.o !== undefined)) {
       ctx.addIssue({

@@ -10,7 +10,8 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "goldens:update": "node scripts/update-goldens.mjs"
   },
   "dependencies": {
     "svgo": "^4.1.0",
