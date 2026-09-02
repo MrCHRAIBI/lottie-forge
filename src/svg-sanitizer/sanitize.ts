@@ -11,7 +11,9 @@
  * the sanitizer runs the collector plugins (forbid-* family)
  * BEFORE `preset-default` mutates the tree. Any violation is
  * reported and the sanitize fails — the SVG is NEVER silently
- * stripped (P4). The plugin order is locked in `config.ts`.
+ * stripped (P4). The plugin order is locked in `config.ts`
+ * and the `assertPluginOrder` self-check fires on every call
+ * so a future reorder breaks loudly.
  *
  * **Two-pass strategy:**
  *
@@ -32,10 +34,25 @@
  * pass. The two-pass strategy is also what makes the
  * sanitize-rejected return value byte-stable (no optimized
  * bytes leaked into the rejection path).
+ *
+ * **Collect-all doctrine (P4 — never first-fail):** the
+ * `violations` array is shared across every collector AND
+ * across both passes. A single SVG fragment that violates
+ * two gates yields two entries in the same report — the
+ * self-consistency spec asserts the collect-all invariant
+ * with a two-gate fixture.
+ *
+ * **`allowed_elements` population:** the D-31 allow-list hits
+ * are collected in a `Set` (closure-shared with the
+ * `forbid-structure` plugin) and converted to a sorted array
+ * on the way out. An empty array with `ok=true` is a true
+ * "no element matched the allow-list" report; a populated
+ * array is the byte-stable subset of D-31 allow-list names
+ * that appeared in the input.
  */
 
 import type { SanitizeRequest, SanitizeResult } from "../rpc/contracts/sanitizer.schema.js";
-import { buildSanitizerConfig, runOptimize } from "./config.js";
+import { assertPluginOrder, buildSanitizerConfig, runOptimize } from "./config.js";
 import {
   type CollectedReport,
   type CollectedViolation,
@@ -54,7 +71,12 @@ import {
  */
 export function sanitizeSvg(request: SanitizeRequest): SanitizeResult {
   // The shared collector — passed to every plugin by reference.
+  // `matchedAllowed` is the closure-scoped accumulator the
+  // forbid-structure plugin populates with every D-31 allow-list
+  // name it sees; we convert the Set to a sorted array on the way
+  // out (D-23 byte-stability — sorted, never iteration-order).
   const violations: CollectedViolation[] = [];
+  const matchedAllowed: Set<string> = new Set();
   const report: CollectedReport = {
     allowed_elements: [],
     violations,
@@ -64,7 +86,15 @@ export function sanitizeSvg(request: SanitizeRequest): SanitizeResult {
   // Pass 1 — collect violations only. No `preset-default`, no
   // `stabilize-ids` (those run in pass 2). The four forbid-*
   // plugins run sequentially against the raw SVG.
-  const collectConfig = buildSanitizerConfig(violations, request.asset_id);
+  const collectConfig = buildSanitizerConfig(
+    violations,
+    request.asset_id,
+    matchedAllowed,
+  );
+  // Self-check the order BEFORE the optimize pass — a future
+  // reorder that breaks the gate must fail loud, not silently
+  // accept the SVG (P5 — D-31 / D-32 / ADR-02).
+  assertPluginOrder(collectConfig);
   const collectPlugins = collectConfig.plugins?.slice(0, 4) ?? [];
   const collectOnly: typeof collectConfig = {
     multipass: false,
@@ -76,7 +106,7 @@ export function sanitizeSvg(request: SanitizeRequest): SanitizeResult {
   if (violations.length > 0) {
     return {
       ok: false,
-      report: toSanitizeReport(report),
+      report: finalizeReport(report, matchedAllowed),
       code: "sanitize_rejected",
     };
   }
@@ -86,14 +116,35 @@ export function sanitizeSvg(request: SanitizeRequest): SanitizeResult {
   // are appended to the same `violations` array), but on a
   // known-clean tree they record nothing; the preset does its
   // mutations; `stabilize-ids` asserts the D-32 scheme.
-  const fullConfig = buildSanitizerConfig(violations, request.asset_id);
+  const fullConfig = buildSanitizerConfig(
+    violations,
+    request.asset_id,
+    matchedAllowed,
+  );
+  assertPluginOrder(fullConfig);
   const optimized = runOptimize(request.svg, fullConfig);
 
   return {
     ok: true,
     svg: optimized,
-    report: toSanitizeReport(report),
+    report: finalizeReport(report, matchedAllowed),
   };
+}
+
+/**
+ * Freeze the report's `allowed_elements` from the closure-scoped
+ * `Set` — sorted alphabetically for byte-stability, filtered to
+ * string entries (D-23 — sorted, never iteration-order).
+ */
+function finalizeReport(report: CollectedReport, matchedAllowed: Set<string>): {
+  allowed_elements: string[];
+  violations: CollectedViolation[];
+  input_element_count: number;
+} {
+  return toSanitizeReport({
+    ...report,
+    allowed_elements: [...matchedAllowed].sort(),
+  });
 }
 
 /**
