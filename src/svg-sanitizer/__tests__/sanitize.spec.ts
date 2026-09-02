@@ -198,9 +198,7 @@ describe("sanitizeSvg — adversarial rejection matrix (SAN-01/02/05 + D-31)", (
       expect(result.ok).toBe(false);
       if (result.ok) {
         // Narrowing guard for the type system.
-        throw new Error(
-          `sanitizeSvg passed an adversarial input (${c.caseId}) — the gate failed`,
-        );
+        throw new Error(`sanitizeSvg passed an adversarial input (${c.caseId}) — the gate failed`);
       }
       // The expected gate appears in the report (gate-level
       // assertion, never message text — D-08 discipline).
@@ -225,9 +223,7 @@ describe("sanitizeSvg — clean control proves the matrix teeth are selective", 
     try {
       result = sanitizeSvg({ asset_id: ASSET_ID, svg: clean });
     } catch (error) {
-      throw new Error(
-        `sanitizeSvg threw on a clean control input: ${(error as Error).message}`,
-      );
+      throw new Error(`sanitizeSvg threw on a clean control input: ${(error as Error).message}`);
     }
     expect(result.ok).toBe(true);
     if (!result.ok) {

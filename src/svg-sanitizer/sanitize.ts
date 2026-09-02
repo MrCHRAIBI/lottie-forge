@@ -113,11 +113,7 @@ export function sanitizeSvg(request: SanitizeRequest): SanitizeResult {
   // Pass 1 — collect violations only. No `preset-default`, no
   // `stabilize-ids` (those run in pass 2). The four forbid-*
   // plugins run sequentially against the raw SVG.
-  const collectConfig = buildSanitizerConfig(
-    violations,
-    request.asset_id,
-    matchedAllowed,
-  );
+  const collectConfig = buildSanitizerConfig(violations, request.asset_id, matchedAllowed);
   // Self-check the order BEFORE the optimize pass — a future
   // reorder that breaks the gate must fail loud, not silently
   // accept the SVG (P5 — D-31 / D-32 / ADR-02).
@@ -143,11 +139,7 @@ export function sanitizeSvg(request: SanitizeRequest): SanitizeResult {
   // are appended to the same `violations` array), but on a
   // known-clean tree they record nothing; the preset does its
   // mutations; `stabilize-ids` asserts the D-32 scheme.
-  const fullConfig = buildSanitizerConfig(
-    violations,
-    request.asset_id,
-    matchedAllowed,
-  );
+  const fullConfig = buildSanitizerConfig(violations, request.asset_id, matchedAllowed);
   assertPluginOrder(fullConfig);
   const optimized = runOptimize(request.svg, fullConfig);
 
@@ -163,7 +155,10 @@ export function sanitizeSvg(request: SanitizeRequest): SanitizeResult {
  * `Set` — sorted alphabetically for byte-stability, filtered to
  * string entries (D-23 — sorted, never iteration-order).
  */
-function finalizeReport(report: CollectedReport, matchedAllowed: Set<string>): {
+function finalizeReport(
+  report: CollectedReport,
+  matchedAllowed: Set<string>,
+): {
   allowed_elements: string[];
   violations: CollectedViolation[];
   input_element_count: number;
