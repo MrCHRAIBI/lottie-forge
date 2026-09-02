@@ -2,19 +2,16 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
+import { type RecipeCatalogue, RecipeCatalogueSchema } from "./contracts/catalogue.schema.js";
+import { type StyleSpec, StyleSpecSchema } from "./contracts/style-spec.schema.js";
 import {
   type Envelope,
   type ErrEnvelope,
   type OkEnvelope,
-  type ServerContext,
-  RPC_ERROR_CODES,
   processLine,
+  RPC_ERROR_CODES,
+  type ServerContext,
 } from "./server.js";
-import {
-  type RecipeCatalogue,
-  RecipeCatalogueSchema,
-} from "./contracts/catalogue.schema.js";
-import { type StyleSpec, StyleSpecSchema } from "./contracts/style-spec.schema.js";
 
 /**
  * Unit spec for `processLine` — the pure NDJSON line handler.
@@ -173,7 +170,9 @@ describe("rpc server: protocol + envelope closed contract (D-27/D-28/D-36)", () 
     expect(isErr(env)).toBe(true);
     if (isErr(env)) {
       expect(env.error.code).toBe("validation_error");
-      const details = env.error.details as { issues: ReadonlyArray<{ path: ReadonlyArray<string | number>; message: string }> };
+      const details = env.error.details as {
+        issues: ReadonlyArray<{ path: ReadonlyArray<string | number>; message: string }>;
+      };
       expect(details).toBeDefined();
       expect(Array.isArray(details.issues)).toBe(true);
       const paths = details.issues.map((i) => JSON.stringify(i.path));
@@ -253,7 +252,11 @@ describe("rpc server: protocol + envelope closed contract (D-27/D-28/D-36)", () 
     expect(isErr(env)).toBe(true);
     if (isErr(env)) {
       expect(env.error.code).toBe("sanitize_rejected");
-      const details = env.error.details as { report: { violations: ReadonlyArray<{ category: string; element_path: string; message: string }> } };
+      const details = env.error.details as {
+        report: {
+          violations: ReadonlyArray<{ category: string; element_path: string; message: string }>;
+        };
+      };
       expect(details).toBeDefined();
       expect(Array.isArray(details.report.violations)).toBe(true);
       expect(details.report.violations.length).toBeGreaterThan(0);

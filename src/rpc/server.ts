@@ -53,27 +53,17 @@
  */
 
 import { readFileSync } from "node:fs";
-import { createInterface } from "node:readline";
 import { dirname, join } from "node:path";
+import { createInterface } from "node:readline";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { z } from "zod";
-
-import { UnsupportedFeatureError } from "../motion-compiler/feature-gate.js";
 import { compile } from "../motion-compiler/compiler.js";
+import { UnsupportedFeatureError } from "../motion-compiler/feature-gate.js";
 import { CompileError } from "../motion-compiler/keyframe-emitter.js";
 import { sanitizeSvg } from "../svg-sanitizer/sanitize.js";
-import {
-  type RecipeCatalogue,
-  RecipeCatalogueSchema,
-} from "./contracts/catalogue.schema.js";
-import {
-  type RenderSpec,
-  RenderSpecSchema,
-} from "./contracts/motion-compiler.schema.js";
-import {
-  type SanitizeRequest,
-  SanitizeRequestSchema,
-} from "./contracts/sanitizer.schema.js";
+import { type RecipeCatalogue, RecipeCatalogueSchema } from "./contracts/catalogue.schema.js";
+import { type RenderSpec, RenderSpecSchema } from "./contracts/motion-compiler.schema.js";
+import { type SanitizeRequest, SanitizeRequestSchema } from "./contracts/sanitizer.schema.js";
 import { type StyleSpec, StyleSpecSchema } from "./contracts/style-spec.schema.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -214,7 +204,9 @@ function flattenZodIssues(
   issues: ReadonlyArray<{ path: ReadonlyArray<PropertyKey>; message: string }>,
 ): ReadonlyArray<{ path: ReadonlyArray<string | number>; message: string }> {
   return issues.map((issue) => ({
-    path: issue.path.filter((p): p is string | number => typeof p === "string" || typeof p === "number"),
+    path: issue.path.filter(
+      (p): p is string | number => typeof p === "string" || typeof p === "number",
+    ),
     message: issue.message,
   }));
 }
@@ -270,11 +262,7 @@ export function processLine(line: string, ctx: ServerContext): Envelope {
   // Extract + validate the `method` literal.
   const rawMethod = request.method;
   if (typeof rawMethod !== "string" || rawMethod.length === 0) {
-    return errEnvelope(
-      id,
-      "parse_error",
-      "request must carry a non-empty string `method`",
-    );
+    return errEnvelope(id, "parse_error", "request must carry a non-empty string `method`");
   }
   const method: string = rawMethod;
 
@@ -294,11 +282,7 @@ export function processLine(line: string, ctx: ServerContext): Envelope {
 }
 
 /** Dispatch `motion.compile` — parse, compile, envelope. */
-function handleMotionCompile(
-  id: number,
-  params: unknown,
-  ctx: ServerContext,
-): Envelope {
+function handleMotionCompile(id: number, params: unknown, ctx: ServerContext): Envelope {
   const parsed = MotionCompileRpcRequestSchema.safeParse(params);
   if (!parsed.success) {
     return errEnvelope(
@@ -332,9 +316,7 @@ function handleMotionCompile(
     // gets logged to stderr (the D-36 stack-trace rule).
     const err = cause as Error;
     const stack = err?.stack ?? String(cause);
-    process.stderr.write(
-      `motion.compile: unexpected internal error — ${stack}\n`,
-    );
+    process.stderr.write(`motion.compile: unexpected internal error — ${stack}\n`);
     return errEnvelope(
       id,
       "internal",
@@ -344,11 +326,7 @@ function handleMotionCompile(
 }
 
 /** Dispatch `svg.sanitize` — parse, sanitize, envelope. */
-function handleSanitize(
-  id: number,
-  params: unknown,
-  ctx: ServerContext,
-): Envelope {
+function handleSanitize(id: number, params: unknown, _ctx: ServerContext): Envelope {
   const parsed = SanitizeRequestSchema.safeParse(params);
   if (!parsed.success) {
     return errEnvelope(
@@ -408,14 +386,8 @@ function main(): void {
       // defense-in-depth. Emit an `internal` envelope and stay alive.
       const err = cause as Error;
       const stack = err?.stack ?? String(cause);
-      process.stderr.write(
-        `rpc-server: processLine threw (defense-in-depth): ${stack}\n`,
-      );
-      const fallback = errEnvelope(
-        null,
-        "internal",
-        `processLine threw — server remains alive`,
-      );
+      process.stderr.write(`rpc-server: processLine threw (defense-in-depth): ${stack}\n`);
+      const fallback = errEnvelope(null, "internal", `processLine threw — server remains alive`);
       try {
         process.stdout.write(`${JSON.stringify(fallback)}\n`);
       } catch {
