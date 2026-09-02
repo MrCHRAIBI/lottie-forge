@@ -48,7 +48,7 @@ import { MotionParamsSchema } from "./recipe.schema.js";
  * RenderSpec (D-34).
  */
 import type { StyleSpec } from "./style-spec.schema.js";
-import { ThemeAnchorIdSchema } from "./vocabulary.schema.js";
+import { RecipeIdSchema, ThemeAnchorIdSchema } from "./vocabulary.schema.js";
 
 /**
  * D-02 `role` derived union — `ThemeAnchorId ∪ {"neutral"}`. Built
@@ -237,18 +237,10 @@ export const ComponentSchema = z.strictObject({
 export const RenderSpecSchema = z
   .strictObject({
     asset_id: z.string().regex(ASSET_ID_PATTERN).max(6),
-    recipe_id: z.enum([
-      "fade",
-      "slide",
-      "bounce",
-      "pulse",
-      "draw-on",
-      "rotate",
-      "scale-pop",
-      "float",
-      "wiggle",
-      "orbit",
-    ] as const),
+    // Imported verbatim from vocabulary.schema.js — a second inline
+    // z.enum here would be silent drift surface (ADR-03 same-commit
+    // rule: the vocabulary is declared exactly once).
+    recipe_id: RecipeIdSchema,
     style_ref: z
       .string()
       .regex(/^[a-z][a-z0-9-]*@\d+\.\d+\.\d+$/)
@@ -691,18 +683,9 @@ export type LottieShapeItem = z.infer<typeof LottieShapeItemSchema>;
  */
 export const CompileResultSchema = z.strictObject({
   asset_id: z.string().regex(ASSET_ID_PATTERN).max(6),
-  recipe_id: z.enum([
-    "fade",
-    "slide",
-    "bounce",
-    "pulse",
-    "draw-on",
-    "rotate",
-    "scale-pop",
-    "float",
-    "wiggle",
-    "orbit",
-  ] as const),
+  // Same single-declaration doctrine as RenderSpecSchema — the
+  // vocabulary enum is re-used, never re-listed.
+  recipe_id: RecipeIdSchema,
   renderer_support: RendererSupportSchema,
   lottie: LottieJSONSchema,
   svg: z.string().min(1),

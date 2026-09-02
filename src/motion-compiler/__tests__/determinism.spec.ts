@@ -1,10 +1,10 @@
 import { Buffer } from "node:buffer";
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import type { RecipeId } from "../../rpc/contracts/vocabulary.schema.js";
 
@@ -13,28 +13,23 @@ import type { RecipeId } from "../../rpc/contracts/vocabulary.schema.js";
  *
  * **COM-01 + D-26/D-37 three-way byte-equality proof.**
  *
- * For every representative golden fixture, two independent
- * `compile-stdin.ts` processes spawn ≥ 1 second apart
- * (anti-horodatage — a clock leak would diverge the first
- * run from the second). The committed golden is the third
- * axis. Three-way Buffer.compare must hold.
+ * **D-26 en extension — every committed fixture is covered** (not a
+ * representative subset): the 10 per-recipe fixtures + the galerie
+ * multi-component fixture. Coverage is DERIVED from
+ * `fixtures/render-specs/` at runtime (same derivation rule as
+ * `update-goldens.mjs::goldenNameFor`), so a fixture added to the
+ * directory is automatically proven — the count pin below keeps the
+ * derivation honest.
  *
- * **Representative-fixture selection** — at least 3
- * fixtures bound runtime:
+ * **Two global passes, one anti-horodatage gap.** `beforeAll` runs
+ * pass A over ALL fixtures, sleeps ≥ 1 second once (a clock leak
+ * would diverge any run before the gap from its run after it), then
+ * runs pass B over ALL fixtures. Cost: ≈ 22 spawns + one 1.1 s
+ * delay — no meaningful CI-budget delta versus the old 3-fixture
+ * variant, full-coverage yield instead.
  *
- * - **slide** — one-shot `translate-in`. Static channel
- *   values (o, r, s) plus the animated `p` (position).
- *
- * - **pulse** — loop `scale-breath`. Animates `s` (scale)
- *   with a multi-sample sine-driven keyframe sequence. The
- *   loop recipe exercises a different emit path than the
- *   one-shot recipes — multi-keyframe intermediates + last
- *   bare (Pitfall 11) is asserted here.
- *
- * - **galerie** — 4-component multi-layer multi-generator
- *   emission. The most complex RecipeSpec; a clock leak or
- *   state-machine bug would diverge here faster than on the
- *   single-component fixtures.
+ * The committed golden is the third axis. Three-way Buffer.compare
+ * must hold per fixture.
  *
  * **Process spawning:** the helper uses tsx — invoking
  * `node <tsx-cli> scripts/compile-stdin.ts` is the same
@@ -43,7 +38,7 @@ import type { RecipeId } from "../../rpc/contracts/vocabulary.schema.js";
  *
  * **Companion byte check (D-25 same-commit):** if the test
  * detects a divergence, it surfaces the per-process stdout
- * head (first 100 bytes hex) — a debugging operator sees
+ * head (first 80 bytes) — a debugging operator sees
  * exactly where the two processes diverged without needing
  * to inspect shell captures.
  */
@@ -55,36 +50,41 @@ const TSX_CLI = join(REPO_ROOT, "node_modules", "tsx", "dist", "cli.mjs");
 const FIXTURES_DIR = join(REPO_ROOT, "fixtures", "render-specs");
 const GOLDENS_DIR = join(REPO_ROOT, "src", "motion-compiler", "__tests__", "goldens");
 
-/** Each test case maps a fixture file + asset id + golden basename. */
-const DETERMINISM_FIXTURES: ReadonlyArray<{
+/** update-goldens.mjs refuses any count other than 11 — same pin here. */
+const EXPECTED_FIXTURE_COUNT = 11;
+
+/** A fixture case maps a fixture file + asset id + golden basename. */
+interface FixtureCase {
   recipeId: RecipeId;
   assetId: string;
   fixtureFilename: string;
   goldenName: string;
-}> = [
-  // One-shot translate-in (single-component, static o/r/a + animated p).
-  {
-    recipeId: "slide",
-    assetId: "a-002",
-    fixtureFilename: "slide.json",
-    goldenName: "a-002.slide.golden.json",
-  },
-  // Loop scale-breath (multi-keyframe sine emit, animated s).
-  {
-    recipeId: "pulse",
-    assetId: "a-004",
-    fixtureFilename: "pulse.json",
-    goldenName: "a-004.pulse.golden.json",
-  },
-  // Galerie — multi-component multi-shape (option-b per D-03);
-  // the fixture basename is "galerie.json" with recipe_id "wiggle".
-  {
-    recipeId: "wiggle",
-    assetId: "a-011",
-    fixtureFilename: "galerie.json",
-    goldenName: "a-011.galerie.golden.json",
-  },
-];
+}
+
+/**
+ * Derive the full case list from the committed fixtures directory —
+ * `goldenNameFor` mirrors `update-goldens.mjs` byte-for-byte so the
+ * two derivations can never drift.
+ */
+function deriveFixtureCases(): FixtureCase[] {
+  const names = readdirSync(FIXTURES_DIR)
+    .filter((n) => n.endsWith(".json"))
+    .sort();
+  return names.map((fixtureFilename) => {
+    const raw = JSON.parse(readFileSync(join(FIXTURES_DIR, fixtureFilename), "utf-8")) as {
+      asset_id: string;
+      recipe_id: RecipeId;
+    };
+    return {
+      recipeId: raw.recipe_id,
+      assetId: raw.asset_id,
+      fixtureFilename,
+      goldenName: `${raw.asset_id}.${fixtureFilename.replace(/\.json$/, "")}.golden.json`,
+    };
+  });
+}
+
+const FIXTURE_CASES = deriveFixtureCases();
 
 const INTER_PROCESS_DELAY_MS = 1100;
 
@@ -145,9 +145,19 @@ function headHex(buf: Buffer): string {
   return buf.subarray(0, Math.min(80, buf.length)).toString("utf-8").replace(/\n/g, "\\n");
 }
 
-describe("determinism proof — two processes + golden, three-way byte-equality (COM-01, D-26, D-37)", () => {
-  for (const { fixtureFilename, goldenName } of DETERMINISM_FIXTURES) {
-    it(`${goldenName}: processA === processB === committed golden (>=1 s spawn gap)`, () => {
+describe("determinism proof — two global passes + golden, three-way byte-equality (COM-01, D-26 en extension, D-37)", () => {
+  // Collected pass bytes, keyed by fixture filename; filled by beforeAll.
+  const passA = new Map<string, Buffer>();
+  const passB = new Map<string, Buffer>();
+
+  beforeAll(() => {
+    if (FIXTURE_CASES.length !== EXPECTED_FIXTURE_COUNT) {
+      throw new Error(
+        `expected exactly ${EXPECTED_FIXTURE_COUNT} committed RenderSpec fixtures, found ${FIXTURE_CASES.length}: ` +
+          `${FIXTURE_CASES.map((c) => c.fixtureFilename).join(", ")}`,
+      );
+    }
+    for (const { fixtureFilename, goldenName } of FIXTURE_CASES) {
       const fixturePath = join(FIXTURES_DIR, fixtureFilename);
       const goldenPath = join(GOLDENS_DIR, goldenName);
       if (!existsSync(fixturePath)) {
@@ -161,18 +171,39 @@ describe("determinism proof — two processes + golden, three-way byte-equality 
             `(or commit it for the first time when bootstrapping, D-25)`,
         );
       }
-      const fixtureContent = readFileSync(fixturePath, "utf-8");
-      const goldenBytes = readFileSync(goldenPath);
+    }
 
-      // Process A — first independent spawn.
-      const processABytes = runCompileStdin(fixtureContent);
+    // Pass A — first independent spawn per fixture.
+    for (const { fixtureFilename } of FIXTURE_CASES) {
+      passA.set(
+        fixtureFilename,
+        runCompileStdin(readFileSync(join(FIXTURES_DIR, fixtureFilename), "utf-8")),
+      );
+    }
 
-      // Anti-horodatage delay >= 1 s — a clock leak in the
-      // compiler would diverge the two runs here.
-      sleepSync(INTER_PROCESS_DELAY_MS);
+    // Anti-horodatage delay >= 1 s — a clock leak in the
+    // compiler would diverge the two passes here.
+    sleepSync(INTER_PROCESS_DELAY_MS);
 
-      // Process B — second independent spawn (fresh process).
-      const processBBytes = runCompileStdin(fixtureContent);
+    // Pass B — second independent spawn per fixture (fresh processes).
+    for (const { fixtureFilename } of FIXTURE_CASES) {
+      passB.set(
+        fixtureFilename,
+        runCompileStdin(readFileSync(join(FIXTURES_DIR, fixtureFilename), "utf-8")),
+      );
+    }
+  }, 120_000); // 22 spawns + the 1.1 s busy-wait — generous, still bounded.
+
+  for (const { fixtureFilename, goldenName } of FIXTURE_CASES) {
+    it(`${goldenName}: processA === processB === committed golden (global >=1 s pass gap)`, () => {
+      const goldenBytes = readFileSync(join(GOLDENS_DIR, goldenName));
+      const processABytes = passA.get(fixtureFilename);
+      const processBBytes = passB.get(fixtureFilename);
+      if (processABytes === undefined || processBBytes === undefined) {
+        throw new Error(
+          `pass bytes missing for ${fixtureFilename} — beforeAll must have run both passes (test isolation broken)`,
+        );
+      }
 
       const cmpAB = Buffer.compare(processABytes, processBBytes);
       const cmpAG = Buffer.compare(processABytes, goldenBytes);
@@ -203,6 +234,6 @@ describe("determinism proof — two processes + golden, three-way byte-equality 
       expect(cmpAB).toBe(0);
       expect(cmpAG).toBe(0);
       expect(cmpBG).toBe(0);
-    }, 60_000); // 60 s vitest timeout — covers the 1.1 s inter-process delay + spawn latency on Windows.
+    });
   }
 });

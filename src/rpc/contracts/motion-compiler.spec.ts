@@ -19,7 +19,7 @@ import {
 } from "./motion-compiler.schema.js";
 import { isRejectionExpectCode } from "./rejection-cases.js";
 import { loadRenderSpecRejectionCases, type Phase3RejectionCase } from "./render-spec-rejection.js";
-import { THEME_ANCHOR_IDS } from "./vocabulary.schema.js";
+import { RECIPE_IDS, RecipeIdSchema, THEME_ANCHOR_IDS } from "./vocabulary.schema.js";
 
 /**
  * Phase 3 frozen-contract suite — RenderSpec gates, the LottieJSON
@@ -304,6 +304,25 @@ describe("RenderSpecSchema — D-07 (1..8 components), D-13 (strictObject), D-32
   });
 
   it("rejects an unknown recipe id (cross-checks vocabulary import)", () => {
+    const result = RenderSpecSchema.safeParse(makeRenderSpec({ recipe_id: "disco-spin" }));
+    expect(result.success).toBe(false);
+  });
+});
+
+describe("recipe_id structural parity — the vocabulary is declared exactly once (ADR-03)", () => {
+  it("re-uses the imported RecipeIdSchema instance, never an inline redeclaration", () => {
+    // Instance identity is the strongest anti-drift pin: adding a
+    // recipe to vocabulary.schema.ts MUST flow into both contracts at
+    // type-check time, with no second literal list to forget.
+    expect(RenderSpecSchema.shape.recipe_id).toBe(RecipeIdSchema);
+    expect(CompileResultSchema.shape.recipe_id).toBe(RecipeIdSchema);
+  });
+
+  it("accepts every vocabulary member and rejects a non-member identically", () => {
+    for (const id of RECIPE_IDS) {
+      expect(RecipeIdSchema.safeParse(id).success).toBe(true);
+      expect(RenderSpecSchema.safeParse(makeRenderSpec({ recipe_id: id })).success).toBe(true);
+    }
     const result = RenderSpecSchema.safeParse(makeRenderSpec({ recipe_id: "disco-spin" }));
     expect(result.success).toBe(false);
   });
