@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Contrats de données & frontière Pydantic↔zod (reconstruction)** - Les 4 modèles Pydantic + miroirs zod stricts + bridge ordonné + CI `verify`, reconstruits depuis zéro
 - [x] **Phase 2: Style verrouillé & catalogue de recettes** - StyleSpec YAML hashée + catalogue fermé de 10 recettes versionnées + gate de re-validation (completed 2026-08-31)
-- [ ] **Phase 3: Motion Compiler & SVG Sanitizer** - Le seul producteur de Lottie JSON (backbone TS déterministe) + la gate dure d'hygiène SVG
+- [x] **Phase 3: Motion Compiler & SVG Sanitizer** - Le seul producteur de Lottie JSON (backbone TS déterministe) + la gate dure d'hygiène SVG (completed 2026-09-02)
 - [ ] **Phase 4: Anim QA pinnée** - La seule gate « shippable » par asset : Playwright pinné, frame walk, pixelmatch, QAReport
 - [ ] **Phase 5: Manifest Store & checkpointer** - Mémoire durable SQLite + crash-recovery LangGraph sans travail dupliqué
 - [ ] **Phase 6: Agents LLM (un par un)** - Trois agents purs derrière la frontière Pydantic, routeur cheap-first, snapshots déterministes
@@ -117,7 +117,7 @@ Plans:
   5. `viewBox` et `<title>` survivent à SVGO 4 (test de régression ADR-02) et les IDs `{asset_id}_{component}_{role}` assignés par le compiler sont identiques entre deux régénérations (diff = ∅) (SAN-03, SAN-04)
 
 **Canonical refs**: `docs/project/06_Backbone.md` (§6.1–§6.8) · `docs/project/02_Architecture.md` §2.9 (ADR-01, ADR-02)
-**Plans:** 8 plans
+**Plans:** 8/8 plans complete
 
 Plans:
 **Wave 1**
@@ -274,7 +274,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 *(FIN MILESTONE 1)* �
 |-------|----------------|--------|-----------|
 | 1. Contrats de données & frontière Pydantic↔zod (reconstruction) | 5/5 | Complete | 2026-08-29 |
 | 2. Style verrouillé & catalogue de recettes | 6/6 | Complete    | 2026-08-31 |
-| 3. Motion Compiler & SVG Sanitizer | 4/8 | In Progress (Wave 4 ✓) | 2026-09-01 |
+| 3. Motion Compiler & SVG Sanitizer | 8/8 | Complete    | 2026-09-01 |
 | 4. Anim QA pinnée | 0/0 | Not started | - |
 | 5. Manifest Store & checkpointer | 0/0 | Not started | - |
 | 6. Agents LLM (un par un) *(M2)* | 0/0 | Not started | - |

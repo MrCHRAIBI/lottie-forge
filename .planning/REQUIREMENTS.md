@@ -37,18 +37,18 @@ Requirements pour la sortie v1 (premier pack shippé via ship-gate humain). Chac
 
 ### Compilation (COM) — Partie 6
 
-- [ ] **COM-01**: Motion Compiler idempotent byte-for-byte (même `RenderSpec` → mêmes bytes), golden files par recette
-- [ ] **COM-02**: Zéro LLM sur le chemin backbone déterministe (aucun import langchain/openai/anthropic — grep CI bloquant)
-- [ ] **COM-03**: Lottie JSON re-validé zod avant retour (un JSON invalide ne sort jamais du compiler)
-- [ ] **COM-04**: Feature gate lottie-web pinnée (`SupportedLottieFeature`, champ `v` ; rejet dur 3D/audio/negative stretch/expressions vivantes ; fallback bake en keyframes)
+- [x] **COM-01**: Motion Compiler idempotent byte-for-byte (même `RenderSpec` → mêmes bytes), golden files par recette
+- [x] **COM-02**: Zéro LLM sur le chemin backbone déterministe (aucun import langchain/openai/anthropic — grep CI bloquant)
+- [x] **COM-03**: Lottie JSON re-validé zod avant retour (un JSON invalide ne sort jamais du compiler)
+- [x] **COM-04**: Feature gate lottie-web pinnée (`SupportedLottieFeature`, champ `v` ; rejet dur 3D/audio/negative stretch/expressions vivantes ; fallback bake en keyframes)
 
 ### Sanitisation SVG (SAN) — Partie 6
 
-- [ ] **SAN-01**: Rejet de `<text>`/`<tspan>` (glyphs-as-paths uniquement)
-- [ ] **SAN-02**: Rejet de raster embarqué (`<image>`, data URIs base64)
-- [ ] **SAN-03**: IDs stables entre régénérations, schéma `{asset_id}_{component}_{role}`, assignés par le compiler (jamais le LLM)
-- [ ] **SAN-04**: SVGO 4 avec `removeViewBox`/`removeTitle` désactivés + test de régression (viewBox et `<title>` survivent) — ADR-02
-- [ ] **SAN-05**: Rejet sécurité : `<foreignObject>`, `<script>`, event handlers, URIs `javascript:`, `xlink:href` externe
+- [x] **SAN-01**: Rejet de `<text>`/`<tspan>` (glyphs-as-paths uniquement)
+- [x] **SAN-02**: Rejet de raster embarqué (`<image>`, data URIs base64)
+- [x] **SAN-03**: IDs stables entre régénérations, schéma `{asset_id}_{component}_{role}`, assignés par le compiler (jamais le LLM)
+- [x] **SAN-04**: SVGO 4 avec `removeViewBox`/`removeTitle` désactivés + test de régression (viewBox et `<title>` survivent) — ADR-02
+- [x] **SAN-05**: Rejet sécurité : `<foreignObject>`, `<script>`, event handlers, URIs `javascript:`, `xlink:href` externe
 
 ### Anim QA (QA) — Parties 7 & 13
 
@@ -172,15 +172,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MOT-02 | Phase 2 (clos structurel) + Phase 6 (côté agent) | Complete |
 | MOT-03 | Phase 2 | Complete |
 | MOT-04 | Phase 2 | Complete |
-| COM-01 | Phase 3 | Pending |
-| COM-02 | Phase 3 | Pending |
-| COM-03 | Phase 3 | Pending |
-| COM-04 | Phase 3 | Pending |
-| SAN-01 | Phase 3 | Pending |
-| SAN-02 | Phase 3 | Pending |
-| SAN-03 | Phase 3 | Pending |
-| SAN-04 | Phase 3 | Pending |
-| SAN-05 | Phase 3 | Pending |
+| COM-01 | Phase 3 | Complete |
+| COM-02 | Phase 3 | Complete |
+| COM-03 | Phase 3 | Complete |
+| COM-04 | Phase 3 | Complete |
+| SAN-01 | Phase 3 | Complete |
+| SAN-02 | Phase 3 | Complete |
+| SAN-03 | Phase 3 | Complete |
+| SAN-04 | Phase 3 | Complete |
+| SAN-05 | Phase 3 | Complete |
 | QA-01 | Phase 4 | Pending |
 | QA-02 | Phase 4 | Pending |
 | QA-03 | Phase 4 | Pending |

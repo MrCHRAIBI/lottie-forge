@@ -1,19 +1,19 @@
 ---
 gsd_state_version: 1.0
-current_phase: 3
-current_phase_name: Motion Compiler & SVG Sanitizer
-status: executing
-stopped_at: Phase 3 Wave 7 complete (plan 03-08 — RPC NDJSON + Python transport + COM-02 grep gate). All 8 plans executed; phase ready for verifier.
-last_updated: "2026-09-02T23:00:00Z"
+current_phase: 4
+current_phase_name: Anim QA pinnée
+status: planning
+stopped_at: Phase 3 complete, ready to plan Phase 4
+last_updated: "2026-09-02T20:15:07.842Z"
 last_activity: 2026-09-02
-last_activity_desc: Phase 3 Wave 7 complete — plan 03-08 ships NDJSON RPC server (`src/rpc/server.ts` + 12-unit-spec) with closed 8-code envelope (D-27/D-28/D-36), Python transport client (`lottie_forge/rpc/client.py` + 22-test §6.6 integration, D-30 transport-only), and COM-02 grep gate (`src/rpc/contracts/no-llm-imports.spec.ts` with proven scanner teeth on synthetic in-memory payloads). 603 vitest + 520 pytest all green post-merge; tsc/biome/ruff clean; verify.yml byte-identical. Phase 3 now awaits `/gsd-execute-phase 03` (or explicit `/gsd-verify-work 03`) to run the verifier and mark the phase complete.
-state_head: 56c6ec0
+last_activity_desc: Phase 3 complete, transitioned to Phase 4
+state_head: de101da835cc850dd4195239df9dd8e0d13b61a4
 progress:
   total_phases: 10
-  completed_phases: 1
-  total_plans: 20
+  completed_phases: 2
+  total_plans: 19
   completed_plans: 19
-  percent: 21
+  percent: 20
 ---
 
 # Project State
@@ -27,10 +27,10 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 
 ## Current Position
 
-Phase: 3 (Motion Compiler & SVG Sanitizer) — Wave 6/7 complete (1 wave remains)
-Plan: 03-06 ✓ + 03-07 ✓ (Wave 6) — Golden pipeline + sanitizer hardening
-Status: Wave 6 done in 37 min total (parallel subagents); 03-06 23 min (P6T1=11 goldens+scripts, P6T2=byte-compare+double-spawn+ids); 03-07 14 min (P7T1=hardening, P7T2=matrix 20 cases, P7T3=regression+self-consistency 77 cases); total 8 atomic commits. Wave 7 unblocked (03-08 RPC + Python transport + COM-02 grep gate).
-Last activity: 2026-09-02 — Completed plans 03-06 + 03-07 of Phase 3 Wave 6 in parallel via gsd-executor subagents (23 + 14 = 37 min, 8 atomic commits). **Task 1** (keyframe-emitter exhaustive, 10 shapes) — `dd8d0c6` — opacity-ramp/translate-in/overshoot-settle/scale-breath/trim-path/angular-in/pop-settle/sine-drift/damped-oscillation/circular-path ALL real with exhaustive switch sans default + `never`-typed exhaustiveness guard (D-37). Easing handles `o`/`i` from `EasingCurve.control_points` on every segment's STARTING keyframe, last keyframe bare (Pitfall 4/11). Animated transform deltas keep OWN closed ranges (D-34) — never reinterpreting 0..1 coord bounds. Draw-on emits a trim item `{ty: "tm", s: static 0, e: animated 0→100, o: static 0, m: 1}` threaded by shape-builder into `gr.it` between geometry and paint. Auto-fixed Pitfall 11 violation: `frameStep = lastFrame / (totalSamples + 1)` ensures strictly ascending `t` for scale-breath/sine-drift/circular-path/damped-oscillation. **Task 2** (5 SHAPE_NAMES + D-15 + triggers) — `899c448` — all 5 generators (rect/ellipse/path/polyline/polystar) with lottie spec vertex order. KAPPA constant imported as single source (spec pin `0.5519150244935105707435627` rounded to IEEE-754 double `0.5519150244935106`, parsed via `Number.parseFloat` to silence biome precision-loss warning). D-15 pose rule = closed mapping 7 finale / 3 t=0, exhaustive switch sans default. Trigger markers from `trigger_points + recipe_id` (e.g. `cm: "enter-fade"`). **Task 3** (feature gate) — `69b51b1` — `assertSupportedComposition` + `assertSupportedLayer` hard-reject 3D/audio-video-image-sequences/negative-stretch/track-matte-canvas-html/expression-channels; `classify(emitted)` returns `"all" | "svg-only"` with svg-only branch forced synthetically via masks/matting fixture (D-33 — no Phase 3 emission produces svg-only naturally; the real set fills in Ph 4/8). **D-33 deliberate deviation**: NO bake-marker convention, NO expression-baking path; expression in input is hard-rejected with `unsupported_feature` (deferred v2). Grep `lottie:bake` across `src/motion-compiler` returns ZERO matches (acceptance criterion verified). Schema widening (auto-fixed during tsc clean): `tm` variant extended to `AnimatablePropertySchema` (animated trim) + `sh` variant extended to bezier description object `{i, o, v, c}` (path/polyline). 76 new vitest cases (39 keyframe-emitter + 20 shape-builder + 17 feature-gate); 435/435 total green; tsc + biome clean. 3 documented deviations (D-33 bake-deferral, schema widening, KAPPA precision) + 3 auto-fixed issues (Pitfall 11 frame-step, zod tuple narrowing, schema widening). 
+Phase: 4 — Anim QA pinnée
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-09-02 — Phase 3 complete, transitioned to Phase 4
 Progress: [██████████] 100% (16/19 plans — Phases 1–2 complete, Phase 3 Waves 1+2+3+4+5 done)
 
 **Milestone 1 = Phases 1–5** (spine déterministe sans agents) · **Milestone 2 = Phases 6–10** (agents + orchestration + packager + observabilité + ship).
@@ -39,7 +39,7 @@ Progress: [██████████] 100% (16/19 plans — Phases 1–2 co
 
 **Velocity:**
 
-- Total plans completed: 9
+- Total plans completed: 14
 - Average duration: 22 min
 - Total execution time: 265 min
 
@@ -49,7 +49,7 @@ Progress: [██████████] 100% (16/19 plans — Phases 1–2 co
 |-------|-------|-------|----------|
 | 01 | 4 plans | 74 min | 18.5 min |
 | 02 | 6 | - | - |
-| 03 | 4 | 99 min | 24.8 min |
+| 3 | 8 | - | - |
 
 **Recent Trend:**
 
@@ -112,6 +112,7 @@ Recent decisions affecting current work:
 - [Phase 03]: Plan 03-02 (2026-09-01, 18 min) : Wave 2 livré.Contrats Phase 3 GELÉS au zod layer (mirror Phase 7 §6.3.1 verbatim). src/rpc/contracts/motion-compiler.schema.ts = `RoleSchema` (D-02 derived union `ThemeAnchorId ∪ {"neutral"}` importé depuis vocabulary.schema.ts — pas de second site de déclaration) + `StrokeWidthTokenSchema` (D-14 thin|default|bold, JAMAIS free float) + `ShapeInputSchema` (D-01 discriminatedUnion 5-générateurs, D-06 ranges fermés 0..1, D-34 cross-field `corner_radius ≤ min(w,h)/2` et `r_inner < r_outer`) + `PaintSchema` (discriminatedUnion fill-only vs stroke+token) + `TransformDeltaSchema` (D-34 propres ranges -1..1/-360..360/0.1..4 séparés des coords 0..1) + `ComponentSchema` + `RenderSpecSchema` (D-07 1..8 components, D-13 strictObject, D-32 `(component, role)` uniqueness via superRefine one-issue-per-duplicate). Gate LottieJSON = `LottieJSONSchema` avec D-12 pin `v="5.7.0"` + `ddd=0` + `ty=4` (shape-layers only), closed SHAPE_NAME union, expression channel `x` **structurellement impossible** via strictObject (D-33 zero expressions), legacy keyframe `e` **structurellement impossible** via strictObject, Pitfall 3 `s:[v]` (1-element array obligatoire), Pitfall 11 superRefine array-level (ascending t, intermediate `i+o`, last NEITHER), Pitfall 2 + COM-04 unit gates (negative-stretch ≤ 0 sur animated+static, opacity 0..100 sur animated+static). `CompileResultSchema` close l'enveloppe — `lottie` est typé `LottieJSONSchema` (re-validé par construction). src/rpc/contracts/sanitizer.schema.ts = `SanitizeRequestSchema` (D-17 svg min 1, empty-edge structured reject), `SanitizeViolationSchema` (closed SANITIZER_VIOLATION_CATEGORIES, 14 catégories dont forbidden-text/raster/foreignobject/script/handlers/xlink/data-uri/...), `SanitizeReportSchema` + `SanitizeResultSchema` (cross-field invariant superRefine `ok=true ⇔ empty violations + svg present`, `ok=false ⇔ ≥1 violation`). src/rpc/contracts/render-spec-rejection.ts = typed facade `loadRenderSpecRejectionCases('render-spec' | 'lottie-json')` (literals clos, no stringly-typed). src/rpc/contracts/rejection-cases.ts = additive `expect_code` field optionel (default null, Phase 1/2 callers intacts) + `REJECTION_EXPECT_CODES` closed enum (8 codes RPC = parse_error/validation_error/compile_error/sanitize_rejected/unsupported_feature/internal/protocol_error/method_not_found) + **load-time guard fail-loud** si `expect_code` non-closed (la one-source-zero-drift harness serait silencieusement divergente vs Py mirror en Phase 7). 2 fixtures = `render-spec.json` (14 cas : missing/malformed asset_id, unknown top-level key, 0/9 components, coord 1.5, negative radius, duplicate (component, role), invalid role "marquee", free-float stroke_width, corner_radius > min/2, transform scale -1, polystar r_inner==r_outer, unknown recipe "disco-spin") + `lottie-json.json` (11 cas : v="5.9.0", ddd=1, ty=2, expression `x`, legacy `e`, scalar `s`, descending t, last-keyframe handles, op<ip, negative scale, empty layers). 89 new vitest cases (76 motion-compiler + 13 sanitizer) green; **272/272 total** (was 183 in Wave 1). Fix self-corrected (Rule 1 — bug dans mon implémentation initiale) : `TransformSchema.superRefine` couvrait seulement le branch animated de `s` et `o` — un `o:{a:0,k:150}` static et un `s:{a:0,k:-100}` static passaient avant. Ajout du branch static `(typeof k === "number" && (k < 0 || k > 100))` etc. Pitfall 11 follow-up landed as separate commit `29fe4a3` : `EaseHandleSchema` accepte la forme hybride Lottie (per-dimension scalar OR 1-element array) que l'émetteur utilise pour les easings bezier (les fixtures violaient la forme scalar-only précédente). `npx tsc --noEmit` clean, `npx @biomejs/biome check .` clean, `npx vitest run` 272/272 green. **Gate for Phase 7 : pytest consomme les mêmes JSON via parametrize sans rewrite (D-29).**
 
 - [Phase 03]: Plan 03-04 (2026-09-01, 22 min, single TRACER task): Wave 4 delivered. TRACER compiler→sanitizer seam proven end-to-end on a-001/fade (2-component inline fixture) — compile() with COM-03 LottieJSONSchema re-validation as last act, D-10 layer inversion (components[0]→layers[-1]), D-02 nm = role anchor, D-32 2/3-segment IDs (built by compiler, asserted by stabilize-ids without rewriting — cleanupIds:false in preset override), D-18 title/desc derived from asset_id+recipe_id only (no user-supplied text leakage, closed RenderSpecSchema.strictObject blocks it), D-22 viewBox-only regime (root has no width/height), D-09 neutral fills [0.5,0.5,0.5] for Lottie emit (Pitfall 8 symmetric headroom for setTheme) + concrete hex for SVG emit (D-16). Two-pass sanitizer strategy (collect-then-reject BEFORE preset-default mutation; pass 1 forbid-* collectors only, pass 2 only on known-clean tree) — the gate is the gate. Locked SVGO 4 config (multipass:true, floatPrecision:4, plugin order gates→preset-default→stabilize-ids, preset overrides removeDesc:false/cleanupIds:false/collapseGroups:false). Exhaustive switch sans default on keyframe_shape (9 typed-throw CompileError code "compile_error", D-37) and shape discriminator (3 typed-throw); opacity-ramp real; widening target = plan 03-05. Schema additions are TYPE-ONLY (RendererSupport + LottieShapeItem) — runtime zod validators untouched, additive IN-07-style. 17 new modules + 1 pipeline spec + 2 schema lines. 22 new vitest cases (12 seam assertions + 10 sanitizer rejection paths); 359/359 total (337 prior + 22 new); npx tsc --noEmit clean; npx @biomejs/biome check . clean (45 files). Documented deviation: option-b inline 2-component TRACER fixture (fade.json pinned at 1 component by 03-03 fixtures.spec.ts; extending would break the 65-case spec — Plan 03-06 will resolve the goldens story). Two-pass sanitize design IS the architectural decision — one-pass optimize() would mutate even on rejection, violating P4 (“never silently strip”). 03-04-SUMMARY.md 22 min, status complete.
+
 ### Blockers/Concerns
 
 - None blocking — Phases 01–03 Wave 3 delivered (bridge pattern replicated across 6 contrats, rejection harness 6 fixtures, gates bloquantes vertes 485 pytest / 156 vitest, format.ts byte-authority verrouillé, make_render_spec() builder + 11 fixtures RenderSpec + 65-case consistency spec landed). 02-REVIEW.md : 10/10 findings résolus — WR-01/02/03 + IN-05 fixés avec tests de régression mutation-checkés (02-REVIEW-FIX.md), IN-01/02/03/04/06/07 fixés en quick task 260831-jnx. **Note SDK** : `gsd_run query state.*` commands retournent "Cannot parse Current Plan or Total Plans in Phase from STATE.md" parce que STATE.md est en format stale pré-Phase-3 ("Plan: Not started", pas de compteur numérique) ; le tracking d'infrastructure state n'a pas été bootstrappé pour Phase 3. Les shared-file writes sont faites manuellement par l'orchestrator après chaque wave. À corriger via une quick task si la friction grossit.
@@ -132,5 +133,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-09-02T22:30:00Z
-Stopped at: Phase 3 Wave 6 complete (plans 03-06 + 03-07) — 1 wave remains (Wave 7 with 03-08 unblocked)
+Stopped at: Phase 3 complete, ready to plan Phase 4
 Resume file: .planning/phases/03-motion-compiler-svg-sanitizer/03-08-PLAN.md
