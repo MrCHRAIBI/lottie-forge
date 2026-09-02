@@ -147,7 +147,7 @@ Plans:
 
 **Wave 7** *(blocked on Wave 6)*
 
-- [ ] 03-08-PLAN.md — RPC NDJSON + client Python §6.6 (D-27/D-28/D-30/D-36) + gate grep COM-02
+- [x] 03-08-PLAN.md — RPC NDJSON + client Python §6.6 (D-27/D-28/D-30/D-36) + gate grep COM-02
 
 ### Phase 4: Anim QA pinnée
 
