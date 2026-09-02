@@ -1,6 +1,6 @@
 import { Buffer } from "node:buffer";
 import { spawnSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -15,11 +15,10 @@ import type { RecipeId } from "../../rpc/contracts/vocabulary.schema.js";
  *
  * **D-26 en extension — every committed fixture is covered** (not a
  * representative subset): the 10 per-recipe fixtures + the galerie
- * multi-component fixture. Coverage is DERIVED from
- * `fixtures/render-specs/` at runtime (same derivation rule as
- * `update-goldens.mjs::goldenNameFor`), so a fixture added to the
- * directory is automatically proven — the count pin below keeps the
- * derivation honest.
+ * multi-component fixture, listed explicitly in
+ * `DETERMINISM_FIXTURES` below. The count pin in `beforeAll` keeps
+ * the table honest against the committed directory (the same 11
+ * count `update-goldens.mjs` enforces).
  *
  * **Two global passes, one anti-horodatage gap.** `beforeAll` runs
  * pass A over ALL fixtures, sleeps ≥ 1 second once (a clock leak
@@ -53,38 +52,94 @@ const GOLDENS_DIR = join(REPO_ROOT, "src", "motion-compiler", "__tests__", "gold
 /** update-goldens.mjs refuses any count other than 11 — same pin here. */
 const EXPECTED_FIXTURE_COUNT = 11;
 
-/** A fixture case maps a fixture file + asset id + golden basename. */
-interface FixtureCase {
+/** Each test case maps a fixture file + asset id + golden basename. */
+const DETERMINISM_FIXTURES: ReadonlyArray<{
   recipeId: RecipeId;
   assetId: string;
   fixtureFilename: string;
   goldenName: string;
-}
-
-/**
- * Derive the full case list from the committed fixtures directory —
- * `goldenNameFor` mirrors `update-goldens.mjs` byte-for-byte so the
- * two derivations can never drift.
- */
-function deriveFixtureCases(): FixtureCase[] {
-  const names = readdirSync(FIXTURES_DIR)
-    .filter((n) => n.endsWith(".json"))
-    .sort();
-  return names.map((fixtureFilename) => {
-    const raw = JSON.parse(readFileSync(join(FIXTURES_DIR, fixtureFilename), "utf-8")) as {
-      asset_id: string;
-      recipe_id: RecipeId;
-    };
-    return {
-      recipeId: raw.recipe_id,
-      assetId: raw.asset_id,
-      fixtureFilename,
-      goldenName: `${raw.asset_id}.${fixtureFilename.replace(/\.json$/, "")}.golden.json`,
-    };
-  });
-}
-
-const FIXTURE_CASES = deriveFixtureCases();
+}> = [
+  // fade — one-shot opacity ramp (single-component, animated o).
+  {
+    recipeId: "fade",
+    assetId: "a-001",
+    fixtureFilename: "fade.json",
+    goldenName: "a-001.fade.golden.json",
+  },
+  // slide — one-shot translate-in (static o/r/a + animated p).
+  {
+    recipeId: "slide",
+    assetId: "a-002",
+    fixtureFilename: "slide.json",
+    goldenName: "a-002.slide.golden.json",
+  },
+  // bounce — one-shot translate with multi-keyframe easing arc.
+  {
+    recipeId: "bounce",
+    assetId: "a-003",
+    fixtureFilename: "bounce.json",
+    goldenName: "a-003.bounce.golden.json",
+  },
+  // pulse — loop scale-breath (multi-keyframe sine emit, animated s).
+  {
+    recipeId: "pulse",
+    assetId: "a-004",
+    fixtureFilename: "pulse.json",
+    goldenName: "a-004.pulse.golden.json",
+  },
+  // draw-on — trim-path stroke reveal (animated ad/trim segment).
+  {
+    recipeId: "draw-on",
+    assetId: "a-005",
+    fixtureFilename: "draw-on.json",
+    goldenName: "a-005.draw-on.golden.json",
+  },
+  // rotate — one-shot rotation sweep (animated r).
+  {
+    recipeId: "rotate",
+    assetId: "a-006",
+    fixtureFilename: "rotate.json",
+    goldenName: "a-006.rotate.golden.json",
+  },
+  // scale-pop — one-shot scale overshoot (animated s, polystar shape).
+  {
+    recipeId: "scale-pop",
+    assetId: "a-007",
+    fixtureFilename: "scale-pop.json",
+    goldenName: "a-007.scale-pop.golden.json",
+  },
+  // float — loop vertical drift (animated p, sine loop).
+  {
+    recipeId: "float",
+    assetId: "a-008",
+    fixtureFilename: "float.json",
+    goldenName: "a-008.float.golden.json",
+  },
+  // wiggle — loop rotation oscillation (animated r, polystar shape).
+  {
+    recipeId: "wiggle",
+    assetId: "a-009",
+    fixtureFilename: "wiggle.json",
+    goldenName: "a-009.wiggle.golden.json",
+  },
+  // orbit — loop circular position path (animated p, polystar shape).
+  {
+    recipeId: "orbit",
+    assetId: "a-010",
+    fixtureFilename: "orbit.json",
+    goldenName: "a-010.orbit.golden.json",
+  },
+  // galerie — 4-component multi-layer multi-generator emission under
+  // recipe_id "wiggle" (option-b per D-03); the most complex
+  // RecipeSpec — a clock leak or state-machine bug diverges here
+  // faster than on the single-component fixtures.
+  {
+    recipeId: "wiggle",
+    assetId: "a-011",
+    fixtureFilename: "galerie.json",
+    goldenName: "a-011.galerie.golden.json",
+  },
+];
 
 const INTER_PROCESS_DELAY_MS = 1100;
 
@@ -151,13 +206,13 @@ describe("determinism proof — two global passes + golden, three-way byte-equal
   const passB = new Map<string, Buffer>();
 
   beforeAll(() => {
-    if (FIXTURE_CASES.length !== EXPECTED_FIXTURE_COUNT) {
+    if (DETERMINISM_FIXTURES.length !== EXPECTED_FIXTURE_COUNT) {
       throw new Error(
-        `expected exactly ${EXPECTED_FIXTURE_COUNT} committed RenderSpec fixtures, found ${FIXTURE_CASES.length}: ` +
-          `${FIXTURE_CASES.map((c) => c.fixtureFilename).join(", ")}`,
+        `expected exactly ${EXPECTED_FIXTURE_COUNT} committed RenderSpec fixtures, found ${DETERMINISM_FIXTURES.length}: ` +
+          `${DETERMINISM_FIXTURES.map((c) => c.fixtureFilename).join(", ")}`,
       );
     }
-    for (const { fixtureFilename, goldenName } of FIXTURE_CASES) {
+    for (const { fixtureFilename, goldenName } of DETERMINISM_FIXTURES) {
       const fixturePath = join(FIXTURES_DIR, fixtureFilename);
       const goldenPath = join(GOLDENS_DIR, goldenName);
       if (!existsSync(fixturePath)) {
@@ -174,7 +229,7 @@ describe("determinism proof — two global passes + golden, three-way byte-equal
     }
 
     // Pass A — first independent spawn per fixture.
-    for (const { fixtureFilename } of FIXTURE_CASES) {
+    for (const { fixtureFilename } of DETERMINISM_FIXTURES) {
       passA.set(
         fixtureFilename,
         runCompileStdin(readFileSync(join(FIXTURES_DIR, fixtureFilename), "utf-8")),
@@ -186,7 +241,7 @@ describe("determinism proof — two global passes + golden, three-way byte-equal
     sleepSync(INTER_PROCESS_DELAY_MS);
 
     // Pass B — second independent spawn per fixture (fresh processes).
-    for (const { fixtureFilename } of FIXTURE_CASES) {
+    for (const { fixtureFilename } of DETERMINISM_FIXTURES) {
       passB.set(
         fixtureFilename,
         runCompileStdin(readFileSync(join(FIXTURES_DIR, fixtureFilename), "utf-8")),
@@ -194,7 +249,7 @@ describe("determinism proof — two global passes + golden, three-way byte-equal
     }
   }, 120_000); // 22 spawns + the 1.1 s busy-wait — generous, still bounded.
 
-  for (const { fixtureFilename, goldenName } of FIXTURE_CASES) {
+  for (const { fixtureFilename, goldenName } of DETERMINISM_FIXTURES) {
     it(`${goldenName}: processA === processB === committed golden (global >=1 s pass gap)`, () => {
       const goldenBytes = readFileSync(join(GOLDENS_DIR, goldenName));
       const processABytes = passA.get(fixtureFilename);
