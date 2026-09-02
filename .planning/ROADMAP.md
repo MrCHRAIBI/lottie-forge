@@ -138,12 +138,12 @@ Plans:
 
 **Wave 5** *(blocked on Wave 4)*
 
-- [ ] 03-05-PLAN.md — Motion complet: keyframe-emitter exhaustif 10 formes + 5 générateurs + markers/pose D-15 + feature gate svg-only (COM-04)
+- [x] 03-05-PLAN.md — Motion complet: keyframe-emitter exhaustif 10 formes + 5 générateurs + markers/pose D-15 + feature gate svg-only (COM-04)
 
 **Wave 6** *(blocked on Wave 5)*
 
-- [ ] 03-06-PLAN.md — 11 goldens byte-exacts (D-03/D-24/D-25) + double-spawn déterminisme (D-26/D-37) + IDs stables (COM-01/SAN-03)
-- [ ] 03-07-PLAN.md — Sanitizer: matrice adversariale SAN-01/02/05 + régression ADR-02 SAN-04 + auto-consistance D-31/D-37
+- [x] 03-06-PLAN.md — 11 goldens byte-exacts (D-03/D-24/D-25) + double-spawn déterminisme (D-26/D-37) + IDs stables (COM-01/SAN-03)
+- [x] 03-07-PLAN.md — Sanitizer: matrice adversariale SAN-01/02/05 + régression ADR-02 SAN-04 + auto-consistance D-31/D-37
 
 **Wave 7** *(blocked on Wave 6)*
 
