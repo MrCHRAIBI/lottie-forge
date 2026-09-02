@@ -4,10 +4,10 @@ current_phase: 4
 current_phase_name: Anim QA pinnée
 status: planning
 stopped_at: Phase 3 complete, ready to plan Phase 4
-last_updated: "2026-09-02T20:15:07.842Z"
+last_updated: "2026-09-02T21:38:10.228Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 3 complete, transitioned to Phase 4
-state_head: de101da835cc850dd4195239df9dd8e0d13b61a4
+state_head: 2d5d6ec8fdf17537bce8e2b06fbb4bd6cff15420
 progress:
   total_phases: 10
   completed_phases: 2
@@ -123,6 +123,7 @@ Recent decisions affecting current work:
 |---|-------------|------|--------|-----------|
 | 260831-jnx | Hardening résiduel 02-REVIEW — IN-01/02/03/04/06/07 (6 items Info, zéro comportement produit) | 2026-08-31 | b9b9726 | [260831-jnx-hardening-residuel-02-review-in-01-02-03](./quick/260831-jnx-hardening-residuel-02-review-in-01-02-03/) |
 | 260831-l1s | Bookkeeping audit M1 — REQUIREMENTS vérifié (déjà à jour 909d05d), ROADMAP Phase 1 Complete, recompte JSON 19 cas style-spec (prose alignée), dispositions F-1..F-4 | 2026-08-31 | da3acdc | [260831-l1s-bookkeeping-audit-m1-planning-only-docs](./quick/260831-l1s-bookkeeping-audit-m1-planning-only-docs/) |
+| 3 | Fidelite Phase 3 — D-26 en extension (determinism.spec.ts 3->11 fixtures, deux passes globales) + recipe_id re-utilise RecipeIdSchema (fin des redeclarations inline, test de parite structurelle) | 2026-09-02 | 2d5d6ec | — |
 
 ## Deferred Items
 
