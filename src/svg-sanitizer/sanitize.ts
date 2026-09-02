@@ -70,6 +70,33 @@ import {
  *     and the `sanitize_rejected` code.
  */
 export function sanitizeSvg(request: SanitizeRequest): SanitizeResult {
+  // SAN-01 empty edge — empty or null SVG input is a structured
+  // validation rejection (never a pass, never a thrown error).
+  // The schema (SanitizeRequestSchema.svg: z.string().min(1))
+  // rejects empty input at the boundary, but a defensive
+  // runtime check keeps the function throw-free even when a
+  // caller bypasses the schema. The result is `ok=false` with
+  // a `validation_error` code and a single `forbidden-element`
+  // violation (semantically: no allow-listed element exists in
+  // an empty input — the gate's contract holds).
+  if (typeof request.svg !== "string" || request.svg.length === 0) {
+    return {
+      ok: false,
+      report: {
+        allowed_elements: [],
+        violations: [
+          {
+            category: "forbidden-element",
+            element_path: "svg",
+            message: `empty or null svg input is forbidden (SAN-01) — sanitizeSvg requires a non-empty SVG string`,
+          },
+        ],
+        input_element_count: 0,
+      },
+      code: "validation_error",
+    };
+  }
+
   // The shared collector — passed to every plugin by reference.
   // `matchedAllowed` is the closure-scoped accumulator the
   // forbid-structure plugin populates with every D-31 allow-list
