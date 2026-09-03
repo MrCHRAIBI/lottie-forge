@@ -4,10 +4,10 @@ current_phase: 4
 current_phase_name: Anim QA pinnée
 status: planning
 stopped_at: Phase 4 context gathered
-last_updated: "2026-09-03T13:23:32.358Z"
+last_updated: "2026-09-03T13:48:45.873Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 3 complete, transitioned to Phase 4
-state_head: 77beedc4ce9aea76350b439b7ac7e1ae2d3ab3e4
+state_head: ba6e4fa605bf9f9366a28327ec22a0debb9100f2
 progress:
   total_phases: 10
   completed_phases: 2
@@ -125,6 +125,7 @@ Recent decisions affecting current work:
 | 260831-l1s | Bookkeeping audit M1 — REQUIREMENTS vérifié (déjà à jour 909d05d), ROADMAP Phase 1 Complete, recompte JSON 19 cas style-spec (prose alignée), dispositions F-1..F-4 | 2026-08-31 | da3acdc | [260831-l1s-bookkeeping-audit-m1-planning-only-docs](./quick/260831-l1s-bookkeeping-audit-m1-planning-only-docs/) |
 | 3 | Fidelite Phase 3 — D-26 en extension (determinism.spec.ts 3->11 fixtures, deux passes globales) + recipe_id re-utilise RecipeIdSchema (fin des redeclarations inline, test de parite structurelle) | 2026-09-02 | 2d5d6ec | — |
 | 4 | Fidelite Phase 3 (rework) — DETERMINISM_FIXTURES table explicite 11 entrees pattern d'origine {recipeId, assetId, fixtureFilename, goldenName}, delai global unique; FIX 2 deja vert en 2d5d6ec | 2026-09-02 | 8af296b | — |
+| 5 | Audit strict 04-CONTEXT.md — B1-B5 (lock unique qa.yml/qa:run, ségrégation *.qa.spec.ts + zero-skips qa.yml, applied_max_diff_pixels, research gate setTheme/.dotlottie, verdict≠transport + codes 8→10) + m1-m13 | 2026-09-03 | ba6e4fa | — |
 
 ## Deferred Items
 
