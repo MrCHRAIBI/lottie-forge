@@ -163,7 +163,31 @@ Plans:
   5. La QA complète est exécutable en CI depuis un fresh checkout (workflow dédié, image pinnée, sans secrets)
 
 **Canonical refs**: `docs/project/07_AnimQA.md` (§7.1–§7.11) · `docs/project/06_Backbone.md` §6.3.4 (feature gate réutilisée)
-**Plans**: TBD
+**Plans:** 8 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 04-01-PLAN.md — Contrats gelés QAReport (Pydantic §7.6 + zod + harnais de rejet D-14) + codes RPC 8→10 (D-17) + requête `anim_qa.run` zéro-chemin (D-18) + contrats configs versionnées (D-06/D-10/D-22)
+- [ ] 04-02-PLAN.md — Environnement pinné : gate human-verify deps npm + pins exacts + `qa-container.lock` (B1/D-01) + `qa:run` docker (D-02) + ségrégation vitest (D-24/B2)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 04-03-PLAN.md — TRACER: `anim_qa.run` bout-en-bout sans navigateur (étapes 1–3 + résolveur baseline → envelope `baseline_missing`, m7 no-spawn, verdict ≠ transport)
+- [ ] 04-04-PLAN.md — Spike de calibration D-07 (premier livrable fonctionnel) + diff.ts pixelmatch + `canonicalFrame()` (D-08/m4) + capture core walker
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 04-05-PLAN.md — Baselines commitées + sidecar (D-05/D-26) + runner complété (walk → diff calibré → QAReport → artefacts out/qa, D-19) + politique QA-03 sans moyenne
+
+**Wave 4** *(blocked on Wave 3)*
+
+- [ ] 04-06-PLAN.md — Smoke theming deux chemins (D-20 costly) : `slotizeForTheme`+setThemeData / `applyTheme`-svg, masks D-11, `theme:noop` (SC-3, D-21)
+- [ ] 04-07-PLAN.md — Scaffold multi-renderer §7.7 (D-27) : passes réelles lottie-react/dotlottie-vue, colonne Flutter manifest-only, scaffold-manifest déterministe
+
+**Wave 5** *(blocked on Wave 4)*
+
+- [ ] 04-08-PLAN.md — CI `qa.yml` (lock parsé B1, sans secrets m13, D-03/D-04) + preuve flake identité stricte ×10 (D-25) ; verify.yml byte-intact
 
 ### Phase 5: Manifest Store & checkpointer
 
